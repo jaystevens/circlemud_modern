@@ -84,13 +84,13 @@ typedef enum {
     eMSDP_NONE = -1,            /* This must always be first. */
 
     /* General */
-        eMSDP_CHARACTER_NAME,
+    eMSDP_CHARACTER_NAME,
     eMSDP_SERVER_ID,
     eMSDP_SERVER_TIME,
     eMSDP_SNIPPET_VERSION,
 
     /* Character */
-        eMSDP_AFFECTS,
+    eMSDP_AFFECTS,
     eMSDP_ALIGNMENT,
     eMSDP_EXPERIENCE,
     eMSDP_EXPERIENCE_MAX,
@@ -122,20 +122,20 @@ typedef enum {
     eMSDP_CON_PERM,
 
     /* Combat */
-        eMSDP_OPPONENT_HEALTH,
+    eMSDP_OPPONENT_HEALTH,
     eMSDP_OPPONENT_HEALTH_MAX,
     eMSDP_OPPONENT_LEVEL,
     eMSDP_OPPONENT_NAME,
 
     /* World */
-        eMSDP_AREA_NAME,
+    eMSDP_AREA_NAME,
     eMSDP_ROOM_EXITS,
     eMSDP_ROOM_NAME,
     eMSDP_ROOM_VNUM,
     eMSDP_WORLD_TIME,
 
     /* Configuration */
-        eMSDP_CLIENT_ID,
+    eMSDP_CLIENT_ID,
     eMSDP_CLIENT_VERSION,
     eMSDP_PLUGIN_ID,
     eMSDP_ANSI_COLORS,
@@ -145,7 +145,7 @@ typedef enum {
     eMSDP_MXP,
 
     /* GUI variables */
-        eMSDP_BUTTON_1,
+    eMSDP_BUTTON_1,
     eMSDP_BUTTON_2,
     eMSDP_BUTTON_3,
     eMSDP_BUTTON_4,
@@ -180,24 +180,24 @@ typedef struct {
 } MSDP_t;
 
 typedef struct {
-    const char *pName;         /* The name of the MSSP variable */
-    const char *pValue;        /* The value of the MSSP variable */
+    const char *pName;              /* The name of the MSSP variable */
+    const char *pValue;             /* The value of the MSSP variable */
     const char *(*pFunction)(void); /* Optional function to return the value */
 } MSSP_t;
 
 typedef struct {
     int WriteOOB;           /* Used internally to indicate OOB data */
-    bool bIACMode;        /* Current mode - deals with broken packets */
-    bool bNegotiated;     /* Indicates client successfully negotiated */
-    bool bBlockMXP;       /* Used internally based on MXP version */
-    bool bTTYPE;          /* The client supports TTYPE */
-    bool bNAWS;           /* The client supports NAWS */
-    bool bCHARSET;        /* The client supports CHARSET */
-    bool bMSDP;           /* The client supports MSDP */
-    bool bATCP;           /* The client supports ATCP */
-    bool bMSP;            /* The client supports MSP */
-    bool bMXP;            /* The client supports MXP */
-    bool bMCCP;           /* The client supports MCCP */
+    bool bIACMode;          /* Current mode - deals with broken packets */
+    bool bNegotiated;       /* Indicates client successfully negotiated */
+    bool bBlockMXP;         /* Used internally based on MXP version */
+    bool bTTYPE;            /* The client supports TTYPE */
+    bool bNAWS;             /* The client supports NAWS */
+    bool bCHARSET;          /* The client supports CHARSET */
+    bool bMSDP;             /* The client supports MSDP */
+    bool bATCP;             /* The client supports ATCP */
+    bool bMSP;              /* The client supports MSP */
+    bool bMXP;              /* The client supports MXP */
+    bool bMCCP;             /* The client supports MCCP */
     support_t b256Support;  /* The client supports XTerm 256 colors */
     int ScreenWidth;        /* The client's screen width */
     int ScreenHeight;       /* The client's screen height */
