@@ -138,8 +138,8 @@ struct cmdlist_element {
 };
 
 struct trig_var_data {
-    char *name;                /* name of variable  */
-    char *value;                /* value of variable */
+    char *name;                  /* name of variable  */
+    char *value;                 /* value of variable */
     long context;                /* 0: global context */
 
     struct trig_var_data *next;
@@ -153,14 +153,14 @@ struct trig_data {
     char *name;                         /* name of trigger                 */
     long trigger_type;                  /* type of trigger (for bitvector) */
     struct cmdlist_element *cmdlist;    /* top of command list             */
-    struct cmdlist_element *curr_state;    /* ptr to current line of trigger  */
+    struct cmdlist_element *curr_state; /* ptr to current line of trigger  */
     int narg;                           /* numerical argument              */
     char *arglist;                      /* argument list                   */
     int depth;                          /* depth into nest ifs/whiles/etc  */
     int loops;                          /* loop iteration counter          */
     struct event *wait_event;           /* event to pause the trigger  */
-    ubyte purged;                       /* trigger is set to be purged     */
-    struct trig_var_data *var_list;        /* list of local vars for trigger  */
+    uint8_t purged;                     /* trigger is set to be purged     */
+    struct trig_var_data *var_list;     /* list of local vars for trigger  */
 
     struct trig_data *next;
     struct trig_data *next_in_world;    /* next in the global trigger list */
@@ -171,7 +171,7 @@ struct script_data {
     long types;                        /* bitvector of trigger types */
     struct trig_data *trig_list;       /* list of triggers           */
     struct trig_var_data *global_vars; /* list of global variables   */
-    ubyte purged;                      /* script is set to be purged */
+    uint8_t purged;                    /* script is set to be purged */
     long context;                      /* current context for statics */
 
     struct script_data *next;          /* used for purged_scripts    */

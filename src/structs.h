@@ -605,7 +605,6 @@
 #define MAX_CMD_LENGTH 16384
 
 /* Type Definitions */
-typedef unsigned char ubyte;        /* 1 byte; vals = 0 to 255 */
 typedef signed short int sh_int;    /* 2 bytes; vals = -32,768 to 32,767 */
 typedef unsigned short int ush_int; /* 2 bytes; vals = 0 to 65,535 */
 #if !defined(__cplusplus)    /* Anyone know a portable method? */
@@ -839,8 +838,8 @@ struct char_player_data {
     byte chclass;                       /* PC / NPC class */
     byte level;                         /* PC / NPC level */
     struct time_data time;              /* PC AGE in days */
-    ubyte weight;                       /* PC / NPC weight */
-    ubyte height;                       /* PC / NPC height */
+    uint8_t weight;                     /* PC / NPC weight */
+    uint8_t height;                     /* PC / NPC height */
 };
 
 /* Character abilities. Different instances of this structure are used for
@@ -913,11 +912,11 @@ struct player_special_data_saved {
     sh_int invis_level;                     /* level of invisibility */
     room_vnum load_room;                    /* Which room to load PC into */
     int pref[PR_ARRAY_MAX];                 /* preference flags */
-    ubyte bad_pws;                          /* number of bad login attempts */
-    int8_t conditions[3];                    /* Drunk, hunger, and thirst */
+    uint8_t bad_pws;                        /* number of bad login attempts */
+    int8_t conditions[3];                   /* Drunk, hunger, and thirst */
     struct txt_block *comm_hist[NUM_HIST];  /* Communication history */
-    ubyte page_length;                      /* Max number of rows of text to send at once */
-    ubyte screen_width;                     /* How wide the display page is */
+    uint8_t page_length;                    /* Max number of rows of text to send at once */
+    uint8_t screen_width;                   /* How wide the display page is */
     int spells_to_learn;                    /* Remaining number of practice sessions */
     int olc_zone;                           /* Current olc permissions */
     int questpoints;                        /* Number of quest points earned */
