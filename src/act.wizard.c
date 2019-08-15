@@ -139,14 +139,14 @@ ACMD(do_echo)
             snprintf(buf, sizeof(buf), "$n %s", argument);
         } else {
             strlcpy(buf, argument, sizeof(buf));
-            mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE, "(GC) %s echoed: %s", GET_NAME(ch), buf);
+            mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), true, "(GC) %s echoed: %s", GET_NAME(ch), buf);
         }
-        act(buf, FALSE, ch, 0, 0, TO_ROOM);
+        act(buf, false, ch, 0, 0, TO_ROOM);
 
         if (!IS_NPC(ch) && PRF_FLAGGED(ch, PRF_NOREPEAT)) {
             send_to_char(ch, "%s", CONFIG_OK);
         } else {
-            act(buf, FALSE, ch, 0, 0, TO_CHAR);
+            act(buf, false, ch, 0, 0, TO_CHAR);
         }
     }
 }
@@ -167,7 +167,7 @@ ACMD(do_send)
         return;
     }
     send_to_char(vict, "%s\r\n", buf);
-    mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s sent %s: %s", GET_NAME(ch), GET_NAME(vict), buf);
+    mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s sent %s: %s", GET_NAME(ch), GET_NAME(vict), buf);
 
     if (!IS_NPC(ch) && PRF_FLAGGED(ch, PRF_NOREPEAT)) {
         send_to_char(ch, "Sent.\r\n");
@@ -294,13 +294,13 @@ ACMD(do_goto)
     }
 
     snprintf(buf, sizeof(buf), "$n %s", POOFOUT(ch) ? POOFOUT(ch) : "disappears in a puff of smoke.");
-    act(buf, TRUE, ch, 0, 0, TO_ROOM);
+    act(buf, true, ch, 0, 0, TO_ROOM);
 
     char_from_room(ch);
     char_to_room(ch, location);
 
     snprintf(buf, sizeof(buf), "$n %s", POOFIN(ch) ? POOFIN(ch) : "appears with an ear-splitting bang.");
-    act(buf, TRUE, ch, 0, 0, TO_ROOM);
+    act(buf, true, ch, 0, 0, TO_ROOM);
 
     look_at_room(ch, 0);
     enter_wtrigger(&world[IN_ROOM(ch)], ch, -1);
@@ -325,11 +325,11 @@ ACMD(do_trans)
                 send_to_char(ch, "Go transfer someone your own size.\r\n");
                 return;
             }
-            act("$n disappears in a mushroom cloud.", FALSE, victim, 0, 0, TO_ROOM);
+            act("$n disappears in a mushroom cloud.", false, victim, 0, 0, TO_ROOM);
             char_from_room(victim);
             char_to_room(victim, IN_ROOM(ch));
-            act("$n arrives from a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
-            act("$n has transferred you!", FALSE, ch, 0, victim, TO_VICT);
+            act("$n arrives from a puff of smoke.", false, victim, 0, 0, TO_ROOM);
+            act("$n has transferred you!", false, ch, 0, victim, TO_VICT);
             look_at_room(victim, 0);
 
             enter_wtrigger(&world[IN_ROOM(victim)], victim, -1);
@@ -346,11 +346,11 @@ ACMD(do_trans)
                 if (GET_LEVEL(victim) >= GET_LEVEL(ch)) {
                     continue;
                 }
-                act("$n disappears in a mushroom cloud.", FALSE, victim, 0, 0, TO_ROOM);
+                act("$n disappears in a mushroom cloud.", false, victim, 0, 0, TO_ROOM);
                 char_from_room(victim);
                 char_to_room(victim, IN_ROOM(ch));
-                act("$n arrives from a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
-                act("$n has transferred you!", FALSE, ch, 0, victim, TO_VICT);
+                act("$n arrives from a puff of smoke.", false, victim, 0, 0, TO_ROOM);
+                act("$n has transferred you!", false, ch, 0, victim, TO_VICT);
                 look_at_room(victim, 0);
                 enter_wtrigger(&world[IN_ROOM(victim)], victim, -1);
             }
@@ -379,11 +379,11 @@ ACMD(do_teleport)
         send_to_char(ch, "Where do you wish to send this person?\r\n");
     } else if ((target = find_target_room(ch, buf2)) != NOWHERE) {
         send_to_char(ch, "%s", CONFIG_OK);
-        act("$n disappears in a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
+        act("$n disappears in a puff of smoke.", false, victim, 0, 0, TO_ROOM);
         char_from_room(victim);
         char_to_room(victim, target);
-        act("$n arrives from a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
-        act("$n has teleported you!", FALSE, ch, 0, (char *) victim, TO_VICT);
+        act("$n arrives from a puff of smoke.", false, victim, 0, 0, TO_ROOM);
+        act("$n has teleported you!", false, ch, 0, (char *) victim, TO_VICT);
         look_at_room(victim, 0);
         enter_wtrigger(&world[IN_ROOM(victim)], victim, -1);
     }
@@ -561,7 +561,7 @@ static void do_stat_room(struct char_data *ch, struct room_data *rm)
 
     send_to_char(ch, "Chars present:%s", CCYEL(ch, C_NRM));
     column = 14;    /* ^^^ strlen ^^^ */
-    for (found = FALSE, k = rm->people; k; k = k->next_in_room) {
+    for (found = false, k = rm->people; k; k = k->next_in_room) {
         if (!CAN_SEE(ch, k)) {
             continue;
         }
@@ -570,7 +570,7 @@ static void do_stat_room(struct char_data *ch, struct room_data *rm)
                                !IS_NPC(k) ? "PC" : (!IS_MOB(k) ? "NPC" : "MOB"));
         if (column >= 62) {
             send_to_char(ch, "%s\r\n", k->next_in_room ? "," : "");
-            found = FALSE;
+            found = false;
             column = 0;
         }
     }
@@ -588,7 +588,7 @@ static void do_stat_room(struct char_data *ch, struct room_data *rm)
             column += send_to_char(ch, "%s %s", found++ ? "," : "", j->short_description);
             if (column >= 62) {
                 send_to_char(ch, "%s\r\n", j->next_content ? "," : "");
-                found = FALSE;
+                found = false;
                 column = 0;
             }
         }
@@ -749,14 +749,14 @@ static void do_stat_object(struct char_data *ch, struct obj_data *j)
             column += send_to_char(ch, "%s %s", found++ ? "," : "", j2->short_description);
             if (column >= 62) {
                 send_to_char(ch, "%s\r\n", j2->next_content ? "," : "");
-                found = FALSE;
+                found = false;
                 column = 0;
             }
         }
         send_to_char(ch, "%s", CCNRM(ch, C_NRM));
     }
 
-    found = FALSE;
+    found = false;
     send_to_char(ch, "Affections:");
     for (i = 0; i < MAX_OBJ_AFFECT; i++) {
         if (j->affected[i].modifier) {
@@ -777,7 +777,7 @@ static void do_stat_object(struct char_data *ch, struct obj_data *j)
 static void do_stat_character(struct char_data *ch, struct char_data *k)
 {
     char buf[MAX_STRING_LENGTH];
-    int i, i2, column, found = FALSE;
+    int i, i2, column, found = false;
     struct obj_data *j;
     struct follow_type *fol;
     struct affected_type *aff;
@@ -916,7 +916,7 @@ static void do_stat_character(struct char_data *ch, struct char_data *k)
             column += send_to_char(ch, "%s %s", found++ ? "," : "", PERS(fol->follower, ch));
             if (column >= 62) {
                 send_to_char(ch, "%s\r\n", fol->next ? "," : "");
-                found = FALSE;
+                found = false;
                 column = 0;
             }
         }
@@ -1182,7 +1182,7 @@ static void stop_snooping(struct char_data *ch)
     } else {
         send_to_char(ch, "You stop snooping.\r\n");
 
-        mudlog(BRF, GET_LEVEL(ch), TRUE, "(GC) %s stops snooping", GET_NAME(ch));
+        mudlog(BRF, GET_LEVEL(ch), true, "(GC) %s stops snooping", GET_NAME(ch));
 
         ch->desc->snooping->snoop_by = NULL;
         ch->desc->snooping = NULL;
@@ -1225,7 +1225,7 @@ ACMD(do_snoop)
         }
         send_to_char(ch, "%s", CONFIG_OK);
 
-        mudlog(BRF, GET_LEVEL(ch), TRUE, "(GC) %s snoops %s", GET_NAME(ch), GET_NAME(victim));
+        mudlog(BRF, GET_LEVEL(ch), true, "(GC) %s snoops %s", GET_NAME(ch), GET_NAME(victim));
 
         if (ch->desc->snooping) {
             ch->desc->snooping->snoop_by = NULL;
@@ -1262,7 +1262,7 @@ ACMD(do_switch)
         send_to_char(ch, "That's private property -- no trespassing!\r\n");
     } else {
         send_to_char(ch, "%s", CONFIG_OK);
-        mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s Switched into: %s", GET_NAME(ch), GET_NAME(victim));
+        mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s Switched into: %s", GET_NAME(ch), GET_NAME(victim));
         ch->desc->character = victim;
         ch->desc->original = ch;
 
@@ -1363,9 +1363,9 @@ ACMD(do_load)
             mob = read_mobile(r_num, REAL);
             char_to_room(mob, IN_ROOM(ch));
 
-            act("$n makes a quaint, magical gesture with one hand.", TRUE, ch, 0, 0, TO_ROOM);
-            act("$n has created $N!", FALSE, ch, 0, mob, TO_ROOM);
-            act("You create $N.", FALSE, ch, 0, mob, TO_CHAR);
+            act("$n makes a quaint, magical gesture with one hand.", true, ch, 0, 0, TO_ROOM);
+            act("$n has created $N!", false, ch, 0, mob, TO_ROOM);
+            act("You create $N.", false, ch, 0, mob, TO_CHAR);
             load_mtrigger(mob);
         }
     } else if (is_abbrev(buf, "obj")) {
@@ -1388,9 +1388,9 @@ ACMD(do_load)
             } else {
                 obj_to_room(obj, IN_ROOM(ch));
             }
-            act("$n makes a strange magical gesture.", TRUE, ch, 0, 0, TO_ROOM);
-            act("$n has created $p!", FALSE, ch, obj, 0, TO_ROOM);
-            act("You create $p.", FALSE, ch, obj, 0, TO_CHAR);
+            act("$n makes a strange magical gesture.", true, ch, 0, 0, TO_ROOM);
+            act("$n has created $p!", false, ch, obj, 0, TO_ROOM);
+            act("You create $p.", false, ch, obj, 0, TO_CHAR);
             load_otrigger(obj);
         }
     } else {
@@ -1485,10 +1485,10 @@ ACMD(do_purge)
                 send_to_char(ch, "You can't purge %s!\r\n", GET_NAME(vict));
                 return;
             }
-            act("$n disintegrates $N.", FALSE, ch, 0, vict, TO_NOTVICT);
+            act("$n disintegrates $N.", false, ch, 0, vict, TO_NOTVICT);
 
             if (!IS_NPC(vict)) {
-                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s has purged %s.", GET_NAME(ch),
+                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s has purged %s.", GET_NAME(ch),
                        GET_NAME(vict));
                 if (vict->desc) {
                     STATE(vict->desc) = CON_CLOSE;
@@ -1498,7 +1498,7 @@ ACMD(do_purge)
             }
             extract_char(vict);
         } else if ((obj = get_obj_in_list_vis(ch, buf, &number, world[IN_ROOM(ch)].contents)) != NULL) {
-            act("$n destroys $p.", FALSE, ch, obj, 0, TO_ROOM);
+            act("$n destroys $p.", false, ch, obj, 0, TO_ROOM);
             extract_obj(obj);
         } else {
             send_to_char(ch, "Nothing here by that name.\r\n");
@@ -1507,7 +1507,7 @@ ACMD(do_purge)
 
         send_to_char(ch, "%s", CONFIG_OK);
     } else {            /* no argument. clean out the room */
-        act("$n gestures... You are surrounded by scorching flames!", FALSE, ch, 0, 0, TO_ROOM);
+        act("$n gestures... You are surrounded by scorching flames!", false, ch, 0, 0, TO_ROOM);
         send_to_room(IN_ROOM(ch), "The world seems a little cleaner.\r\n");
         purge_room(IN_ROOM(ch));
     }
@@ -1552,7 +1552,7 @@ ACMD(do_advance)
         return;
     }
     if (newlevel == GET_LEVEL(victim)) {
-        act("$E is already at that level.", FALSE, ch, 0, victim, TO_CHAR);
+        act("$E is already at that level.", false, ch, 0, victim, TO_CHAR);
         return;
     }
     oldlevel = GET_LEVEL(victim);
@@ -1567,7 +1567,7 @@ ACMD(do_advance)
             "Your head seems to be filled with demons from another plane as\r\n"
             "your body dissolves to the elements of time and space itself.\r\n"
             "Suddenly a silent explosion of light snaps you back to reality.\r\n\r\n"
-            "You feel slightly different.", FALSE, ch, 0, victim, TO_VICT);
+            "You feel slightly different.", false, ch, 0, victim, TO_VICT);
     }
 
     send_to_char(ch, "%s", CONFIG_OK);
@@ -1615,7 +1615,7 @@ ACMD(do_restore)
     if (!*buf) {
         send_to_char(ch, "Whom do you wish to restore?\r\n");
     } else if (is_abbrev(buf, "all")) {
-        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s restored all", GET_NAME(ch));
+        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s restored all", GET_NAME(ch));
 
         for (j = descriptor_list; j; j = j->next) {
             if (!IS_PLAYING(j) || !(vict = j->character) || GET_LEVEL(vict) >= LVL_IMMORT) {
@@ -1628,14 +1628,14 @@ ACMD(do_restore)
 
             update_pos(vict);
             send_to_char(ch, "%s has been fully healed.\r\n", GET_NAME(vict));
-            act("You have been fully healed by $N!", FALSE, vict, 0, ch, TO_CHAR);
+            act("You have been fully healed by $N!", false, vict, 0, ch, TO_CHAR);
         }
     } else if (!(vict = get_char_vis(ch, buf, NULL, FIND_CHAR_WORLD))) {
         send_to_char(ch, "%s", CONFIG_NOPERSON);
     } else if (!IS_NPC(vict) && ch != vict && GET_LEVEL(vict) >= GET_LEVEL(ch)) {
-        act("$E doesn't need your help.", FALSE, ch, 0, vict, TO_CHAR);
+        act("$E doesn't need your help.", false, ch, 0, vict, TO_CHAR);
     } else {
-        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s restored %s", GET_NAME(ch), GET_NAME(vict));
+        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s restored %s", GET_NAME(ch), GET_NAME(vict));
 
         GET_HIT(vict) = GET_MAX_HIT(vict);
         GET_MANA(vict) = GET_MAX_MANA(vict);
@@ -1660,7 +1660,7 @@ ACMD(do_restore)
         update_pos(vict);
         affect_total(vict);
         send_to_char(ch, "%s", CONFIG_OK);
-        act("You have been fully healed by $N!", FALSE, vict, 0, ch, TO_CHAR);
+        act("You have been fully healed by $N!", false, vict, 0, ch, TO_CHAR);
     }
 }
 
@@ -1685,10 +1685,10 @@ static void perform_immort_invis(struct char_data *ch, int level)
             continue;
         }
         if (GET_LEVEL(tch) >= GET_INVIS_LEV(ch) && GET_LEVEL(tch) < level) {
-            act("You blink and suddenly realize that $n is gone.", FALSE, ch, 0, tch, TO_VICT);
+            act("You blink and suddenly realize that $n is gone.", false, ch, 0, tch, TO_VICT);
         }
         if (GET_LEVEL(tch) < GET_INVIS_LEV(ch) && GET_LEVEL(tch) >= level) {
-            act("You suddenly realize that $n is standing beside you.", FALSE, ch, 0, tch, TO_VICT);
+            act("You suddenly realize that $n is standing beside you.", false, ch, 0, tch, TO_VICT);
         }
     }
 
@@ -1741,7 +1741,7 @@ ACMD(do_gecho)
             }
         }
 
-        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE, "(GC) %s gechoed: %s", GET_NAME(ch), argument);
+        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), true, "(GC) %s gechoed: %s", GET_NAME(ch), argument);
 
         if (PRF_FLAGGED(ch, PRF_NOREPEAT)) {
             send_to_char(ch, "%s", CONFIG_OK);
@@ -1788,7 +1788,7 @@ ACMD(do_dc)
    * get disconnected by two different immortals in the same 1/10th of a
    * second, we have the below 'if' check. -gg */
     if (STATE(d) == CON_DISCONNECT || STATE(d) == CON_CLOSE) {
-        act("$E's already being disconnected.", FALSE, ch, 0, d->character, TO_CHAR);
+        act("$E's already being disconnected.", false, ch, 0, d->character, TO_CHAR);
     } else {
         /* Remember that we can disconnect people not in the game and that rather
      * confuses the code when it expected there to be a character context. */
@@ -2204,14 +2204,14 @@ ACMD(do_force)
             send_to_char(ch, "No, no, no!\r\n");
         } else {
             send_to_char(ch, "%s", CONFIG_OK);
-            act(buf1, TRUE, ch, NULL, vict, TO_VICT);
-            mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s forced %s to %s", GET_NAME(ch), GET_NAME(vict),
+            act(buf1, true, ch, NULL, vict, TO_VICT);
+            mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s forced %s to %s", GET_NAME(ch), GET_NAME(vict),
                    to_force);
             command_interpreter(vict, to_force);
         }
     } else if (!str_cmp("room", arg)) {
         send_to_char(ch, "%s", CONFIG_OK);
-        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s forced room %d to %s", GET_NAME(ch),
+        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s forced room %d to %s", GET_NAME(ch),
                GET_ROOM_VNUM(IN_ROOM(ch)), to_force);
 
         for (vict = world[IN_ROOM(ch)].people; vict; vict = next_force) {
@@ -2219,12 +2219,12 @@ ACMD(do_force)
             if (!IS_NPC(vict) && GET_LEVEL(vict) >= GET_LEVEL(ch)) {
                 continue;
             }
-            act(buf1, TRUE, ch, NULL, vict, TO_VICT);
+            act(buf1, true, ch, NULL, vict, TO_VICT);
             command_interpreter(vict, to_force);
         }
     } else { /* force all */
         send_to_char(ch, "%s", CONFIG_OK);
-        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s forced all to %s", GET_NAME(ch), to_force);
+        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s forced all to %s", GET_NAME(ch), to_force);
 
         for (i = descriptor_list; i; i = next_desc) {
             next_desc = i->next;
@@ -2233,7 +2233,7 @@ ACMD(do_force)
                 (!IS_NPC(vict) && GET_LEVEL(vict) >= GET_LEVEL(ch))) {
                 continue;
             }
-            act(buf1, TRUE, ch, NULL, vict, TO_VICT);
+            act(buf1, true, ch, NULL, vict, TO_VICT);
             command_interpreter(vict, to_force);
         }
     }
@@ -2243,7 +2243,7 @@ ACMD(do_wiznet)
 {
     char buf1[MAX_INPUT_LENGTH + MAX_NAME_LENGTH + 32], buf2[MAX_INPUT_LENGTH + MAX_NAME_LENGTH + 32];
     struct descriptor_data *d;
-    char emote = FALSE;
+    char emote = false;
     int level = LVL_IMMORT;
 
     skip_spaces(&argument);
@@ -2254,7 +2254,7 @@ ACMD(do_wiznet)
     }
     switch (*argument) {
         case '*':
-            emote = TRUE;
+            emote = true;
         case '#':
             one_argument(argument + 1, buf1);
             if (is_number(buf1)) {
@@ -2347,7 +2347,7 @@ ACMD(do_zreset)
                 reset_zone(i);
             }
             send_to_char(ch, "Reset world.\r\n");
-            mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s reset entire world.", GET_NAME(ch));
+            mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s reset entire world.", GET_NAME(ch));
             return;
         }
     } else if (*arg == '.' || !*arg) {
@@ -2363,7 +2363,7 @@ ACMD(do_zreset)
     if (i <= top_of_zone_table && (can_edit_zone(ch, i) || GET_LEVEL(ch) > LVL_IMMORT)) {
         reset_zone(i);
         send_to_char(ch, "Reset zone #%d: %s.\r\n", zone_table[i].number, zone_table[i].name);
-        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s reset zone %d (%s)", GET_NAME(ch),
+        mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s reset zone %d (%s)", GET_NAME(ch),
                zone_table[i].number, zone_table[i].name);
     } else {
         send_to_char(ch, "You do not have permission to reset this zone. Try %d.\r\n", GET_OLC_ZONE(ch));
@@ -2406,18 +2406,18 @@ ACMD(do_wizutil)
                 REMOVE_BIT_AR(PLR_FLAGS(vict), PLR_KILLER);
                 send_to_char(ch, "Pardoned.\r\n");
                 send_to_char(vict, "You have been pardoned by the Gods!\r\n");
-                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s pardoned by %s", GET_NAME(vict),
+                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s pardoned by %s", GET_NAME(vict),
                        GET_NAME(ch));
                 break;
             case SCMD_NOTITLE:
                 result = PLR_TOG_CHK(vict, PLR_NOTITLE);
-                mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) Notitle %s for %s by %s.", ONOFF(result),
+                mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) Notitle %s for %s by %s.", ONOFF(result),
                        GET_NAME(vict), GET_NAME(ch));
                 send_to_char(ch, "(GC) Notitle %s for %s by %s.\r\n", ONOFF(result), GET_NAME(vict), GET_NAME(ch));
                 break;
             case SCMD_MUTE:
                 result = PLR_TOG_CHK(vict, PLR_NOSHOUT);
-                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) Mute %s for %s by %s.", ONOFF(result),
+                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) Mute %s for %s by %s.", ONOFF(result),
                        GET_NAME(vict), GET_NAME(ch));
                 send_to_char(ch, "(GC) Mute %s for %s by %s.\r\n", ONOFF(result), GET_NAME(vict), GET_NAME(ch));
                 break;
@@ -2435,8 +2435,8 @@ ACMD(do_wizutil)
                 send_to_char(vict,
                              "A bitter wind suddenly rises and drains every erg of heat from your body!\r\nYou feel frozen!\r\n");
                 send_to_char(ch, "Frozen.\r\n");
-                act("A sudden cold wind conjured from nowhere freezes $n!", FALSE, vict, 0, 0, TO_ROOM);
-                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s frozen by %s.", GET_NAME(vict),
+                act("A sudden cold wind conjured from nowhere freezes $n!", false, vict, 0, 0, TO_ROOM);
+                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s frozen by %s.", GET_NAME(vict),
                        GET_NAME(ch));
                 break;
             case SCMD_THAW:
@@ -2449,13 +2449,13 @@ ACMD(do_wizutil)
                                  GET_FREEZE_LEV(vict), GET_NAME(vict), HMHR(vict));
                     return;
                 }
-                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s un-frozen by %s.", GET_NAME(vict),
+                mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s un-frozen by %s.", GET_NAME(vict),
                        GET_NAME(ch));
                 REMOVE_BIT_AR(PLR_FLAGS(vict), PLR_FROZEN);
                 send_to_char(vict,
                              "A fireball suddenly explodes in front of you, melting the ice!\r\nYou feel thawed.\r\n");
                 send_to_char(ch, "Thawed.\r\n");
-                act("A sudden fireball conjured from nowhere thaws $n!", FALSE, vict, 0, 0, TO_ROOM);
+                act("A sudden fireball conjured from nowhere thaws $n!", false, vict, 0, 0, TO_ROOM);
                 break;
             case SCMD_UNAFFECT:
                 if (vict->affected || AFF_FLAGS(vict)) {
@@ -2560,7 +2560,7 @@ ACMD(do_show)
     size_t len, nlen;
     zone_rnum zrn;
     zone_vnum zvn;
-    bool self = FALSE;
+    bool self = false;
     struct char_data *vict = NULL;
     struct obj_data *obj;
     struct descriptor_data *d;
@@ -2613,7 +2613,7 @@ ACMD(do_show)
         return;
     }
     if (!strcmp(value, ".")) {
-        self = TRUE;
+        self = true;
     }
     buf[0] = '\0';
 
@@ -2664,7 +2664,7 @@ ACMD(do_show)
             } else if (builder == 2) {
                 send_to_char(ch, "The following zones have been built by: %s\r\n", CAP(value));
             }
-            page_string(ch->desc, buf, TRUE);
+            page_string(ch->desc, buf, true);
             break;
 
             /* show player */
@@ -2770,7 +2770,7 @@ ACMD(do_show)
                     }
                 }
             }
-            page_string(ch->desc, buf, TRUE);
+            page_string(ch->desc, buf, true);
             break;
 
             /* show death */
@@ -2786,7 +2786,7 @@ ACMD(do_show)
                     len += nlen;
                 }
             }
-            page_string(ch->desc, buf, TRUE);
+            page_string(ch->desc, buf, true);
             break;
 
             /* show godrooms */
@@ -2802,7 +2802,7 @@ ACMD(do_show)
                     len += nlen;
                 }
             }
-            page_string(ch->desc, buf, TRUE);
+            page_string(ch->desc, buf, true);
             break;
 
             /* show shops */
@@ -2852,7 +2852,7 @@ ACMD(do_show)
                 len += nlen;
             }
 
-            page_string(ch->desc, buf, TRUE);
+            page_string(ch->desc, buf, true);
             break;
 
             /* show experience tables */
@@ -2871,7 +2871,7 @@ ACMD(do_show)
                 len += nlen;
             }
 
-            page_string(ch->desc, buf, TRUE);
+            page_string(ch->desc, buf, true);
             break;
 
         case 13:
@@ -2890,7 +2890,7 @@ ACMD(do_show)
                     }
                 }
             }
-            page_string(ch->desc, buf, TRUE);
+            page_string(ch->desc, buf, true);
             break;
 
             /* show what? */
@@ -3315,7 +3315,7 @@ static int perform_set(struct char_data *ch, struct char_data *vict, int mode, c
             GET_SCREEN_WIDTH(vict) = RANGE(40, 200);
             break;
         case 45: /* sex */
-            if ((i = search_block(val_arg, genders, FALSE)) < 0) {
+            if ((i = search_block(val_arg, genders, false)) < 0) {
                 send_to_char(ch, "Must be 'male', 'female', or 'neutral'.\r\n");
                 return (0);
             }
@@ -3385,7 +3385,7 @@ static int perform_set(struct char_data *ch, struct char_data *vict, int mode, c
             qvnum = atoi(val_arg);
             if (real_quest(qvnum) == NOTHING) {
                 send_to_char(ch, "That quest doesn't exist.\r\n");
-                return FALSE;
+                return false;
             } else {
                 if (is_complete(vict, qvnum)) {
                     remove_completed_quest(vict, qvnum);
@@ -3440,7 +3440,7 @@ static void show_set_help(struct char_data *ch)
             len += add_len;
         }
     }
-    page_string(ch->desc, buf, TRUE);
+    page_string(ch->desc, buf, true);
 }
 
 ACMD(do_set)
@@ -4348,7 +4348,7 @@ ACMD(do_peace)
     struct char_data *vict, *next_v;
 
     act("As $n makes a strange arcane gesture, a golden light descends\r\n"
-        "from the heavens stopping all the fighting.\r\n", FALSE, ch, 0, 0, TO_ROOM);
+        "from the heavens stopping all the fighting.\r\n", false, ch, 0, 0, TO_ROOM);
     send_to_room(IN_ROOM(ch), "Everything is quite peaceful now.\r\n");
     for (vict = world[IN_ROOM(ch)].people; vict; vict = next_v) {
         next_v = vict->next_in_room;
@@ -4365,7 +4365,7 @@ ACMD(do_zpurge)
 {
     int vroom, room, zone = 0;
     char arg[MAX_INPUT_LENGTH];
-    int purge_all = FALSE;
+    int purge_all = false;
     one_argument(argument, arg);
     if (*arg == '.' || !*arg) {
         zone = world[IN_ROOM(ch)].zone;
@@ -4376,7 +4376,7 @@ ACMD(do_zpurge)
             return;
         }
     } else if (*arg == '*') {
-        purge_all = TRUE;
+        purge_all = true;
     } else {
         send_to_char(ch, "That isn't a valid zone number!\r\n");
         return;
@@ -4390,14 +4390,14 @@ ACMD(do_zpurge)
             purge_room(real_room(vroom));
         }
         send_to_char(ch, "Purged zone #%d: %s.\r\n", zone_table[zone].number, zone_table[zone].name);
-        mudlog(NRM, MAX(LVL_GRGOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s purged zone %d (%s)", GET_NAME(ch),
+        mudlog(NRM, MAX(LVL_GRGOD, GET_INVIS_LEV(ch)), true, "(GC) %s purged zone %d (%s)", GET_NAME(ch),
                zone_table[zone].number, zone_table[zone].name);
     } else {
         for (room = 0; room <= top_of_world; room++) {
             purge_room(room);
         }
         send_to_char(ch, "Purged world.\r\n");
-        mudlog(NRM, MAX(LVL_GRGOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s purged entire world.", GET_NAME(ch));
+        mudlog(NRM, MAX(LVL_GRGOD, GET_INVIS_LEV(ch)), true, "(GC) %s purged entire world.", GET_NAME(ch));
     }
 }
 
@@ -4432,24 +4432,24 @@ ACMD(do_file)
         char level;         /* Minimum level needed to view. */
         const char *file;         /* The file location, relative to the working dir. */
         int read_backwards; /* Should the file be read backwards by default? */
-    } fields[] = {{"xnames",    LVL_GOD, XNAME_FILE,         TRUE},
-                  {"levels",    LVL_GOD, LEVELS_LOGFILE,     TRUE},
-                  {"rip",       LVL_GOD, RIP_LOGFILE,        TRUE},
-                  {"players",   LVL_GOD, NEWPLAYERS_LOGFILE, TRUE},
-                  {"rentgone",  LVL_GOD, RENTGONE_LOGFILE,   TRUE},
-                  {"errors",    LVL_GOD, ERRORS_LOGFILE,     TRUE},
-                  {"godcmds",   LVL_GOD, GODCMDS_LOGFILE,    TRUE},
-                  {"syslog",    LVL_GOD, SYSLOG_LOGFILE,     TRUE},
-                  {"crash",     LVL_GOD, CRASH_LOGFILE,      TRUE},
-                  {"help",      LVL_GOD, HELP_LOGFILE,       TRUE},
-                  {"changelog", LVL_GOD, CHANGE_LOG_FILE,    FALSE},
-                  {"deletes",   LVL_GOD, DELETES_LOGFILE,    TRUE},
-                  {"restarts",  LVL_GOD, RESTARTS_LOGFILE,   TRUE},
-                  {"usage",     LVL_GOD, USAGE_LOGFILE,      TRUE},
-                  {"badpws",    LVL_GOD, BADPWS_LOGFILE,     TRUE},
-                  {"olc",       LVL_GOD, OLC_LOGFILE,        TRUE},
-                  {"trigger",   LVL_GOD, TRIGGER_LOGFILE,    TRUE},
-                  {"\n", 0, "\n",                            FALSE} /* This must be the last entry */
+    } fields[] = {{"xnames",    LVL_GOD, XNAME_FILE,         true},
+                  {"levels",    LVL_GOD, LEVELS_LOGFILE,     true},
+                  {"rip",       LVL_GOD, RIP_LOGFILE,        true},
+                  {"players",   LVL_GOD, NEWPLAYERS_LOGFILE, true},
+                  {"rentgone",  LVL_GOD, RENTGONE_LOGFILE,   true},
+                  {"errors",    LVL_GOD, ERRORS_LOGFILE,     true},
+                  {"godcmds",   LVL_GOD, GODCMDS_LOGFILE,    true},
+                  {"syslog",    LVL_GOD, SYSLOG_LOGFILE,     true},
+                  {"crash",     LVL_GOD, CRASH_LOGFILE,      true},
+                  {"help",      LVL_GOD, HELP_LOGFILE,       true},
+                  {"changelog", LVL_GOD, CHANGE_LOG_FILE,    false},
+                  {"deletes",   LVL_GOD, DELETES_LOGFILE,    true},
+                  {"restarts",  LVL_GOD, RESTARTS_LOGFILE,   true},
+                  {"usage",     LVL_GOD, USAGE_LOGFILE,      true},
+                  {"badpws",    LVL_GOD, BADPWS_LOGFILE,     true},
+                  {"olc",       LVL_GOD, OLC_LOGFILE,        true},
+                  {"trigger",   LVL_GOD, TRIGGER_LOGFILE,    true},
+                  {"\n", 0, "\n",                            false} /* This must be the last entry */
     };
 
     /* Initialize buffer */
@@ -4509,7 +4509,7 @@ ACMD(do_file)
     /* Must be able to access the file on disk. */
     if (!(req_file = fopen(fields[l].file, "r"))) {
         send_to_char(ch, "The file %s can not be opened.\r\n", fields[l].file);
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: Error opening file %s using 'file' command.", fields[l].file);
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: Error opening file %s using 'file' command.", fields[l].file);
         return;
     }
     /**/
@@ -4524,7 +4524,7 @@ ACMD(do_file)
              fields[l].level, fields[l].file, (long) req_file_size, req_file_lines);
 
     /* Should the file be 'headed' or 'tailed'? */
-    if ((fields[l].read_backwards == TRUE) && (req_lines < req_file_lines)) {
+    if ((fields[l].read_backwards == true) && (req_lines < req_file_lines)) {
         snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf), "\tgReading from the tail of the file.\tn\r\n\r\n");
         lines_read = file_tail(req_file, buf, sizeof(buf), req_lines);
     } else {
@@ -4566,17 +4566,17 @@ ACMD(do_changelog)
 
     sprintf(buf, "%s.bak", CHANGE_LOG_FILE);
     if (rename(CHANGE_LOG_FILE, buf)) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: Error making backup changelog file (%s)", buf);
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: Error making backup changelog file (%s)", buf);
         return;
     }
 
     if (!(fl = fopen(buf, "r"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: Error opening backup changelog file (%s)", buf);
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: Error opening backup changelog file (%s)", buf);
         return;
     }
 
     if (!(new = fopen(CHANGE_LOG_FILE, "w"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: Error opening new changelog file (%s)", CHANGE_LOG_FILE);
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: Error opening new changelog file (%s)", CHANGE_LOG_FILE);
         return;
     }
 
@@ -4704,7 +4704,7 @@ ACMD(do_plist)
     }
     snprintf(buf + len, sizeof(buf) - len, "%s-------------------------------------%s\r\n"
                                            "%d players listed.\r\n", CCCYN(ch, C_NRM), CCNRM(ch, C_NRM), count);
-    page_string(ch->desc, buf, TRUE);
+    page_string(ch->desc, buf, true);
 }
 
 ACMD(do_wizupdate)
@@ -4722,25 +4722,25 @@ bool change_player_name(struct char_data *ch, struct char_data *vict, char *new_
 
     if (!ch) {
         log("SYSERR: No char passed to change_player_name.");
-        return FALSE;
+        return false;
     }
 
     if (!vict) {
         log("SYSERR: No victim passed to change_player_name.");
         send_to_char(ch, "Invalid victim.\r\n");
-        return FALSE;
+        return false;
     }
 
     if (!new_name || !(*new_name) || strlen(new_name) < 2 || strlen(new_name) > MAX_NAME_LENGTH ||
         !valid_name(new_name) || fill_word(new_name) || reserved_word(new_name)) {
         send_to_char(ch, "Invalid new name.\r\n");
-        return FALSE;
+        return false;
     }
 
     /* Check that someone with new_name isn't already logged in */
     if ((temp_ch = get_player_vis(ch, new_name, NULL, FIND_CHAR_WORLD)) != NULL) {
         send_to_char(ch, "Sorry, the new name already exists.\r\n");
-        return FALSE;
+        return false;
     } else {
         /* try to load the player off disk */
         CREATE(temp_ch, struct char_data, 1);
@@ -4750,7 +4750,7 @@ bool change_player_name(struct char_data *ch, struct char_data *vict, char *new_
         if ((plr_i = load_char(new_name, temp_ch)) > -1) {
             free_char(temp_ch);
             send_to_char(ch, "Sorry, the new name already exists.\r\n");
-            return FALSE;
+            return false;
         }
     }
 
@@ -4764,18 +4764,18 @@ bool change_player_name(struct char_data *ch, struct char_data *vict, char *new_
     if (player_table[i].id != GET_IDNUM(vict)) {
         send_to_char(ch, "Your target was not found in the player index.\r\n");
         log("SYSERR: Player %s, with ID %ld, could not be found in the player index.", GET_NAME(vict), GET_IDNUM(vict));
-        return FALSE;
+        return false;
     }
 
     /* Set up a few variables that will be needed */
     sprintf(old_name, "%s", GET_NAME(vict));
     if (!get_filename(old_pfile, sizeof(old_pfile), PLR_FILE, old_name)) {
         send_to_char(ch, "Unable to ascertain player's old pfile name.\r\n");
-        return FALSE;
+        return false;
     }
     if (!get_filename(new_pfile, sizeof(new_pfile), PLR_FILE, new_name)) {
         send_to_char(ch, "Unable to ascertain player's new pfile name.\r\n");
-        return FALSE;
+        return false;
     }
 
     /* Now start changing the name over - all checks and setup have passed */
@@ -4792,14 +4792,14 @@ bool change_player_name(struct char_data *ch, struct char_data *vict, char *new_
     /* Save the changed player index - the pfile is saved by perform_set */
     save_player_index();
 
-    mudlog(BRF, LVL_IMMORT, TRUE, "(GC) %s changed the name of %s to %s", GET_NAME(ch), old_name, new_name);
+    mudlog(BRF, LVL_IMMORT, true, "(GC) %s changed the name of %s to %s", GET_NAME(ch), old_name, new_name);
 
     if (vict->desc) {  /* Descriptor is set if the victim is logged in */
         send_to_char(vict, "Your login name has changed from %s%s%s to %s%s%s.\r\n", CCYEL(vict, C_NRM), old_name,
                      CCNRM(vict, C_NRM), CCYEL(vict, C_NRM), new_name, CCNRM(vict, C_NRM));
     }
 
-    return TRUE;
+    return true;
 }
 
 ACMD(do_zlock)
@@ -4808,7 +4808,7 @@ ACMD(do_zlock)
     zone_rnum zn;
     char arg[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
     int counter = 0;
-    bool fail = FALSE;
+    bool fail = false;
 
     two_arguments(argument, arg, arg2);
 
@@ -4834,7 +4834,7 @@ ACMD(do_zlock)
                     if (save_zone(zn)) {
                         log("(GC) %s has locked zone %d", GET_NAME(ch), zone_table[zn].number);
                     } else {
-                        fail = TRUE;
+                        fail = true;
                     }
                 }
             }
@@ -4846,7 +4846,7 @@ ACMD(do_zlock)
                     if (save_zone(zn)) {
                         log("(GC) %s has locked zone %d", GET_NAME(ch), zone_table[zn].number);
                     } else {
-                        fail = TRUE;
+                        fail = true;
                     }
                 }
             }
@@ -4860,7 +4860,7 @@ ACMD(do_zlock)
             return;
         }
         send_to_char(ch, "%d zones have now been locked.\r\n", counter);
-        mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s has locked ALL zones!", GET_NAME(ch));
+        mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s has locked ALL zones!", GET_NAME(ch));
         return;
     }
     if (is_abbrev(arg, "list")) {
@@ -4902,7 +4902,7 @@ ACMD(do_zlock)
     }
     SET_BIT_AR(ZONE_FLAGS(zn), ZONE_NOBUILD);
     if (save_zone(zn)) {
-        mudlog(NRM, MAX(LVL_GRGOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s has locked zone %d", GET_NAME(ch), znvnum);
+        mudlog(NRM, MAX(LVL_GRGOD, GET_INVIS_LEV(ch)), true, "(GC) %s has locked zone %d", GET_NAME(ch), znvnum);
     } else {
         send_to_char(ch, "Unable to save zone changes.  Check syslog!\r\n");
     }
@@ -4914,7 +4914,7 @@ ACMD(do_zunlock)
     zone_rnum zn;
     char arg[MAX_INPUT_LENGTH];
     int counter = 0;
-    bool fail = FALSE;
+    bool fail = false;
 
     one_argument(argument, arg);
 
@@ -4938,7 +4938,7 @@ ACMD(do_zunlock)
                 if (save_zone(zn)) {
                     log("(GC) %s has unlocked zone %d", GET_NAME(ch), zone_table[zn].number);
                 } else {
-                    fail = TRUE;
+                    fail = true;
                 }
             }
         }
@@ -4951,7 +4951,7 @@ ACMD(do_zunlock)
             return;
         }
         send_to_char(ch, "%d zones have now been unlocked.\r\n", counter);
-        mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s has unlocked ALL zones!", GET_NAME(ch));
+        mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "(GC) %s has unlocked ALL zones!", GET_NAME(ch));
         return;
     }
     if (is_abbrev(arg, "list")) {
@@ -4993,7 +4993,7 @@ ACMD(do_zunlock)
     }
     REMOVE_BIT_AR(ZONE_FLAGS(zn), ZONE_NOBUILD);
     if (save_zone(zn)) {
-        mudlog(NRM, MAX(LVL_GRGOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s has unlocked zone %d", GET_NAME(ch), znvnum);
+        mudlog(NRM, MAX(LVL_GRGOD, GET_INVIS_LEV(ch)), true, "(GC) %s has unlocked zone %d", GET_NAME(ch), znvnum);
     } else {
         send_to_char(ch, "Unable to save zone changes.  Check syslog!\r\n");
     }
@@ -5048,14 +5048,14 @@ bool AddRecentPlayer(char *chname, char *chhost, bool newplr, bool cpyplr)
     int max_vnum;
 
     if (!chname || !*chname) { // dropped connection with no name given
-        return FALSE;
+        return false;
     }
 
     ct = time(0);  /* Grab the current time */
 
     this = create_recent();
 
-    if (!this) { return FALSE; }
+    if (!this) { return false; }
 
     this->time = ct;
     this->new_player = newplr;
@@ -5065,7 +5065,7 @@ bool AddRecentPlayer(char *chname, char *chhost, bool newplr, bool cpyplr)
     max_vnum = get_max_recent();
     this->vnum = max_vnum;   /* Possibly should be +1 ? */
 
-    return TRUE;
+    return true;
 }
 
 void free_recent_players(void)
@@ -5104,22 +5104,22 @@ ACMD(do_recent)
 
     this = recent_list;
     while (this) {
-        loc = FALSE;
+        loc = false;
         hits++;
         ct = this->time;
         strftime(timestr, sizeof(timestr), "%a %b %d %H:%M:%S %Y", localtime(&ct));
 
         if (*(this->host)) {
-            if (!strcmp(this->host, "localhost")) { loc = TRUE; }
+            if (!strcmp(this->host, "localhost")) { loc = true; }
         }
 
         if ((limit == 0) || (count < limit)) {
             if (GET_LEVEL(ch) >= LVL_GRGOD)   /* If High-Level Imm, then show Host IP */
             {
-                if (this->new_player == TRUE) {
+                if (this->new_player == true) {
                     send_to_char(ch, "%3d | %-24.24s | %s%-32s%s | %s %s(New Player)%s\r\n", this->vnum, timestr,
                                  loc ? QRED : "", this->host, QNRM, this->name, QYEL, QNRM);
-                } else if (this->copyover_player == TRUE) {
+                } else if (this->copyover_player == true) {
                     send_to_char(ch, "%3d | %-24.24s | %s%-32s%s | %s %s(Copyover)%s\r\n", this->vnum, timestr,
                                  loc ? QRED : "", this->host, QNRM, this->name, QCYN, QNRM);
                 } else {
@@ -5127,10 +5127,10 @@ ACMD(do_recent)
                                  this->host, QNRM, this->name);
                 }
             } else {
-                if (this->new_player == TRUE) {
+                if (this->new_player == true) {
                     send_to_char(ch, "%3d | %-24.24s | %s %s(New Player)%s\r\n", this->vnum, timestr, this->name, QYEL,
                                  QNRM);
-                } else if (this->copyover_player == TRUE) {
+                } else if (this->copyover_player == true) {
                     send_to_char(ch, "%3d | %-24.24s | %s %s(Copyover)%s\r\n", this->vnum, timestr, this->name, QCYN,
                                  QNRM);
                 } else {
@@ -5159,7 +5159,7 @@ ACMD(do_oset)
                          "Options: alias, apply, longdesc, shortdesc\r\n"
                          "> oset <object> <option> <value>\r\n";
     struct obj_data *obj;
-    bool success = TRUE;
+    bool success = true;
 
     if (IS_NPC(ch) || ch->desc == NULL) {
         send_to_char(ch, "oset is only usable by connected players.\r\n");

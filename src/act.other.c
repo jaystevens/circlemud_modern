@@ -49,8 +49,8 @@ ACMD(do_quit)
         send_to_char(ch, "You die before your time...\r\n");
         die(ch, NULL);
     } else {
-        act("$n has left the game.", TRUE, ch, 0, 0, TO_ROOM);
-        mudlog(NRM, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "%s has quit the game.", GET_NAME(ch));
+        act("$n has left the game.", true, ch, 0, 0, TO_ROOM);
+        mudlog(NRM, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "%s has quit the game.", GET_NAME(ch));
 
         if (GET_QUEST_TIME(ch) != -1) {
             quest_timeout(ch);
@@ -205,7 +205,7 @@ ACMD(do_steal)
                     break;
                 }
             if (!obj) {
-                act("$E hasn't got that item.", FALSE, ch, 0, vict, TO_CHAR);
+                act("$E hasn't got that item.", false, ch, 0, vict, TO_CHAR);
                 return;
             } else {            /* It is equipment */
                 if ((GET_POS(vict) > POS_STUNNED)) {
@@ -216,8 +216,8 @@ ACMD(do_steal)
                         send_to_char(ch, "Impossible!\r\n");
                         return;
                     }
-                    act("You unequip $p and steal it.", FALSE, ch, obj, 0, TO_CHAR);
-                    act("$n steals $p from $N.", FALSE, ch, obj, vict, TO_NOTVICT);
+                    act("You unequip $p and steal it.", false, ch, obj, 0, TO_CHAR);
+                    act("$n steals $p from $N.", false, ch, obj, vict, TO_NOTVICT);
                     obj_to_char(unequip_char(vict, eq_pos), ch);
                 }
             }
@@ -226,10 +226,10 @@ ACMD(do_steal)
             percent += GET_OBJ_WEIGHT(obj);    /* Make heavy harder */
 
             if (percent > GET_SKILL(ch, SKILL_STEAL)) {
-                ohoh = TRUE;
+                ohoh = true;
                 send_to_char(ch, "Oops..\r\n");
-                act("$n tried to steal something from you!", FALSE, ch, 0, vict, TO_VICT);
-                act("$n tries to steal something from $N.", TRUE, ch, 0, vict, TO_NOTVICT);
+                act("$n tried to steal something from you!", false, ch, 0, vict, TO_VICT);
+                act("$n tries to steal something from $N.", true, ch, 0, vict, TO_NOTVICT);
             } else {            /* Steal the item */
                 if (IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch)) {
                     if (!give_otrigger(obj, vict, ch) || !receive_mtrigger(ch, vict, obj)) {
@@ -247,10 +247,10 @@ ACMD(do_steal)
         }
     } else {            /* Steal some coins */
         if (AWAKE(vict) && (percent > GET_SKILL(ch, SKILL_STEAL))) {
-            ohoh = TRUE;
+            ohoh = true;
             send_to_char(ch, "Oops..\r\n");
-            act("You discover that $n has $s hands in your wallet.", FALSE, ch, 0, vict, TO_VICT);
-            act("$n tries to steal gold from $N.", TRUE, ch, 0, vict, TO_NOTVICT);
+            act("You discover that $n has $s hands in your wallet.", false, ch, 0, vict, TO_VICT);
+            act("$n tries to steal gold from $N.", true, ch, 0, vict, TO_NOTVICT);
         } else {
             /* Steal some gold coins */
             gold = (GET_GOLD(vict) * rand_number(1, 10)) / 100;
@@ -408,7 +408,7 @@ ACMD(do_group)
             send_to_char(ch, "But you are already part of a group.\r\n");
             return;
         } else if (!GROUP(vict)) {
-            act("$E$u is not part of a group!", FALSE, ch, 0, vict, TO_CHAR);
+            act("$E$u is not part of a group!", false, ch, 0, vict, TO_CHAR);
             return;
         } else if (!IS_SET(GROUP_FLAGS(GROUP(vict)), GROUP_OPEN)) {
             send_to_char(ch, "That group isn't accepting members.\r\n");
@@ -430,7 +430,7 @@ ACMD(do_group)
             send_to_char(ch, "Only the group's leader can kick members out.\r\n");
             return;
         } else if (GROUP(vict) != GROUP(ch)) {
-            act("$E$u is not a member of your group!", FALSE, ch, 0, vict, TO_CHAR);
+            act("$E$u is not a member of your group!", false, ch, 0, vict, TO_CHAR);
             return;
         }
         send_to_char(ch, "You have kicked %s out of the group.\r\n", GET_NAME(vict));
@@ -799,19 +799,19 @@ ACMD(do_gen_tog)
                 GET_BUILDWALK_SECTOR(ch) = i;
                 send_to_char(ch, "Default sector type is %s\r\n", sector_types[i]);
 
-                mudlog(CMP, GET_LEVEL(ch), TRUE, "OLC: %s turned buildwalk on. Allowed zone %d", GET_NAME(ch),
+                mudlog(CMP, GET_LEVEL(ch), true, "OLC: %s turned buildwalk on. Allowed zone %d", GET_NAME(ch),
                        GET_OLC_ZONE(ch));
             } else {
-                mudlog(CMP, GET_LEVEL(ch), TRUE, "OLC: %s turned buildwalk off. Allowed zone %d", GET_NAME(ch),
+                mudlog(CMP, GET_LEVEL(ch), true, "OLC: %s turned buildwalk off. Allowed zone %d", GET_NAME(ch),
                        GET_OLC_ZONE(ch));
             }
             break;
         case SCMD_AFK:
             result = PRF_TOG_CHK(ch, PRF_AFK);
             if (PRF_FLAGGED(ch, PRF_AFK)) {
-                act("$n has gone AFK.", TRUE, ch, 0, 0, TO_ROOM);
+                act("$n has gone AFK.", true, ch, 0, 0, TO_ROOM);
             } else {
-                act("$n has come back from AFK.", TRUE, ch, 0, 0, TO_ROOM);
+                act("$n has come back from AFK.", true, ch, 0, 0, TO_ROOM);
                 if (has_mail(GET_IDNUM(ch))) {
                     send_to_char(ch, "You have mail waiting.\r\n");
                 }

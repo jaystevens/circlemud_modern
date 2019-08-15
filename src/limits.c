@@ -220,11 +220,11 @@ void run_autowiz(void)
         /* Abusing signed -> unsigned conversion to avoid '-1' check. */
         if (res < sizeof(buf)) {
             int rval;
-            mudlog(CMP, LVL_IMMORT, FALSE, "Initiating autowiz.");
+            mudlog(CMP, LVL_IMMORT, false, "Initiating autowiz.");
             reboot_wizlists();
             rval = system(buf);
             if (rval != 0) {
-                mudlog(BRF, LVL_IMMORT, TRUE, "Warning: autowiz failed with return value %d", rval);
+                mudlog(BRF, LVL_IMMORT, true, "Warning: autowiz failed with return value %d", rval);
             }
         } else
             log("Cannot run autowiz: command-line doesn't fit in buffer.");
@@ -234,7 +234,7 @@ void run_autowiz(void)
 
 void gain_exp(struct char_data *ch, int gain)
 {
-    int is_altered = FALSE;
+    int is_altered = false;
     int num_levels = 0;
 
     if (!IS_NPC(ch) && ((GET_LEVEL(ch) < 1 || GET_LEVEL(ch) >= LVL_IMMORT))) {
@@ -257,11 +257,11 @@ void gain_exp(struct char_data *ch, int gain)
             GET_LEVEL(ch) += 1;
             num_levels++;
             advance_level(ch);
-            is_altered = TRUE;
+            is_altered = true;
         }
 
         if (is_altered) {
-            mudlog(BRF, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "%s advanced %d level%s to level %d.", GET_NAME(ch),
+            mudlog(BRF, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "%s advanced %d level%s to level %d.", GET_NAME(ch),
                    num_levels, num_levels == 1 ? "" : "s", GET_LEVEL(ch));
             if (num_levels == 1) {
                 send_to_char(ch, "You rise a level!\r\n");
@@ -286,7 +286,7 @@ void gain_exp(struct char_data *ch, int gain)
 
 void gain_exp_regardless(struct char_data *ch, int gain)
 {
-    int is_altered = FALSE;
+    int is_altered = false;
     int num_levels = 0;
 
     if ((IS_HAPPYHOUR) && (IS_HAPPYEXP)) {
@@ -302,11 +302,11 @@ void gain_exp_regardless(struct char_data *ch, int gain)
             GET_LEVEL(ch) += 1;
             num_levels++;
             advance_level(ch);
-            is_altered = TRUE;
+            is_altered = true;
         }
 
         if (is_altered) {
-            mudlog(BRF, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "%s advanced %d level%s to level %d.", GET_NAME(ch),
+            mudlog(BRF, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "%s advanced %d level%s to level %d.", GET_NAME(ch),
                    num_levels, num_levels == 1 ? "" : "s", GET_LEVEL(ch));
             if (num_levels == 1) {
                 send_to_char(ch, "You rise a level!\r\n");
@@ -367,7 +367,7 @@ static void check_idling(struct char_data *ch)
                 stop_fighting(FIGHTING(ch));
                 stop_fighting(ch);
             }
-            act("$n disappears into the void.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n disappears into the void.", true, ch, 0, 0, TO_ROOM);
             send_to_char(ch, "You have been idle, and are pulled into a void.\r\n");
             save_char(ch);
             Crash_crashsave(ch);
@@ -392,7 +392,7 @@ static void check_idling(struct char_data *ch)
             } else {
                 Crash_idlesave(ch);
             }
-            mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "%s force-rented and extracted (idle).", GET_NAME(ch));
+            mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(ch)), true, "%s force-rented and extracted (idle).", GET_NAME(ch));
             add_llog_entry(ch, LAST_IDLEOUT);
             extract_char(ch);
         }
@@ -455,10 +455,10 @@ void point_update(void)
             if (!GET_OBJ_TIMER(j)) {
 
                 if (j->carried_by) {
-                    act("$p decays in your hands.", FALSE, j->carried_by, j, 0, TO_CHAR);
+                    act("$p decays in your hands.", false, j->carried_by, j, 0, TO_CHAR);
                 } else if ((IN_ROOM(j) != NOWHERE) && (world[IN_ROOM(j)].people)) {
-                    act("A quivering horde of maggots consumes $p.", TRUE, world[IN_ROOM(j)].people, j, 0, TO_ROOM);
-                    act("A quivering horde of maggots consumes $p.", TRUE, world[IN_ROOM(j)].people, j, 0, TO_CHAR);
+                    act("A quivering horde of maggots consumes $p.", true, world[IN_ROOM(j)].people, j, 0, TO_ROOM);
+                    act("A quivering horde of maggots consumes $p.", true, world[IN_ROOM(j)].people, j, 0, TO_CHAR);
                 }
                 for (jj = j->contains; jj; jj = next_thing2) {
                     next_thing2 = jj->next_content;    /* Next in inventory */

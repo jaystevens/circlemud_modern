@@ -41,7 +41,7 @@
 #include "modify.h"
 
 /* Board appearance order. */
-#define    NEWEST_AT_TOP    FALSE
+#define    NEWEST_AT_TOP    false
 
 /* Format: vnum, read lvl, write lvl, remove lvl, filename, 0 at end. Be sure 
  * to also change NUM_OF_BOARDS in board.h*/
@@ -216,7 +216,7 @@ int board_write_message(int board_type, struct char_data *ch, char *arg, struct 
 
     send_to_char(ch, "Write your message.\r\n");
     send_editor_help(ch->desc);
-    act("$n starts to write a message.", TRUE, ch, 0, 0, TO_ROOM);
+    act("$n starts to write a message.", true, ch, 0, 0, TO_ROOM);
 
     string_write(ch->desc, &(msg_storage[NEW_MSG_INDEX(board_type).slot_num]), MAX_MESSAGE_LENGTH,
                  board_type + BOARD_MAGIC, NULL);
@@ -244,7 +244,7 @@ int board_show_board(int board_type, struct char_data *ch, char *arg, struct obj
         send_to_char(ch, "You try but fail to understand the holy words.\r\n");
         return (1);
     }
-    act("$n studies the board.", TRUE, ch, 0, 0, TO_ROOM);
+    act("$n studies the board.", true, ch, 0, 0, TO_ROOM);
 
     if (!num_of_msgs[board_type]) {
         send_to_char(ch,
@@ -279,7 +279,7 @@ int board_show_board(int board_type, struct char_data *ch, char *arg, struct obj
             len += nlen;
         }
 #endif
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
     }
     return (1);
 
@@ -341,7 +341,7 @@ int board_display_msg(int board_type, struct char_data *ch, char *arg, struct ob
     snprintf(buffer, sizeof(buffer), "Message %d : %s\r\n\r\n%s\r\n", msg, MSG_HEADING(board_type, ind),
              msg_storage[MSG_SLOTNUM(board_type, ind)]);
 
-    page_string(ch->desc, buffer, TRUE);
+    page_string(ch->desc, buffer, true);
 
     return (1);
 }
@@ -417,7 +417,7 @@ int board_remove_msg(int board_type, struct char_data *ch, char *arg, struct obj
 
     send_to_char(ch, "Message removed.\r\n");
     snprintf(buf, sizeof(buf), "$n just removed message %d.", msg);
-    act(buf, FALSE, ch, 0, 0, TO_ROOM);
+    act(buf, false, ch, 0, 0, TO_ROOM);
     board_save_board(board_type);
 
     return (1);

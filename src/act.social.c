@@ -93,7 +93,7 @@ ACMD(do_action)
     }
 
     if (GET_POS(vict) < action->min_victim_position) {
-        act("$N is not in a proper position for that.", FALSE, ch, 0, vict, TO_CHAR | TO_SLEEP);
+        act("$N is not in a proper position for that.", false, ch, 0, vict, TO_CHAR | TO_SLEEP);
     } else {
         if (*part) {
             act(action->char_body_found, 0, ch, (struct obj_data *) part, vict, TO_CHAR | TO_SLEEP);
@@ -248,7 +248,7 @@ ACMD(do_gmote)
 
     if ((act_nr = find_action(cmd)) < 0) {
         snprintf(buf, sizeof(buf), "Gemote: $n%s", argument);
-        act(buf, FALSE, ch, 0, vict, TO_GMOTE);
+        act(buf, false, ch, 0, vict, TO_GMOTE);
         return;
     }
 
@@ -280,10 +280,10 @@ ACMD(do_gmote)
         snprintf(buf, sizeof(buf), "Gemote: %s", action->others_auto);
     } else {
         if (GET_POS(vict) < action->min_victim_position) {
-            act("$N is not in a proper position for that.", FALSE, ch, 0, vict, TO_CHAR | TO_SLEEP);
+            act("$N is not in a proper position for that.", false, ch, 0, vict, TO_CHAR | TO_SLEEP);
             return;
         }
         snprintf(buf, sizeof(buf), "Gemote: %s", action->others_found);
     }
-    act(buf, FALSE, ch, 0, vict, TO_GMOTE);
+    act(buf, false, ch, 0, vict, TO_GMOTE);
 }

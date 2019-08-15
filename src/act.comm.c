@@ -30,12 +30,12 @@ static bool legal_communication(char *arg)
         if (*arg == '@') {
             arg++;
             if (*arg == '(' || *arg == ')' || *arg == '<' || *arg == '>') {
-                return FALSE;
+                return false;
             }
         }
         arg++;
     }
-    return TRUE;
+    return true;
 }
 
 ACMD(do_say)
@@ -53,7 +53,7 @@ ACMD(do_say)
         }
 
         snprintf(buf, sizeof(buf), "$n\tn says, '%s'", argument);
-        msg = act(buf, FALSE, ch, 0, 0, TO_ROOM | DG_NO_TRIG);
+        msg = act(buf, false, ch, 0, 0, TO_ROOM | DG_NO_TRIG);
 
         for (vict = world[IN_ROOM(ch)].people; vict; vict = vict->next_in_room) {
             if (vict != ch && GET_POS(vict) > POS_SLEEPING) {
@@ -65,7 +65,7 @@ ACMD(do_say)
             send_to_char(ch, "%s", CONFIG_OK);
         } else {
             sprintf(buf, "You say, '%s'", argument);
-            msg = act(buf, FALSE, ch, 0, 0, TO_CHAR | DG_NO_TRIG);
+            msg = act(buf, false, ch, 0, 0, TO_CHAR | DG_NO_TRIG);
             add_history(ch, msg, HIST_SAY);
         }
     }
@@ -107,14 +107,14 @@ static void perform_tell(struct char_data *ch, struct char_data *vict, char *arg
     char buf[MAX_STRING_LENGTH], *msg;
 
     snprintf(buf, sizeof(buf), "%s$n tells you, '%s'%s", CCRED(vict, C_NRM), arg, CCNRM(vict, C_NRM));
-    msg = act(buf, FALSE, ch, 0, vict, TO_VICT | TO_SLEEP);
+    msg = act(buf, false, ch, 0, vict, TO_VICT | TO_SLEEP);
     add_history(vict, msg, HIST_TELL);
 
     if (!IS_NPC(ch) && PRF_FLAGGED(ch, PRF_NOREPEAT)) {
         send_to_char(ch, "%s", CONFIG_OK);
     } else {
         snprintf(buf, sizeof(buf), "%sYou tell $N, '%s'%s", CCRED(ch, C_NRM), arg, CCNRM(ch, C_NRM));
-        msg = act(buf, FALSE, ch, 0, vict, TO_CHAR | TO_SLEEP);
+        msg = act(buf, false, ch, 0, vict, TO_CHAR | TO_SLEEP);
         add_history(ch, msg, HIST_TELL);
     }
 
@@ -135,17 +135,17 @@ static int is_tell_ok(struct char_data *ch, struct char_data *vict)
     } else if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_SOUNDPROOF) && (GET_LEVEL(ch) < LVL_GOD)) {
         send_to_char(ch, "The walls seem to absorb your words.\r\n");
     } else if (!IS_NPC(vict) && !vict->desc) {        /* linkless */
-        act("$E's linkless at the moment.", FALSE, ch, 0, vict, TO_CHAR | TO_SLEEP);
+        act("$E's linkless at the moment.", false, ch, 0, vict, TO_CHAR | TO_SLEEP);
     } else if (PLR_FLAGGED(vict, PLR_WRITING)) {
-        act("$E's writing a message right now; try again later.", FALSE, ch, 0, vict, TO_CHAR | TO_SLEEP);
+        act("$E's writing a message right now; try again later.", false, ch, 0, vict, TO_CHAR | TO_SLEEP);
     } else if ((!IS_NPC(vict) && PRF_FLAGGED(vict, PRF_NOTELL)) ||
                (ROOM_FLAGGED(IN_ROOM(vict), ROOM_SOUNDPROOF) && (GET_LEVEL(ch) < LVL_GOD))) {
-        act("$E can't hear you.", FALSE, ch, 0, vict, TO_CHAR | TO_SLEEP);
+        act("$E can't hear you.", false, ch, 0, vict, TO_CHAR | TO_SLEEP);
     } else {
-        return (TRUE);
+        return true;
     }
 
-    return (FALSE);
+    return true;
 }
 
 /* Yes, do_tell probably could be combined with whisper and ask, but it is
@@ -283,14 +283,14 @@ ACMD(do_spec_comm)
         }
 
         snprintf(buf1, sizeof(buf1), "$n %s you, '%s'", action_plur, buf2);
-        act(buf1, FALSE, ch, 0, vict, TO_VICT);
+        act(buf1, false, ch, 0, vict, TO_VICT);
 
         if ((!IS_NPC(ch)) && (PRF_FLAGGED(ch, PRF_NOREPEAT))) {
             send_to_char(ch, "%s", CONFIG_OK);
         } else {
             send_to_char(ch, "You %s %s, '%s'\r\n", action_sing, GET_NAME(vict), buf2);
         }
-        act(action_others, FALSE, ch, 0, vict, TO_NOTVICT);
+        act(action_others, false, ch, 0, vict, TO_NOTVICT);
     }
 }
 
@@ -355,9 +355,9 @@ ACMD(do_write)
 
     /* Now let's see what kind of stuff we've found. */
     if (GET_OBJ_TYPE(pen) != ITEM_PEN) {
-        act("$p is no good for writing with.", FALSE, ch, pen, 0, TO_CHAR);
+        act("$p is no good for writing with.", false, ch, pen, 0, TO_CHAR);
     } else if (GET_OBJ_TYPE(paper) != ITEM_NOTE) {
-        act("You can't write on $p.", FALSE, ch, paper, 0, TO_CHAR);
+        act("You can't write on $p.", false, ch, paper, 0, TO_CHAR);
     } else {
         char *backstr = NULL;
 
@@ -369,7 +369,7 @@ ACMD(do_write)
         }
 
         /* We can write. */
-        act("$n begins to jot down a note.", TRUE, ch, 0, 0, TO_ROOM);
+        act("$n begins to jot down a note.", true, ch, 0, 0, TO_ROOM);
         send_editor_help(ch->desc);
         string_write(ch->desc, &paper->action_description, MAX_NOTE_LENGTH, 0, backstr);
     }
@@ -395,7 +395,7 @@ ACMD(do_page)
             if (GET_LEVEL(ch) > LVL_GOD) {
                 for (d = descriptor_list; d; d = d->next) {
                     if (STATE(d) == CON_PLAYING && d->character) {
-                        act(buf, FALSE, ch, 0, d->character, TO_VICT);
+                        act(buf, false, ch, 0, d->character, TO_VICT);
                     }
                 }
             } else {
@@ -404,11 +404,11 @@ ACMD(do_page)
             return;
         }
         if ((vict = get_char_vis(ch, arg, NULL, FIND_CHAR_WORLD))) {
-            act(buf, FALSE, ch, 0, vict, TO_VICT);
+            act(buf, false, ch, 0, vict, TO_VICT);
             if (!IS_NPC(ch) && PRF_FLAGGED(ch, PRF_NOREPEAT)) {
                 send_to_char(ch, "%s", CONFIG_OK);
             } else {
-                act(buf, FALSE, ch, 0, vict, TO_CHAR);
+                act(buf, false, ch, 0, vict, TO_CHAR);
             }
         } else {
             send_to_char(ch, "There is no such person in the game!\r\n");
@@ -422,7 +422,7 @@ ACMD(do_gen_comm)
     struct descriptor_data *i;
     char color_on[24];
     char buf1[MAX_INPUT_LENGTH], buf2[MAX_INPUT_LENGTH], *msg;
-    bool emoting = FALSE;
+    bool emoting = false;
 
     /* Array of flags which must _not_ be set in order for comm to be heard. */
     int channels[] = {
@@ -519,7 +519,7 @@ ACMD(do_gen_comm)
         snprintf(buf1, sizeof(buf1), "%sYou %s, '%s%s'%s", COLOR_LEV(ch) >= C_CMP ? color_on : "", com_msgs[subcmd][1],
                  argument, COLOR_LEV(ch) >= C_CMP ? color_on : "", CCNRM(ch, C_CMP));
 
-        msg = act(buf1, FALSE, ch, 0, 0, TO_CHAR | TO_SLEEP);
+        msg = act(buf1, false, ch, 0, 0, TO_CHAR | TO_SLEEP);
         add_history(ch, msg, hist_type[subcmd]);
     }
     if (!emoting) {
@@ -545,7 +545,7 @@ ACMD(do_gen_comm)
         }
 
         snprintf(buf2, sizeof(buf2), "%s%s%s", (COLOR_LEV(i->character) >= C_NRM) ? color_on : "", buf1, KNRM);
-        msg = act(buf2, FALSE, ch, 0, i->character, TO_VICT | TO_SLEEP);
+        msg = act(buf2, false, ch, 0, i->character, TO_VICT | TO_SLEEP);
         add_history(i->character, msg, hist_type[subcmd]);
     }
 }
@@ -572,16 +572,16 @@ ACMD(do_qcomm)
             send_to_char(ch, "%s", CONFIG_OK);
         } else if (subcmd == SCMD_QSAY) {
             snprintf(buf, sizeof(buf), "You quest-say, '%s'", argument);
-            act(buf, FALSE, ch, 0, argument, TO_CHAR);
+            act(buf, false, ch, 0, argument, TO_CHAR);
         } else {
-            act(argument, FALSE, ch, 0, argument, TO_CHAR);
+            act(argument, false, ch, 0, argument, TO_CHAR);
         }
 
         if (subcmd == SCMD_QSAY) {
             snprintf(buf, sizeof(buf), "$n quest-says, '%s'", argument);
         } else {
             strlcpy(buf, argument, sizeof(buf));
-            mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE, "(GC) %s qechoed: %s", GET_NAME(ch), argument);
+            mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), true, "(GC) %s qechoed: %s", GET_NAME(ch), argument);
         }
         for (i = descriptor_list; i; i = i->next) {
             if (STATE(i) == CON_PLAYING && i != ch->desc && PRF_FLAGGED(i->character, PRF_QUEST)) {

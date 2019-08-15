@@ -199,11 +199,11 @@ int greet_mtrigger(char_data *actor, int dir)
     trig_data *t;
     char_data *ch;
     char buf[MAX_INPUT_LENGTH];
-    int intermediate, final = TRUE;
+    int intermediate, final = true;
     struct trig_data *next_trig;
 
     if (!valid_dg_target(actor, DG_ALLOW_GODS)) {
-        return TRUE;
+        return true;
     }
 
     for (ch = world[IN_ROOM(actor)].people; ch; ch = ch->next_in_room) {
@@ -224,7 +224,7 @@ int greet_mtrigger(char_data *actor, int dir)
                 }
                 ADD_UID_VAR(buf, t, char_script_id(actor), "actor", 0);
                 intermediate = script_driver(&ch, t, MOB_TRIGGER, TRIG_NEW);
-                if (!intermediate) { final = FALSE; }
+                if (!intermediate) { final = false; }
                 continue;
             }
         }
@@ -313,7 +313,7 @@ int command_mtrigger(char_data *actor, char *cmd, char *argument)
                 }
 
                 if (!GET_TRIG_ARG(t) || !*GET_TRIG_ARG(t)) {
-                    mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: Command Trigger #%d has no text argument!",
+                    mudlog(NRM, LVL_BUILDER, true, "SYSERR: Command Trigger #%d has no text argument!",
                            GET_TRIG_VNUM(t));
                     continue;
                 }
@@ -353,7 +353,7 @@ void speech_mtrigger(char_data *actor, char *str)
                 }
 
                 if (!GET_TRIG_ARG(t) || !*GET_TRIG_ARG(t)) {
-                    mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: Speech Trigger #%d has no text argument!",
+                    mudlog(NRM, LVL_BUILDER, true, "SYSERR: Speech Trigger #%d has no text argument!",
                            GET_TRIG_VNUM(t));
                     continue;
                 }
@@ -384,7 +384,7 @@ act_mtrigger(const char_data *ch, char *str, char_data *actor, char_data *victim
             }
 
             if (!GET_TRIG_ARG(t) || !*GET_TRIG_ARG(t)) {
-                mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: Act Trigger #%d has no text argument!", GET_TRIG_VNUM(t));
+                mudlog(NRM, LVL_BUILDER, true, "SYSERR: Act Trigger #%d has no text argument!", GET_TRIG_VNUM(t));
                 continue;
             }
 
@@ -711,7 +711,7 @@ int cmd_otrig(obj_data *obj, char_data *actor, char *cmd, char *argument, int ty
             }
 
             if (IS_SET(GET_TRIG_NARG(t), type) && (!GET_TRIG_ARG(t) || !*GET_TRIG_ARG(t))) {
-                mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: O-Command Trigger #%d has no text argument!", GET_TRIG_VNUM(t));
+                mudlog(NRM, LVL_BUILDER, true, "SYSERR: O-Command Trigger #%d has no text argument!", GET_TRIG_VNUM(t));
                 continue;
             }
 
@@ -1098,7 +1098,7 @@ int command_wtrigger(char_data *actor, char *cmd, char *argument)
         }
 
         if (!GET_TRIG_ARG(t) || !*GET_TRIG_ARG(t)) {
-            mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: W-Command Trigger #%d has no text argument!", GET_TRIG_VNUM(t));
+            mudlog(NRM, LVL_BUILDER, true, "SYSERR: W-Command Trigger #%d has no text argument!", GET_TRIG_VNUM(t));
             continue;
         }
 
@@ -1133,7 +1133,7 @@ void speech_wtrigger(char_data *actor, char *str)
         }
 
         if (!GET_TRIG_ARG(t) || !*GET_TRIG_ARG(t)) {
-            mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: W-Speech Trigger #%d has no text argument!", GET_TRIG_VNUM(t));
+            mudlog(NRM, LVL_BUILDER, true, "SYSERR: W-Speech Trigger #%d has no text argument!", GET_TRIG_VNUM(t));
             continue;
         }
 

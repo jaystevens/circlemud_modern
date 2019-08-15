@@ -86,7 +86,7 @@ zone_rnum create_new_zone(zone_vnum vzone_num, room_vnum bottom, room_vnum top, 
     /* Create the zone file. */
     snprintf(buf, sizeof(buf), "%s/%d.zon", ZON_PREFIX, vzone_num);
     if (!(fp = fopen(buf, "w"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new zone file.");
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: OLC: Can't write new zone file.");
         *error = "Could not write zone file.\r\n";
         return NOWHERE;
     }
@@ -96,7 +96,7 @@ zone_rnum create_new_zone(zone_vnum vzone_num, room_vnum bottom, room_vnum top, 
     /* Create the room file. */
     snprintf(buf, sizeof(buf), "%s/%d.wld", WLD_PREFIX, vzone_num);
     if (!(fp = fopen(buf, "w"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new world file.");
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: OLC: Can't write new world file.");
         *error = "Could not write world file.\r\n";
         return NOWHERE;
     }
@@ -106,7 +106,7 @@ zone_rnum create_new_zone(zone_vnum vzone_num, room_vnum bottom, room_vnum top, 
     /* Create the mobile file. */
     snprintf(buf, sizeof(buf), "%s/%d.mob", MOB_PREFIX, vzone_num);
     if (!(fp = fopen(buf, "w"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new mob file.");
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: OLC: Can't write new mob file.");
         *error = "Could not write mobile file.\r\n";
         return NOWHERE;
     }
@@ -116,7 +116,7 @@ zone_rnum create_new_zone(zone_vnum vzone_num, room_vnum bottom, room_vnum top, 
     /* Create the object file. */
     snprintf(buf, sizeof(buf), "%s/%d.obj", OBJ_PREFIX, vzone_num);
     if (!(fp = fopen(buf, "w"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new obj file.");
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: OLC: Can't write new obj file.");
         *error = "Could not write object file.\r\n";
         return NOWHERE;
     }
@@ -126,7 +126,7 @@ zone_rnum create_new_zone(zone_vnum vzone_num, room_vnum bottom, room_vnum top, 
     /* Create the shop file. */
     snprintf(buf, sizeof(buf), "%s/%d.shp", SHP_PREFIX, vzone_num);
     if (!(fp = fopen(buf, "w"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new shop file.");
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: OLC: Can't write new shop file.");
         *error = "Could not write shop file.\r\n";
         return NOWHERE;
     }
@@ -136,7 +136,7 @@ zone_rnum create_new_zone(zone_vnum vzone_num, room_vnum bottom, room_vnum top, 
     /* Create the quests file */
     snprintf(buf, sizeof(buf), "%s/%d.qst", QST_PREFIX, vzone_num);
     if (!(fp = fopen(buf, "w"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new quest file");
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: OLC: Can't write new quest file");
         *error = "Could not write quest file.\r\n";
         return NOWHERE;
     }
@@ -146,7 +146,7 @@ zone_rnum create_new_zone(zone_vnum vzone_num, room_vnum bottom, room_vnum top, 
     /* Create the trigger file. */
     snprintf(buf, sizeof(buf), "%s/%d.trg", TRG_PREFIX, vzone_num);
     if (!(fp = fopen(buf, "w"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new trigger file");
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: OLC: Can't write new trigger file");
         *error = "Could not write trigger file.\r\n";
         return NOWHERE;
     }
@@ -217,7 +217,7 @@ void create_world_index(int znum, const char *type)
     FILE *newfile, *oldfile;
     char new_name[32], old_name[32];
     const char *prefix;
-    int num, found = FALSE;
+    int num, found = false;
     char buf[MAX_STRING_LENGTH];
     char buf1[MAX_STRING_LENGTH];
 
@@ -252,10 +252,10 @@ void create_world_index(int znum, const char *type)
     snprintf(new_name, sizeof(new_name), "%s/newindex", prefix);
 
     if (!(oldfile = fopen(old_name, "r"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Failed to open %s.", old_name);
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: OLC: Failed to open %s.", old_name);
         return;
     } else if (!(newfile = fopen(new_name, "w"))) {
-        mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Failed to open %s.", new_name);
+        mudlog(BRF, LVL_IMPL, true, "SYSERR: OLC: Failed to open %s.", new_name);
         fclose(oldfile);
         return;
     }
@@ -271,7 +271,7 @@ void create_world_index(int znum, const char *type)
         } else if (!found) {
             sscanf(buf, "%d", &num);
             if (num > znum) {
-                found = TRUE;
+                found = true;
                 fprintf(newfile, "%s\n", buf1);
             } else if (num == znum) {
                 /* index file already had an entry for this zone. */
@@ -334,13 +334,13 @@ int save_zone(zone_rnum zone_num)
 
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
         log("SYSERR: GenOLC: save_zone: Invalid real zone number %d. (0-%d)", zone_num, top_of_zone_table);
-        return FALSE;
+        return false;
     }
 
     snprintf(fname, sizeof(fname), "%s/%d.new", ZON_PREFIX, zone_table[zone_num].number);
     if (!(zfile = fopen(fname, "w"))) {
-        mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: save_zones:  Can't write zone %d.", zone_table[zone_num].number);
-        return FALSE;
+        mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: save_zones:  Can't write zone %d.", zone_table[zone_num].number);
+        return false;
     }
 
     for (i = 0; i < ZN_ARRAY_MAX; i++) {
@@ -453,7 +453,7 @@ int save_zone(zone_rnum zone_num)
                 /* Invalid commands are replaced with '*' - Ignore them. */
                 continue;
             default:
-                mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: z_save_to_disk(): Unknown cmd '%c' - NOT saving",
+                mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: z_save_to_disk(): Unknown cmd '%c' - NOT saving",
                        ZCMD(zone_num, subcmd).command);
                 continue;
         }
@@ -474,7 +474,7 @@ int save_zone(zone_rnum zone_num)
     if (in_save_list(zone_table[zone_num].number, SL_ZON)) {
         remove_from_save_list(zone_table[zone_num].number, SL_ZON);
     }
-    return TRUE;
+    return true;
 }
 
 /* Some common code to count the number of comands in the list. */

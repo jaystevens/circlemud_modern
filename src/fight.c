@@ -74,9 +74,9 @@ void appear(struct char_data *ch)
     REMOVE_BIT_AR(AFF_FLAGS(ch), AFF_HIDE);
 
     if (GET_LEVEL(ch) < LVL_IMMORT) {
-        act("$n slowly fades into existence.", FALSE, ch, 0, 0, TO_ROOM);
+        act("$n slowly fades into existence.", false, ch, 0, 0, TO_ROOM);
     } else {
-        act("You feel a strange presence as $n appears, seemingly from nowhere.", FALSE, ch, 0, 0, TO_ROOM);
+        act("You feel a strange presence as $n appears, seemingly from nowhere.", false, ch, 0, 0, TO_ROOM);
     }
 }
 
@@ -118,7 +118,7 @@ void check_killer(struct char_data *ch, struct char_data *vict)
 
     SET_BIT_AR(PLR_FLAGS(ch), PLR_KILLER);
     send_to_char(ch, "If you want to be a PLAYER KILLER, so be it...\r\n");
-    mudlog(BRF, MAX(LVL_IMMORT, MAX(GET_INVIS_LEV(ch), GET_INVIS_LEV(vict))), TRUE,
+    mudlog(BRF, MAX(LVL_IMMORT, MAX(GET_INVIS_LEV(ch), GET_INVIS_LEV(vict))), true,
            "PC Killer bit set on %s for initiating attack on %s at %s.", GET_NAME(ch), GET_NAME(vict),
            world[IN_ROOM(vict)].name);
 }
@@ -251,7 +251,7 @@ void death_cry(struct char_data *ch)
 {
     int door;
 
-    act("Your blood freezes as you hear $n's death cry.", FALSE, ch, 0, 0, TO_ROOM);
+    act("Your blood freezes as you hear $n's death cry.", false, ch, 0, 0, TO_ROOM);
 
     for (door = 0; door < DIR_COUNT; door++) {
         if (CAN_GO(ch, door)) {
@@ -497,14 +497,14 @@ static void dam_message(int dam, struct char_data *ch, struct char_data *victim,
 
     /* damage message to onlookers */
     buf = replace_string(dam_weapons[msgnum].to_room, attack_hit_text[w_type].singular, attack_hit_text[w_type].plural);
-    act(buf, FALSE, ch, NULL, victim, TO_NOTVICT);
+    act(buf, false, ch, NULL, victim, TO_NOTVICT);
 
     /* damage message to damager */
     if (GET_LEVEL(ch) >= LVL_IMMORT) {
         send_to_char(ch, "(%d) ", dam);
     }
     buf = replace_string(dam_weapons[msgnum].to_char, attack_hit_text[w_type].singular, attack_hit_text[w_type].plural);
-    act(buf, FALSE, ch, NULL, victim, TO_CHAR);
+    act(buf, false, ch, NULL, victim, TO_CHAR);
     send_to_char(ch, CCNRM(ch, C_CMP));
 
     /* damage message to damagee */
@@ -513,7 +513,7 @@ static void dam_message(int dam, struct char_data *ch, struct char_data *victim,
     }
     buf = replace_string(dam_weapons[msgnum].to_victim, attack_hit_text[w_type].singular,
                          attack_hit_text[w_type].plural);
-    act(buf, FALSE, ch, NULL, victim, TO_VICT | TO_SLEEP);
+    act(buf, false, ch, NULL, victim, TO_VICT | TO_SLEEP);
     send_to_char(victim, CCNRM(victim, C_CMP));
 }
 
@@ -536,9 +536,9 @@ int skill_message(int dam, struct char_data *ch, struct char_data *vict, int att
             }
 
             if (!IS_NPC(vict) && (GET_LEVEL(vict) >= LVL_IMPL)) {
-                act(msg->god_msg.attacker_msg, FALSE, ch, weap, vict, TO_CHAR);
-                act(msg->god_msg.victim_msg, FALSE, ch, weap, vict, TO_VICT);
-                act(msg->god_msg.room_msg, FALSE, ch, weap, vict, TO_NOTVICT);
+                act(msg->god_msg.attacker_msg, false, ch, weap, vict, TO_CHAR);
+                act(msg->god_msg.victim_msg, false, ch, weap, vict, TO_VICT);
+                act(msg->god_msg.room_msg, false, ch, weap, vict, TO_NOTVICT);
             } else if (dam != 0) {
                 /*
                  * Don't send redundant color codes for TYPE_SUFFERING & other types
@@ -547,40 +547,40 @@ int skill_message(int dam, struct char_data *ch, struct char_data *vict, int att
                 if (GET_POS(vict) == POS_DEAD) {
                     if (msg->die_msg.attacker_msg) {
                         send_to_char(ch, CCYEL(ch, C_CMP));
-                        act(msg->die_msg.attacker_msg, FALSE, ch, weap, vict, TO_CHAR);
+                        act(msg->die_msg.attacker_msg, false, ch, weap, vict, TO_CHAR);
                         send_to_char(ch, CCNRM(ch, C_CMP));
                     }
 
                     send_to_char(vict, CCRED(vict, C_CMP));
-                    act(msg->die_msg.victim_msg, FALSE, ch, weap, vict, TO_VICT | TO_SLEEP);
+                    act(msg->die_msg.victim_msg, false, ch, weap, vict, TO_VICT | TO_SLEEP);
                     send_to_char(vict, CCNRM(vict, C_CMP));
 
-                    act(msg->die_msg.room_msg, FALSE, ch, weap, vict, TO_NOTVICT);
+                    act(msg->die_msg.room_msg, false, ch, weap, vict, TO_NOTVICT);
                 } else {
                     if (msg->hit_msg.attacker_msg) {
                         send_to_char(ch, CCYEL(ch, C_CMP));
-                        act(msg->hit_msg.attacker_msg, FALSE, ch, weap, vict, TO_CHAR);
+                        act(msg->hit_msg.attacker_msg, false, ch, weap, vict, TO_CHAR);
                         send_to_char(ch, CCNRM(ch, C_CMP));
                     }
 
                     send_to_char(vict, CCRED(vict, C_CMP));
-                    act(msg->hit_msg.victim_msg, FALSE, ch, weap, vict, TO_VICT | TO_SLEEP);
+                    act(msg->hit_msg.victim_msg, false, ch, weap, vict, TO_VICT | TO_SLEEP);
                     send_to_char(vict, CCNRM(vict, C_CMP));
 
-                    act(msg->hit_msg.room_msg, FALSE, ch, weap, vict, TO_NOTVICT);
+                    act(msg->hit_msg.room_msg, false, ch, weap, vict, TO_NOTVICT);
                 }
             } else if (ch != vict) {    /* Dam == 0 */
                 if (msg->miss_msg.attacker_msg) {
                     send_to_char(ch, CCYEL(ch, C_CMP));
-                    act(msg->miss_msg.attacker_msg, FALSE, ch, weap, vict, TO_CHAR);
+                    act(msg->miss_msg.attacker_msg, false, ch, weap, vict, TO_CHAR);
                     send_to_char(ch, CCNRM(ch, C_CMP));
                 }
 
                 send_to_char(vict, CCRED(vict, C_CMP));
-                act(msg->miss_msg.victim_msg, FALSE, ch, weap, vict, TO_VICT | TO_SLEEP);
+                act(msg->miss_msg.victim_msg, false, ch, weap, vict, TO_VICT | TO_SLEEP);
                 send_to_char(vict, CCNRM(vict, C_CMP));
 
-                act(msg->miss_msg.room_msg, FALSE, ch, weap, vict, TO_NOTVICT);
+                act(msg->miss_msg.room_msg, false, ch, weap, vict, TO_NOTVICT);
             }
             return (1);
         }
@@ -701,19 +701,19 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
     /* Use send_to_char -- act() doesn't send message if you are DEAD. */
     switch (GET_POS(victim)) {
         case POS_MORTALLYW:
-            act("$n is mortally wounded, and will die soon, if not aided.", TRUE, victim, 0, 0, TO_ROOM);
+            act("$n is mortally wounded, and will die soon, if not aided.", true, victim, 0, 0, TO_ROOM);
             send_to_char(victim, "You are mortally wounded, and will die soon, if not aided.\r\n");
             break;
         case POS_INCAP:
-            act("$n is incapacitated and will slowly die, if not aided.", TRUE, victim, 0, 0, TO_ROOM);
+            act("$n is incapacitated and will slowly die, if not aided.", true, victim, 0, 0, TO_ROOM);
             send_to_char(victim, "You are incapacitated and will slowly die, if not aided.\r\n");
             break;
         case POS_STUNNED:
-            act("$n is stunned, but will probably regain consciousness again.", TRUE, victim, 0, 0, TO_ROOM);
+            act("$n is stunned, but will probably regain consciousness again.", true, victim, 0, 0, TO_ROOM);
             send_to_char(victim, "You're stunned, but will probably regain consciousness again.\r\n");
             break;
         case POS_DEAD:
-            act("$n is dead!  R.I.P.", FALSE, victim, 0, 0, TO_ROOM);
+            act("$n is dead!  R.I.P.", false, victim, 0, 0, TO_ROOM);
             send_to_char(victim, "You are dead!  Sorry...\r\n");
             break;
 
@@ -741,7 +741,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
     if (!IS_NPC(victim) && !(victim->desc) && GET_POS(victim) > POS_STUNNED) {
         do_flee(victim, NULL, 0, 0);
         if (!FIGHTING(victim)) {
-            act("$n is rescued by divine forces.", FALSE, victim, 0, 0, TO_ROOM);
+            act("$n is rescued by divine forces.", false, victim, 0, 0, TO_ROOM);
             GET_WAS_IN(victim) = IN_ROOM(victim);
             char_from_room(victim);
             char_to_room(victim, 0);
@@ -764,7 +764,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
         }
 
         if (!IS_NPC(victim)) {
-            mudlog(BRF, MAX(LVL_IMMORT, MAX(GET_INVIS_LEV(ch), GET_INVIS_LEV(victim))), TRUE, "%s killed by %s at %s",
+            mudlog(BRF, MAX(LVL_IMMORT, MAX(GET_INVIS_LEV(ch), GET_INVIS_LEV(victim))), true, "%s killed by %s at %s",
                    GET_NAME(victim), GET_NAME(ch), world[IN_ROOM(victim)].name);
             if (MOB_FLAGGED(ch, MOB_MEMORY)) {
                 forget(ch, victim);
@@ -874,9 +874,9 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
      *   2..19 = Checked vs. AC.
      *    20   = Automatic hit. */
     if (diceroll == 20 || !AWAKE(victim)) {
-        dam = TRUE;
+        dam = true;
     } else if (diceroll == 1) {
-        dam = FALSE;
+        dam = false;
     } else {
         dam = (calc_thaco - diceroll <= victim_ac);
     }
@@ -951,7 +951,7 @@ void perform_violence(void)
             GET_MOB_WAIT(ch) = 0;
             if (GET_POS(ch) < POS_FIGHTING) {
                 GET_POS(ch) = POS_FIGHTING;
-                act("$n scrambles to $s feet!", TRUE, ch, 0, 0, TO_ROOM);
+                act("$n scrambles to $s feet!", true, ch, 0, 0, TO_ROOM);
             }
         }
 

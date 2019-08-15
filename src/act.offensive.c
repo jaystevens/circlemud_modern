@@ -50,16 +50,16 @@ ACMD(do_assist)
         }
 
         if (!opponent) {
-            act("But nobody is fighting $M!", FALSE, ch, 0, helpee, TO_CHAR);
+            act("But nobody is fighting $M!", false, ch, 0, helpee, TO_CHAR);
         } else if (!CAN_SEE(ch, opponent)) {
-            act("You can't see who is fighting $M!", FALSE, ch, 0, helpee, TO_CHAR);
+            act("You can't see who is fighting $M!", false, ch, 0, helpee, TO_CHAR);
             /* prevent accidental pkill */
         } else if (!CONFIG_PK_ALLOWED && !IS_NPC(opponent)) {
             send_to_char(ch, "You cannot kill other players.\r\n");
         } else {
             send_to_char(ch, "You join the fight!\r\n");
             act("$N assists you!", 0, helpee, 0, ch, TO_CHAR);
-            act("$n assists $N.", FALSE, ch, 0, helpee, TO_NOTVICT);
+            act("$n assists $N.", false, ch, 0, helpee, TO_NOTVICT);
             hit(ch, opponent, TYPE_UNDEFINED);
         }
     }
@@ -78,9 +78,9 @@ ACMD(do_hit)
         send_to_char(ch, "That player is not here.\r\n");
     } else if (vict == ch) {
         send_to_char(ch, "You hit yourself...OUCH!.\r\n");
-        act("$n hits $mself, and says OUCH!", FALSE, ch, 0, vict, TO_ROOM);
+        act("$n hits $mself, and says OUCH!", false, ch, 0, vict, TO_ROOM);
     } else if (AFF_FLAGGED(ch, AFF_CHARM) && (ch->master == vict)) {
-        act("$N is just such a good friend, you simply can't hit $M.", FALSE, ch, 0, vict, TO_CHAR);
+        act("$N is just such a good friend, you simply can't hit $M.", false, ch, 0, vict, TO_CHAR);
     } else {
         if (!CONFIG_PK_ALLOWED && !IS_NPC(vict) && !IS_NPC(ch)) {
             check_killer(ch, vict);
@@ -117,9 +117,9 @@ ACMD(do_kill)
         } else if (ch == vict) {
             send_to_char(ch, "Your mother would be so sad.. :(\r\n");
         } else {
-            act("You chop $M to pieces!  Ah!  The blood!", FALSE, ch, 0, vict, TO_CHAR);
-            act("$N chops you to pieces!", FALSE, vict, 0, ch, TO_CHAR);
-            act("$n brutally slays $N!", FALSE, ch, 0, vict, TO_NOTVICT);
+            act("You chop $M to pieces!  Ah!  The blood!", false, ch, 0, vict, TO_CHAR);
+            act("$N chops you to pieces!", false, vict, 0, ch, TO_CHAR);
+            act("$n brutally slays $N!", false, ch, 0, vict, TO_NOTVICT);
             raw_kill(vict, ch);
         }
     }
@@ -160,9 +160,9 @@ ACMD(do_backstab)
     }
 
     if (MOB_FLAGGED(vict, MOB_AWARE) && AWAKE(vict)) {
-        act("You notice $N lunging at you!", FALSE, vict, 0, ch, TO_CHAR);
-        act("$e notices you lunging at $m!", FALSE, vict, 0, ch, TO_VICT);
-        act("$n notices $N lunging at $m!", FALSE, vict, 0, ch, TO_NOTVICT);
+        act("You notice $N lunging at you!", false, vict, 0, ch, TO_CHAR);
+        act("$e notices you lunging at $m!", false, vict, 0, ch, TO_VICT);
+        act("$n notices $N lunging at $m!", false, vict, 0, ch, TO_NOTVICT);
         hit(vict, ch, TYPE_UNDEFINED);
         return;
     }
@@ -182,7 +182,7 @@ ACMD(do_backstab)
 ACMD(do_order)
 {
     char name[MAX_INPUT_LENGTH], message[MAX_INPUT_LENGTH];
-    bool found = FALSE;
+    bool found = false;
     struct char_data *vict;
     struct follow_type *k;
 
@@ -203,11 +203,11 @@ ACMD(do_order)
             char buf[MAX_STRING_LENGTH];
 
             snprintf(buf, sizeof(buf), "$N orders you to '%s'", message);
-            act(buf, FALSE, vict, 0, ch, TO_CHAR);
-            act("$n gives $N an order.", FALSE, ch, 0, vict, TO_ROOM);
+            act(buf, false, vict, 0, ch, TO_CHAR);
+            act("$n gives $N an order.", false, ch, 0, vict, TO_ROOM);
 
             if ((vict->master != ch) || !AFF_FLAGGED(vict, AFF_CHARM)) {
-                act("$n has an indifferent look.", FALSE, vict, 0, 0, TO_ROOM);
+                act("$n has an indifferent look.", false, vict, 0, 0, TO_ROOM);
             } else {
                 send_to_char(ch, "%s", CONFIG_OK);
                 command_interpreter(vict, message);
@@ -216,12 +216,12 @@ ACMD(do_order)
             char buf[MAX_STRING_LENGTH];
 
             snprintf(buf, sizeof(buf), "$n issues the order '%s'.", message);
-            act(buf, FALSE, ch, 0, 0, TO_ROOM);
+            act(buf, false, ch, 0, 0, TO_ROOM);
 
             for (k = ch->followers; k; k = k->next) {
                 if (IN_ROOM(ch) == IN_ROOM(k->follower)) {
                     if (AFF_FLAGGED(k->follower, AFF_CHARM)) {
-                        found = TRUE;
+                        found = true;
                         command_interpreter(k->follower, message);
                     }
                 }
@@ -248,9 +248,9 @@ ACMD(do_flee)
     for (i = 0; i < 6; i++) {
         attempt = rand_number(0, DIR_COUNT - 1); /* Select a random direction */
         if (CAN_GO(ch, attempt) && !ROOM_FLAGGED(EXIT(ch, attempt)->to_room, ROOM_DEATH)) {
-            act("$n panics, and attempts to flee!", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n panics, and attempts to flee!", true, ch, 0, 0, TO_ROOM);
             was_fighting = FIGHTING(ch);
-            if (do_simple_move(ch, attempt, TRUE)) {
+            if (do_simple_move(ch, attempt, true)) {
                 send_to_char(ch, "You flee head over heels.\r\n");
                 if (was_fighting && !IS_NPC(ch)) {
                     loss = GET_MAX_HIT(was_fighting) - GET_HIT(was_fighting);
@@ -264,7 +264,7 @@ ACMD(do_flee)
                     stop_fighting(was_fighting);
                 }
             } else {
-                act("$n tries to flee, but can't!", TRUE, ch, 0, 0, TO_ROOM);
+                act("$n tries to flee, but can't!", true, ch, 0, 0, TO_ROOM);
             }
             return;
         }
@@ -371,7 +371,7 @@ ACMD(do_rescue)
     }
 
     if (!tmp_ch) {
-        act("But nobody is fighting $M!", FALSE, ch, 0, vict, TO_CHAR);
+        act("But nobody is fighting $M!", false, ch, 0, vict, TO_CHAR);
         return;
     }
     percent = rand_number(1, 101);    /* 101% is a complete failure */
@@ -382,8 +382,8 @@ ACMD(do_rescue)
         return;
     }
     send_to_char(ch, "Banzai!  To the rescue...\r\n");
-    act("You are rescued by $N, you are confused!", FALSE, vict, 0, ch, TO_CHAR);
-    act("$n heroically rescues $N!", FALSE, ch, 0, vict, TO_NOTVICT);
+    act("You are rescued by $N, you are confused!", false, vict, 0, ch, TO_CHAR);
+    act("$n heroically rescues $N!", false, ch, 0, vict, TO_NOTVICT);
 
     if (FIGHTING(vict) == tmp_ch) {
         stop_fighting(vict);
@@ -493,7 +493,7 @@ ACMD(do_whirlwind)
     }
 
     send_to_char(ch, "You begin to spin rapidly in circles.\r\n");
-    act("$n begins to rapidly spin in a circle!", FALSE, ch, 0, 0, TO_ROOM);
+    act("$n begins to rapidly spin in a circle!", false, ch, 0, 0, TO_ROOM);
 
     /* NEW_EVENT() will add a new mud event to the event list of the character.
      * This function below adds a new event of "eWHIRLWIND", to "ch", and passes "NULL" as
@@ -574,14 +574,14 @@ ACMD(do_bandage)
     prob = GET_SKILL(ch, SKILL_BANDAGE);
 
     if (percent <= prob) {
-        act("Your attempt to bandage fails.", FALSE, ch, 0, 0, TO_CHAR);
-        act("$n tries to bandage $N, but fails miserably.", TRUE, ch, 0, vict, TO_NOTVICT);
+        act("Your attempt to bandage fails.", false, ch, 0, 0, TO_CHAR);
+        act("$n tries to bandage $N, but fails miserably.", true, ch, 0, vict, TO_NOTVICT);
         damage(vict, vict, 2, TYPE_SUFFERING);
         return;
     }
 
-    act("You successfully bandage $N.", FALSE, ch, 0, vict, TO_CHAR);
-    act("$n bandages $N, who looks a bit better now.", TRUE, ch, 0, vict, TO_NOTVICT);
-    act("Someone bandages you, and you feel a bit better now.", FALSE, ch, 0, vict, TO_VICT);
+    act("You successfully bandage $N.", false, ch, 0, vict, TO_CHAR);
+    act("$n bandages $N, who looks a bit better now.", true, ch, 0, vict, TO_NOTVICT);
+    act("Someone bandages you, and you feel a bit better now.", false, ch, 0, vict, TO_VICT);
     GET_HIT(vict) = 0;
 }

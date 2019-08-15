@@ -1298,10 +1298,10 @@ void SoundSend(descriptor_t *apDescriptor, const char *apTrigger)
 const char *ColourRGB(descriptor_t *apDescriptor, const char *apRGB)
 {
     protocol_t *pProtocol = apDescriptor ? apDescriptor->pProtocol : NULL;
-    bool charHasColor = TRUE;
+    bool charHasColor = true;
 
     if (apDescriptor->character && !clr(apDescriptor->character, C_CMP)) {
-        charHasColor = FALSE;
+        charHasColor = false;
     }
 
     if (pProtocol && pProtocol->pVariables[eMSDP_ANSI_COLORS]->ValueInt && charHasColor) {

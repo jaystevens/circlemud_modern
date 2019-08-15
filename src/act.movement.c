@@ -141,7 +141,7 @@ static int has_scuba(struct char_data *ch)
  * @param ch The character structure to attempt to move.
  * @param dir The defined direction (NORTH, SOUTH, etc...) to attempt to
  * move into.
- * @param need_specials_check If TRUE will cause 
+ * @param need_specials_check If true will cause
  * @retval int 1 for a successful move (ch is now in a new location)		
  * or 0 for a failed move (ch is still in the original location). */
 int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
@@ -190,7 +190,7 @@ int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
     /* Charm effect: Does it override the movement? */
     if (AFF_FLAGGED(ch, AFF_CHARM) && ch->master && was_in == IN_ROOM(ch->master)) {
         send_to_char(ch, "The thought of leaving your master makes you weep.\r\n");
-        act("$n bursts into tears.", FALSE, ch, 0, 0, TO_ROOM);
+        act("$n bursts into tears.", false, ch, 0, 0, TO_ROOM);
         return (0);
     }
 
@@ -287,7 +287,7 @@ int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
     /* Generate the leave message and display to others in the was_in room. */
     if (!AFF_FLAGGED(ch, AFF_SNEAK)) {
         snprintf(leave_message, sizeof(leave_message), "$n leaves %s.", dirs[dir]);
-        act(leave_message, TRUE, ch, 0, 0, TO_ROOM);
+        act(leave_message, true, ch, 0, 0, TO_ROOM);
     }
 
     char_from_room(ch);
@@ -310,7 +310,7 @@ int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
 
     /* Display arrival information to anyone in the destination room... */
     if (!AFF_FLAGGED(ch, AFF_SNEAK)) {
-        act("$n has arrived.", TRUE, ch, 0, 0, TO_ROOM);
+        act("$n has arrived.", true, ch, 0, 0, TO_ROOM);
     }
 
     /* ... and the room description to the character. */
@@ -320,7 +320,7 @@ int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
 
     /* ... and Kill the player if the room is a death trap. */
     if (ROOM_FLAGGED(going_to, ROOM_DEATH) && GET_LEVEL(ch) < LVL_IMMORT) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "%s hit death trap #%d (%s)", GET_NAME(ch), GET_ROOM_VNUM(going_to),
+        mudlog(BRF, LVL_IMMORT, true, "%s hit death trap #%d (%s)", GET_NAME(ch), GET_ROOM_VNUM(going_to),
                world[going_to].name);
         death_cry(ch);
         extract_char(ch);
@@ -379,7 +379,7 @@ int perform_move(struct char_data *ch, int dir, int need_specials_check)
         for (k = ch->followers; k; k = next) {
             next = k->next;
             if ((IN_ROOM(k->follower) == was_in) && (GET_POS(k->follower) >= POS_STANDING)) {
-                act("You follow $N.\r\n", FALSE, k->follower, 0, ch, TO_CHAR);
+                act("You follow $N.\r\n", false, k->follower, 0, ch, TO_CHAR);
                 perform_move(k->follower, dir, 1);
             }
         }
@@ -399,8 +399,8 @@ static int find_door(struct char_data *ch, const char *type, char *dir, const ch
     int door;
 
     if (*dir) {            /* a direction was specified */
-        if ((door = search_block(dir, dirs, FALSE)) == -1) { /* Partial Match */
-            if ((door = search_block(dir, autoexits, FALSE)) == -1) { /* Check 'short' dirs too */
+        if ((door = search_block(dir, dirs, false)) == -1) { /* Partial Match */
+            if ((door = search_block(dir, autoexits, false)) == -1) { /* Check 'short' dirs too */
                 send_to_char(ch, "That's not a direction.\r\n");
                 return (-1);
             }
@@ -593,7 +593,7 @@ static void do_doorcmd(struct char_data *ch, struct obj_data *obj, int door, int
                  obj ? "$p" : EXIT(ch, door)->keyword ? "$F" : "door");
     }
     if (!obj || IN_ROOM(obj) != NOWHERE) {
-        act(buf, FALSE, ch, obj, obj ? 0 : EXIT(ch, door)->keyword, TO_ROOM);
+        act(buf, false, ch, obj, obj ? 0 : EXIT(ch, door)->keyword, TO_ROOM);
     }
 
     /* Notify the other room */
@@ -764,7 +764,7 @@ ACMD(do_stand)
             break;
         case POS_SITTING:
             send_to_char(ch, "You stand up.\r\n");
-            act("$n clambers to $s feet.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n clambers to $s feet.", true, ch, 0, 0, TO_ROOM);
             /* Were they sitting in something? */
             char_from_furniture(ch);
             /* Will be sitting after a successful bash and may still be fighting. */
@@ -772,7 +772,7 @@ ACMD(do_stand)
             break;
         case POS_RESTING:
             send_to_char(ch, "You stop resting, and stand up.\r\n");
-            act("$n stops resting, and clambers on $s feet.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n stops resting, and clambers on $s feet.", true, ch, 0, 0, TO_ROOM);
             GET_POS(ch) = POS_STANDING;
             /* Were they sitting in something. */
             char_from_furniture(ch);
@@ -785,7 +785,7 @@ ACMD(do_stand)
             break;
         default:
             send_to_char(ch, "You stop floating around, and put your feet on the ground.\r\n");
-            act("$n stops floating around, and puts $s feet on the ground.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n stops floating around, and puts $s feet on the ground.", true, ch, 0, 0, TO_ROOM);
             GET_POS(ch) = POS_STANDING;
             break;
     }
@@ -810,7 +810,7 @@ ACMD(do_sit)
         case POS_STANDING:
             if (found == 0) {
                 send_to_char(ch, "You sit down.\r\n");
-                act("$n sits down.", FALSE, ch, 0, 0, TO_ROOM);
+                act("$n sits down.", false, ch, 0, 0, TO_ROOM);
                 GET_POS(ch) = POS_SITTING;
             } else {
                 if (GET_OBJ_TYPE(furniture) != ITEM_FURNITURE) {
@@ -818,11 +818,11 @@ ACMD(do_sit)
                     return;
                 } else if (GET_OBJ_VAL(furniture, 1) > GET_OBJ_VAL(furniture, 0)) {
                     /* Val 1 is current number sitting, 0 is max in sitting. */
-                    act("$p looks like it's all full.", TRUE, ch, furniture, 0, TO_CHAR);
+                    act("$p looks like it's all full.", true, ch, furniture, 0, TO_CHAR);
                     log("SYSERR: Furniture %d holding too many people.", GET_OBJ_VNUM(furniture));
                     return;
                 } else if (GET_OBJ_VAL(furniture, 1) == GET_OBJ_VAL(furniture, 0)) {
-                    act("There is no where left to sit upon $p.", TRUE, ch, furniture, 0, TO_CHAR);
+                    act("There is no where left to sit upon $p.", true, ch, furniture, 0, TO_CHAR);
                     return;
                 } else {
                     if (OBJ_SAT_IN_BY(furniture) == NULL)
@@ -833,8 +833,8 @@ ACMD(do_sit)
                         }
                         NEXT_SITTING(tempch) = ch;
                     }
-                    act("You sit down upon $p.", TRUE, ch, furniture, 0, TO_CHAR);
-                    act("$n sits down upon $p.", TRUE, ch, furniture, 0, TO_ROOM);
+                    act("You sit down upon $p.", true, ch, furniture, 0, TO_CHAR);
+                    act("$n sits down upon $p.", true, ch, furniture, 0, TO_ROOM);
                     SITTING(ch) = furniture;
                     NEXT_SITTING(ch) = NULL;
                     GET_OBJ_VAL(furniture, 1) += 1;
@@ -847,7 +847,7 @@ ACMD(do_sit)
             break;
         case POS_RESTING:
             send_to_char(ch, "You stop resting, and sit up.\r\n");
-            act("$n stops resting.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n stops resting.", true, ch, 0, 0, TO_ROOM);
             GET_POS(ch) = POS_SITTING;
             break;
         case POS_SLEEPING:
@@ -858,7 +858,7 @@ ACMD(do_sit)
             break;
         default:
             send_to_char(ch, "You stop floating around, and sit down.\r\n");
-            act("$n stops floating around, and sits down.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n stops floating around, and sits down.", true, ch, 0, 0, TO_ROOM);
             GET_POS(ch) = POS_SITTING;
             break;
     }
@@ -869,12 +869,12 @@ ACMD(do_rest)
     switch (GET_POS(ch)) {
         case POS_STANDING:
             send_to_char(ch, "You sit down and rest your tired bones.\r\n");
-            act("$n sits down and rests.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n sits down and rests.", true, ch, 0, 0, TO_ROOM);
             GET_POS(ch) = POS_RESTING;
             break;
         case POS_SITTING:
             send_to_char(ch, "You rest your tired bones.\r\n");
-            act("$n rests.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n rests.", true, ch, 0, 0, TO_ROOM);
             GET_POS(ch) = POS_RESTING;
             break;
         case POS_RESTING:
@@ -888,7 +888,7 @@ ACMD(do_rest)
             break;
         default:
             send_to_char(ch, "You stop floating around, and stop to rest your tired bones.\r\n");
-            act("$n stops floating around, and rests.", FALSE, ch, 0, 0, TO_ROOM);
+            act("$n stops floating around, and rests.", false, ch, 0, 0, TO_ROOM);
             GET_POS(ch) = POS_RESTING;
             break;
     }
@@ -901,7 +901,7 @@ ACMD(do_sleep)
         case POS_SITTING:
         case POS_RESTING:
             send_to_char(ch, "You go to sleep.\r\n");
-            act("$n lies down and falls asleep.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n lies down and falls asleep.", true, ch, 0, 0, TO_ROOM);
             GET_POS(ch) = POS_SLEEPING;
             break;
         case POS_SLEEPING:
@@ -912,7 +912,7 @@ ACMD(do_sleep)
             break;
         default:
             send_to_char(ch, "You stop floating around, and lie down to sleep.\r\n");
-            act("$n stops floating around, and lie down to sleep.", TRUE, ch, 0, 0, TO_ROOM);
+            act("$n stops floating around, and lie down to sleep.", true, ch, 0, 0, TO_ROOM);
             GET_POS(ch) = POS_SLEEPING;
             break;
     }
@@ -933,14 +933,14 @@ ACMD(do_wake)
         } else if (vict == ch) {
             self = 1;
         } else if (AWAKE(vict)) {
-            act("$E is already awake.", FALSE, ch, 0, vict, TO_CHAR);
+            act("$E is already awake.", false, ch, 0, vict, TO_CHAR);
         } else if (AFF_FLAGGED(vict, AFF_SLEEP)) {
-            act("You can't wake $M up!", FALSE, ch, 0, vict, TO_CHAR);
+            act("You can't wake $M up!", false, ch, 0, vict, TO_CHAR);
         } else if (GET_POS(vict) < POS_SLEEPING) {
-            act("$E's in pretty bad shape!", FALSE, ch, 0, vict, TO_CHAR);
+            act("$E's in pretty bad shape!", false, ch, 0, vict, TO_CHAR);
         } else {
-            act("You wake $M up.", FALSE, ch, 0, vict, TO_CHAR);
-            act("You are awakened by $n.", FALSE, ch, 0, vict, TO_VICT | TO_SLEEP);
+            act("You wake $M up.", false, ch, 0, vict, TO_CHAR);
+            act("You are awakened by $n.", false, ch, 0, vict, TO_VICT | TO_SLEEP);
             GET_POS(vict) = POS_SITTING;
         }
         if (!self) {
@@ -953,7 +953,7 @@ ACMD(do_wake)
         send_to_char(ch, "You are already awake...\r\n");
     } else {
         send_to_char(ch, "You awaken, and sit up.\r\n");
-        act("$n awakens.", TRUE, ch, 0, 0, TO_ROOM);
+        act("$n awakens.", true, ch, 0, 0, TO_ROOM);
         GET_POS(ch) = POS_SITTING;
     }
 }
@@ -980,11 +980,11 @@ ACMD(do_follow)
     }
 
     if (ch->master == leader) {
-        act("You are already following $M.", FALSE, ch, 0, leader, TO_CHAR);
+        act("You are already following $M.", false, ch, 0, leader, TO_CHAR);
         return;
     }
     if (AFF_FLAGGED(ch, AFF_CHARM) && (ch->master)) {
-        act("But you only feel like following $N!", FALSE, ch, 0, ch->master, TO_CHAR);
+        act("But you only feel like following $N!", false, ch, 0, ch->master, TO_CHAR);
     } else {            /* Not Charmed follow person */
         if (leader == ch) {
             if (!ch->master) {

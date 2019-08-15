@@ -128,7 +128,7 @@ struct happyhour happy_data = {
     0};
 
 /* declaration of local (file scope) variables */
-static int converting = FALSE;
+static int converting = false;
 
 /* Local (file scope) utility functions */
 static int check_bitvector_names(bitvector_t bits, size_t namecount, const char *whatami, const char *whatbits);
@@ -198,7 +198,7 @@ static void boot_social_messages(void)
     int line_number, nr = 0, hide, min_char_pos, min_pos, min_lvl, curr_soc = -1;
     char next_soc[MAX_STRING_LENGTH], sorted[MAX_INPUT_LENGTH];
 
-    if (CONFIG_NEW_SOCIALS == TRUE) {
+    if (CONFIG_NEW_SOCIALS == true) {
         /* open social file */
         if (!(fl = fopen(SOCMESS_FILE_NEW, "r"))) {
             log("SYSERR: can't open socials file '%s': %s", SOCMESS_FILE_NEW, strerror(errno));
@@ -255,7 +255,7 @@ static void boot_social_messages(void)
             exit(1);
         }
         if (*next_soc == '$') { break; }
-        if (CONFIG_NEW_SOCIALS == TRUE) {
+        if (CONFIG_NEW_SOCIALS == true) {
             if (fscanf(fl, " %s %d %d %d %d \n", sorted, &hide, &min_char_pos, &min_pos, &min_lvl) != 5) {
                 log("SYSERR: format error in social file near social '%s'", next_soc);
                 /* SYSERR_DESC: From boot_social_messages(), this error is output when
@@ -308,7 +308,7 @@ static void boot_social_messages(void)
         soc_mess_list[curr_soc].char_found = fread_action(fl, nr);
 
         /* if no char_found, the rest is to be ignored */
-        if (CONFIG_NEW_SOCIALS == FALSE && !soc_mess_list[curr_soc].char_found) {
+        if (CONFIG_NEW_SOCIALS == false && !soc_mess_list[curr_soc].char_found) {
             continue;
         }
 
@@ -318,7 +318,7 @@ static void boot_social_messages(void)
         soc_mess_list[curr_soc].char_auto = fread_action(fl, nr);
         soc_mess_list[curr_soc].others_auto = fread_action(fl, nr);
 
-        if (CONFIG_NEW_SOCIALS == FALSE) {
+        if (CONFIG_NEW_SOCIALS == false) {
             continue;
         }
 
@@ -1285,7 +1285,7 @@ static char fread_letter(FILE *fp)
 bitvector_t asciiflag_conv(char *flag)
 {
     bitvector_t flags = 0;
-    int is_num = TRUE;
+    int is_num = true;
     char *p;
 
     for (p = flag; *p; p++) {
@@ -1297,7 +1297,7 @@ bitvector_t asciiflag_conv(char *flag)
 
         /* Allow the first character to be a minus sign */
         if (!isdigit(*p) && (*p != '-' || p != flag)) {
-            is_num = FALSE;
+            is_num = false;
         }
     }
 
@@ -1311,7 +1311,7 @@ bitvector_t asciiflag_conv(char *flag)
 static bitvector_t asciiflag_conv_aff(char *flag)
 {
     bitvector_t flags = 0;
-    int is_num = TRUE;
+    int is_num = true;
     char *p;
 
     for (p = flag; *p; p++) {
@@ -1323,7 +1323,7 @@ static bitvector_t asciiflag_conv_aff(char *flag)
 
         /* Allow the first character to be a minus sign */
         if (!isdigit(*p) && (*p != '-' || p != flag)) {
-            is_num = FALSE;
+            is_num = false;
         }
     }
 
@@ -1369,10 +1369,10 @@ void parse_room(FILE *fl, int virtual_nr)
     }
 
     if (((retval = sscanf(line, " %d %s %s %s %s %d ", t, flags, flags2, flags3, flags4, t + 2)) == 3) &&
-        (bitwarning == TRUE)) {
+        (bitwarning == true)) {
         log("WARNING: Conventional world files detected. See config.c.");
         exit(1);
-    } else if ((retval == 3) && (bitwarning == FALSE)) {
+    } else if ((retval == 3) && (bitwarning == false)) {
         /* Looks like the implementor is ready, so let's load the world files. We
      * load the extra three flags as 0, since they won't be anything anyway. We
      * will save the entire world later on, when every room, mobile, and object
@@ -1393,7 +1393,7 @@ void parse_room(FILE *fl, int virtual_nr)
 
         if (bitsavetodisk) { /* Maybe the implementor just wants to look at the 128bit files */
             add_to_save_list(zone_table[real_zone_by_thing(virtual_nr)].number, 3);
-            converting = TRUE;
+            converting = true;
         }
 
         log("   done.");
@@ -1714,13 +1714,13 @@ static void parse_simple_mob(FILE *mob_f, int i, int nr)
  * changes need to be made anywhere in the code.
  * CASE		: Requires a parameter through 'value'. */
 #define CASE(test)    \
-    if (value && !matched && !str_cmp(keyword, test) && (matched = TRUE))
+    if (value && !matched && !str_cmp(keyword, test) && (matched = true))
 #define RANGE(low, high)    \
     (num_arg = MAX((low), MIN((high), (num_arg))))
 
 static void interpret_espec(const char *keyword, const char *value, int i, int nr)
 {
-    int num_arg = 0, matched = FALSE;
+    int num_arg = 0, matched = false;
 
     /* If there isn't a colon, there is no value.  While Boolean options are
    * possible, we don't actually have any.  Feel free to make some. */
@@ -1875,11 +1875,11 @@ void parse_mobile(FILE *mob_f, int nr)
     }
 
     if (((retval = sscanf(line, "%s %s %s %s %s %s %s %s %d %c", f1, f2, f3, f4, f5, f6, f7, f8, t + 2, &letter)) !=
-         10) && (bitwarning == TRUE)) {
+         10) && (bitwarning == true)) {
         /* Let's make the implementor read some, before converting his world files. */
         log("WARNING: Conventional mobile files detected. See config.c.");
         exit(1);
-    } else if ((retval == 4) && (bitwarning == FALSE)) {
+    } else if ((retval == 4) && (bitwarning == false)) {
         log("Converting mobile #%d to 128bits..", nr);
         MOB_FLAGS(mob_proto + i)[0] = asciiflag_conv(f1);
         MOB_FLAGS(mob_proto + i)[1] = 0;
@@ -1915,7 +1915,7 @@ void parse_mobile(FILE *mob_f, int nr)
 
         if (bitsavetodisk) {
             add_to_save_list(zone_table[real_zone_by_thing(nr)].number, 0);
-            converting = TRUE;
+            converting = true;
         }
 
         log("   done.");
@@ -2031,11 +2031,11 @@ char *parse_object(FILE *obj_f, int nr)
     }
 
     if (((retval = sscanf(line, " %d %s %s %s %s %s %s %s %s %s %s %s %s", t, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10,
-                          f11, f12)) == 4) && (bitwarning == TRUE)) {
+                          f11, f12)) == 4) && (bitwarning == true)) {
         /* Let's make the implementor read some, before converting his world files. */
         log("WARNING: Conventional object files detected. Please see config.c.");
         exit(1);
-    } else if (((retval == 4) || (retval == 3)) && (bitwarning == FALSE)) {
+    } else if (((retval == 4) || (retval == 3)) && (bitwarning == false)) {
 
         if (retval == 3) {
             t[3] = 0;
@@ -2059,7 +2059,7 @@ char *parse_object(FILE *obj_f, int nr)
 
         if (bitsavetodisk) {
             add_to_save_list(zone_table[real_zone_by_thing(nr)].number, 1);
-            converting = TRUE;
+            converting = true;
         }
 
         log("   done.");
@@ -2196,7 +2196,7 @@ static void load_zones(FILE *fl, char *zonename)
     static zone_rnum zone = 0;
     int i, cmd_no, num_of_cmds = 0, line_num = 0, tmp, error;
     char *ptr, buf[READ_SIZE], zname[READ_SIZE], buf2[MAX_STRING_LENGTH];
-    int zone_fix = FALSE;
+    int zone_fix = false;
     char t1[80], t2[80];
     char zbuf1[MAX_STRING_LENGTH], zbuf2[MAX_STRING_LENGTH];
     char zbuf3[MAX_STRING_LENGTH], zbuf4[MAX_STRING_LENGTH];
@@ -2267,7 +2267,7 @@ static void load_zones(FILE *fl, char *zonename)
                 Z.name = strdup(Z.builders);
                 free(Z.builders);
                 Z.builders = strdup("None.");
-                zone_fix = TRUE;
+                zone_fix = true;
             }
         }
         /* We only found 4 values, so set 'defaults' for the ones not found */
@@ -2289,13 +2289,13 @@ static void load_zones(FILE *fl, char *zonename)
 
     for (;;) {
         /* skip reading one line if we fixed above (line is correct already) */
-        if (zone_fix != TRUE) {
+        if (zone_fix != true) {
             if ((tmp = get_line(fl, buf)) == 0) {
                 log("SYSERR: Format error in %s - premature end of file", zname);
                 exit(1);
             }
         } else {
-            zone_fix = FALSE;
+            zone_fix = false;
         }
 
         line_num += tmp;
@@ -2683,7 +2683,7 @@ void zone_update(void)
         if (zone_table[update_u->zone_to_reset].reset_mode == 2 || is_empty(update_u->zone_to_reset)) {
             struct descriptor_data *pt;
             reset_zone(update_u->zone_to_reset);
-            mudlog(CMP, LVL_IMPL + 1, FALSE, "Auto zone reset: %s (Zone %d)", zone_table[update_u->zone_to_reset].name,
+            mudlog(CMP, LVL_IMPL + 1, false, "Auto zone reset: %s (Zone %d)", zone_table[update_u->zone_to_reset].name,
                    zone_table[update_u->zone_to_reset].number);
             for (pt = descriptor_list; pt; pt = pt->next) {
                 if (IS_PLAYING(pt) && pt->character && PRF_FLAGGED(pt->character, PRF_ZONERESETS)) {
@@ -2713,8 +2713,8 @@ void zone_update(void)
 
 static void log_zone_error(zone_rnum zone, int cmd_no, const char *message)
 {
-    mudlog(NRM, LVL_GOD, TRUE, "SYSERR: zone file: %s", message);
-    mudlog(NRM, LVL_GOD, TRUE, "SYSERR: ...offending cmd: '%c' cmd in zone #%d, line %d", ZCMD.command,
+    mudlog(NRM, LVL_GOD, true, "SYSERR: zone file: %s", message);
+    mudlog(NRM, LVL_GOD, true, "SYSERR: ...offending cmd: '%c' cmd in zone #%d, line %d", ZCMD.command,
            zone_table[zone].number, ZCMD.line);
 }
 
@@ -2959,7 +2959,7 @@ void reset_zone(zone_rnum zone)
     }
 }
 
-/* for use in reset_zone; return TRUE if zone 'nr' is free of PC's  */
+/* for use in reset_zone; return true if zone 'nr' is free of PC's  */
 int is_empty(zone_rnum zone_nr)
 {
     struct descriptor_data *i;
@@ -3102,11 +3102,11 @@ int fread_number(FILE *fp)
 
     number = 0;
 
-    sign = FALSE;
+    sign = false;
     if (c == '+') {
         c = getc(fp);
     } else if (c == '-') {
-        sign = TRUE;
+        sign = true;
         c = getc(fp);
     }
 
@@ -3848,13 +3848,13 @@ zone_rnum real_zone(zone_vnum vnum)
 static int check_object(struct obj_data *obj)
 {
     char objname[MAX_INPUT_LENGTH + 32];
-    int error = FALSE, y;
+    int error = false, y;
 
-    if (GET_OBJ_WEIGHT(obj) < 0 && (error = TRUE))
+    if (GET_OBJ_WEIGHT(obj) < 0 && (error = true))
         log("SYSERR: Object #%d (%s) has negative weight (%d).", GET_OBJ_VNUM(obj), obj->short_description,
             GET_OBJ_WEIGHT(obj));
 
-    if (GET_OBJ_RENT(obj) < 0 && (error = TRUE))
+    if (GET_OBJ_RENT(obj) < 0 && (error = true))
         log("SYSERR: Object #%d (%s) has negative cost/day (%d).", GET_OBJ_VNUM(obj), obj->short_description,
             GET_OBJ_RENT(obj));
 
@@ -3870,13 +3870,13 @@ static int check_object(struct obj_data *obj)
             char onealias[MAX_INPUT_LENGTH], *space = strrchr(obj->name, ' ');
 
             strlcpy(onealias, space ? space + 1 : obj->name, sizeof(onealias));
-            if (search_block(onealias, drinknames, TRUE) < 0 && (error = TRUE))
+            if (search_block(onealias, drinknames, true) < 0 && (error = true))
                 log("SYSERR: Object #%d (%s) doesn't have drink type as last keyword. (%s)", GET_OBJ_VNUM(obj),
                     obj->short_description, obj->name);
         }
             /* Fall through. */
         case ITEM_FOUNTAIN:
-            if ((GET_OBJ_VAL(obj, 0) > 0) && (GET_OBJ_VAL(obj, 1) > GET_OBJ_VAL(obj, 0) && (error = TRUE)))
+            if ((GET_OBJ_VAL(obj, 0) > 0) && (GET_OBJ_VAL(obj, 1) > GET_OBJ_VAL(obj, 0) && (error = true)))
                 log("SYSERR: Object #%d (%s) contains (%d) more than maximum (%d).", GET_OBJ_VNUM(obj),
                     obj->short_description, GET_OBJ_VAL(obj, 1), GET_OBJ_VAL(obj, 0));
             break;
@@ -3891,7 +3891,7 @@ static int check_object(struct obj_data *obj)
         case ITEM_STAFF:
             error |= check_object_level(obj, 0);
             error |= check_object_spell_number(obj, 3);
-            if (GET_OBJ_VAL(obj, 2) > GET_OBJ_VAL(obj, 1) && (error = TRUE))
+            if (GET_OBJ_VAL(obj, 2) > GET_OBJ_VAL(obj, 1) && (error = true))
                 log("SYSERR: Object #%d (%s) has more charges (%d) than maximum (%d).", GET_OBJ_VNUM(obj),
                     obj->short_description, GET_OBJ_VAL(obj, 2), GET_OBJ_VAL(obj, 1));
             break;
@@ -3900,7 +3900,7 @@ static int check_object(struct obj_data *obj)
                 char onealias[MAX_INPUT_LENGTH], *next_name;
                 next_name = any_one_arg(obj->name, onealias);
                 do {
-                    if (find_exdesc(onealias, obj->ex_description) && (error = TRUE)) {
+                    if (find_exdesc(onealias, obj->ex_description) && (error = true)) {
                         log("SYSERR: Object #%d (%s) is type NOTE and has extra description with same name. (%s)",
                             GET_OBJ_VNUM(obj), obj->short_description, obj->name);
                     }
@@ -3909,7 +3909,7 @@ static int check_object(struct obj_data *obj)
             }
             break;
         case ITEM_FURNITURE:
-            if (GET_OBJ_VAL(obj, 1) > GET_OBJ_VAL(obj, 0) && (error = TRUE))
+            if (GET_OBJ_VAL(obj, 1) > GET_OBJ_VAL(obj, 0) && (error = true))
                 log("SYSERR: Object #%d (%s) contains (%d) more than maximum (%d).", GET_OBJ_VNUM(obj),
                     obj->short_description, GET_OBJ_VAL(obj, 1), GET_OBJ_VAL(obj, 0));
             break;
@@ -3920,7 +3920,7 @@ static int check_object(struct obj_data *obj)
 
 static int check_object_spell_number(struct obj_data *obj, int val)
 {
-    int error = FALSE;
+    int error = false;
     const char *spellname;
 
     if (GET_OBJ_VAL(obj, val) == -1 || GET_OBJ_VAL(obj, val) == 0) { /* no spell */
@@ -3930,13 +3930,13 @@ static int check_object_spell_number(struct obj_data *obj, int val)
     /* Check for negative spells, spells beyond the top define, and any spell
    * which is actually a skill. */
     if (GET_OBJ_VAL(obj, val) < 0) {
-        error = TRUE;
+        error = true;
     }
     if (GET_OBJ_VAL(obj, val) > TOP_SPELL_DEFINE) {
-        error = TRUE;
+        error = true;
     }
     if (GET_OBJ_VAL(obj, val) > MAX_SPELLS && GET_OBJ_VAL(obj, val) <= MAX_SKILLS) {
-        error = TRUE;
+        error = true;
     }
     if (error)
         log("SYSERR: Object #%d (%s) has out of range spell #%d.", GET_OBJ_VNUM(obj), obj->short_description,
@@ -3949,7 +3949,7 @@ static int check_object_spell_number(struct obj_data *obj, int val)
     /* Now check for unnamed spells. */
     spellname = skill_name(GET_OBJ_VAL(obj, val));
 
-    if ((spellname == unused_spellname || !str_cmp("UNDEFINED", spellname)) && (error = TRUE))
+    if ((spellname == unused_spellname || !str_cmp("UNDEFINED", spellname)) && (error = true))
         log("SYSERR: Object #%d (%s) uses '%s' spell #%d.", GET_OBJ_VNUM(obj), obj->short_description, spellname,
             GET_OBJ_VAL(obj, val));
 
@@ -3958,9 +3958,9 @@ static int check_object_spell_number(struct obj_data *obj, int val)
 
 static int check_object_level(struct obj_data *obj, int val)
 {
-    int error = FALSE;
+    int error = false;
 
-    if ((GET_OBJ_VAL(obj, val) < 0 || GET_OBJ_VAL(obj, val) > LVL_IMPL) && (error = TRUE))
+    if ((GET_OBJ_VAL(obj, val) < 0 || GET_OBJ_VAL(obj, val) > LVL_IMPL) && (error = true))
         log("SYSERR: Object #%d (%s) has out of range level #%d.", GET_OBJ_VNUM(obj), obj->short_description,
             GET_OBJ_VAL(obj, val));
 
@@ -3970,18 +3970,18 @@ static int check_object_level(struct obj_data *obj, int val)
 static int check_bitvector_names(bitvector_t bits, size_t namecount, const char *whatami, const char *whatbits)
 {
     unsigned int flagnum;
-    bool error = FALSE;
+    bool error = false;
 
     /* See if any bits are set above the ones we know about. */
     if (bits <= (~(bitvector_t) 0 >> (sizeof(bitvector_t) * 8 - namecount))) {
-        return (FALSE);
+        return (false);
     }
 
     for (flagnum = namecount; flagnum < sizeof(bitvector_t) * 8; flagnum++) {
         if ((1 << flagnum) & bits) {
             log("SYSERR: %s has unknown %s flag, bit %d (0 through %d known).", whatami, whatbits, flagnum,
                 (int) namecount - 1);
-            error = TRUE;
+            error = true;
         }
     }
 

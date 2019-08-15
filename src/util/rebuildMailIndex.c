@@ -15,10 +15,10 @@
 
 #define FLAG(n) (1 << (n))
 
-#ifndef FALSE
+#ifndef false
 typedef enum _boolean_type {
-    FALSE = 0,
-    TRUE
+    false = 0,
+    true
 } bool;
 #endif
 
@@ -276,7 +276,7 @@ int get_line(FILE *fl, char *buf)
 long asciiflag_conv(char *flag)
 {
     long flags = 0;
-    int is_num = TRUE;
+    int is_num = true;
     char *p;
 
     for (p = flag; *p; p++) {
@@ -288,7 +288,7 @@ long asciiflag_conv(char *flag)
 
         /* Allow the first character to be a minus sign */
         if (!isdigit(*p) && (*p != '-' || p != flag)) {
-            is_num = FALSE;
+            is_num = false;
         }
     }
 

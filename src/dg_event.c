@@ -66,7 +66,7 @@ struct event *event_create(EVENTFUNC(*func), void *event_obj, long when)
     new_event->func = func;
     new_event->event_obj = event_obj;
     new_event->q_el = queue_enq(event_q, new_event, when + pulse);
-    new_event->isMudEvent = FALSE;
+    new_event->isMudEvent = false;
 
     return new_event;
 }

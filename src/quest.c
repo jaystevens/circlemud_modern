@@ -79,10 +79,10 @@ int is_complete(struct char_data *ch, qst_vnum vnum)
 
     for (i = 0; i < GET_NUM_QUESTS(ch); i++) {
         if (ch->player_specials->saved.completed_quests[i] == vnum) {
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
 qst_vnum find_quest_by_qmnum(struct char_data *ch, mob_vnum qm, int num)
@@ -364,7 +364,7 @@ void autoquest_trigger_check(struct char_data *ch, struct char_data *vict, struc
 {
     struct char_data *i;
     qst_rnum rnum;
-    int found = TRUE;
+    int found = true;
 
     if (IS_NPC(ch)) {
         return;
@@ -407,12 +407,12 @@ void autoquest_trigger_check(struct char_data *ch, struct char_data *vict, struc
             break;
         case AQ_MOB_SAVE:
             if (ch == vict) {
-                found = FALSE;
+                found = false;
             }
             for (i = world[IN_ROOM(ch)].people; i && found; i = i->next_in_room) {
                 if (i && IS_NPC(i) && !MOB_FLAGGED(i, MOB_NOTDEADYET)) {
                     if ((GET_MOB_VNUM(i) != QST_TARGET(rnum)) && !AFF_FLAGGED(i, AFF_CHARM)) {
-                        found = FALSE;
+                        found = false;
                     }
                 }
             }
@@ -431,7 +431,7 @@ void autoquest_trigger_check(struct char_data *ch, struct char_data *vict, struc
             if (QST_TARGET(rnum) == world[IN_ROOM(ch)].number) {
                 for (i = world[IN_ROOM(ch)].people; i && found; i = i->next_in_room) {
                     if (i && IS_NPC(i) && !MOB_FLAGGED(i, MOB_NOTDEADYET)) {
-                        found = FALSE;
+                        found = false;
                     }
                 }
                 if (found) {
@@ -546,8 +546,8 @@ static void quest_join(struct char_data *ch, struct char_data *qm, char argument
         snprintf(buf, sizeof(buf), "%s You need to have %s first!", GET_NAME(ch),
                  obj_proto[real_object(QST_PREREQ(rnum))].short_description);
     } else {
-        act("You join the quest.", TRUE, ch, NULL, NULL, TO_CHAR);
-        act("$n has joined a quest.", TRUE, ch, NULL, NULL, TO_ROOM);
+        act("You join the quest.", true, ch, NULL, NULL, TO_CHAR);
+        act("$n has joined a quest.", true, ch, NULL, NULL, TO_ROOM);
         snprintf(buf, sizeof(buf), "%s Listen carefully to the instructions.", GET_NAME(ch));
         do_tell(qm, buf, cmd_tell, 0);
         set_quest(ch, rnum);
@@ -751,7 +751,7 @@ ACMD(do_quest)
     two_arguments(argument, arg1, arg2);
     if (!*arg1) {
         send_to_char(ch, "%s\r\n", GET_LEVEL(ch) < LVL_IMMORT ? quest_mort_usage : quest_imm_usage);
-    } else if (((tp = search_block(arg1, quest_cmd, FALSE)) == -1)) {
+    } else if (((tp = search_block(arg1, quest_cmd, false)) == -1)) {
         send_to_char(ch, "%s\r\n", GET_LEVEL(ch) < LVL_IMMORT ? quest_mort_usage : quest_imm_usage);
     } else {
         switch (tp) {
@@ -793,15 +793,15 @@ SPECIAL(questmaster)
     /* check that qm mob has quests assigned */
     for (rnum = 0; (rnum < total_quests && QST_MASTER(rnum) != GET_MOB_VNUM(qm)); rnum++) {}
     if (rnum >= total_quests) {
-        return FALSE; /* No quests for this mob */
+        return false; /* No quests for this mob */
     } else if (QST_FUNC(rnum) && (QST_FUNC(rnum)(ch, me, cmd, argument))) {
-        return TRUE;  /* The secondary spec proc handled this command */
+        return true;  /* The secondary spec proc handled this command */
     } else if (CMD_IS("quest")) {
         two_arguments(argument, arg1, arg2);
         if (!*arg1) {
-            return FALSE;
-        } else if (((tp = search_block(arg1, quest_cmd, FALSE)) == -1)) {
-            return FALSE;
+            return false;
+        } else if (((tp = search_block(arg1, quest_cmd, false)) == -1)) {
+            return false;
         } else {
             switch (tp) {
                 case SCMD_QUEST_LIST:
@@ -815,11 +815,11 @@ SPECIAL(questmaster)
                     quest_join(ch, qm, arg2);
                     break;
                 default:
-                    return FALSE; /* fall through to the do_quest command processor */
+                    return false; /* fall through to the do_quest command processor */
             } /* switch on subcmd number */
-            return TRUE;
+            return true;
         }
     } else {
-        return FALSE; /* not a questmaster command */
+        return false; /* not a questmaster command */
     }
 }

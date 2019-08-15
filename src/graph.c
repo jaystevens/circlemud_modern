@@ -49,7 +49,7 @@ static int VALID_EDGE(room_rnum x, int y)
     if (world[x].dir_option[y] == NULL || TOROOM(x, y) == NOWHERE) {
         return 0;
     }
-    if (CONFIG_TRACK_T_DOORS == FALSE && IS_CLOSED(x, y)) {
+    if (CONFIG_TRACK_T_DOORS == false && IS_CLOSED(x, y)) {
         return 0;
     }
     if (ROOM_FLAGGED(TOROOM(x, y), ROOM_NOTRACK) || IS_MARKED(TOROOM(x, y))) {
@@ -215,9 +215,9 @@ void hunt_victim(struct char_data *ch)
     }
 
     /* make sure the char still exists */
-    for (found = FALSE, tmp = character_list; tmp && !found; tmp = tmp->next) {
+    for (found = false, tmp = character_list; tmp && !found; tmp = tmp->next) {
         if (HUNTING(ch) == tmp) {
-            found = TRUE;
+            found = true;
         }
     }
 

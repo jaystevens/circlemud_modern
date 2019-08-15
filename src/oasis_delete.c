@@ -18,8 +18,8 @@
 #include "oasis.h"
 #include "improved-edit.h"
 
-/* Free's strings from any object, room, mobiles, or player. TRUE if successful,
- * otherwise, it returns FALSE. Type - The OLC type constant relating to the 
+/* Free's strings from any object, room, mobiles, or player. true if successful,
+ * otherwise, it returns false. Type - The OLC type constant relating to the
  * data type of data. */
 int free_strings(void *data, int type)
 {
@@ -65,11 +65,11 @@ int free_strings(void *data, int type)
                 }
             }
 
-            return (TRUE);
+            return (true);
 
         case OASIS_MOB:
         case OASIS_OBJ:
-            return (FALSE);        /* For now... */
+            return (false);        /* For now... */
 
         case OASIS_CFG:
             config = (struct config_data *) data;
@@ -114,10 +114,10 @@ int free_strings(void *data, int type)
                 free(config->operation.START_MESSG);
             }
 
-            return (TRUE);
+            return (true);
 
         default:
-            mudlog(BRF, LVL_GOD, TRUE, "SYSERR: oasis_delete.c: free_strings: Invalid type handled (Type %d).", type);
-            return (FALSE);
+            mudlog(BRF, LVL_GOD, true, "SYSERR: oasis_delete.c: free_strings: Invalid type handled (Type %d).", type);
+            return (false);
     }
 }

@@ -24,7 +24,7 @@ Contents
 1.1 Overview 
 The act() function is used to process and send strings of text to characters 
 in a room. It can be used to send the same basic string to a number of 
-characters filling in certain segments – designated by control characters – 
+characters filling in certain segments ï¿½ designated by control characters ï¿½ 
 in different ways, dependant on what each character can see and who each 
 character is. Once the text string passed to the function has been parsed, it 
 is capitalized and a newline is added to its tail. 
@@ -38,17 +38,17 @@ struct obj_data *obj, const void *vict_obj, int type)
 These pieces are used as follows: 
 
 str: This is the basic string, a null terminated character array, including 
-control characters (see section 1.4 on ‘Control Characters’), to be sent to 
+control characters (see section 1.4 on ï¿½Control Charactersï¿½), to be sent to 
 characters designated by the targets. 
 
 hide_invisible: A TRUE or FALSE value indicating whether or not to hide the 
-entire output from any characters that cannot see the “performing character”. 
+entire output from any characters that cannot see the ï¿½performing characterï¿½. 
 
-ch: The “performing character”. This is the character that the output string 
+ch: The ï¿½performing characterï¿½. This is the character that the output string 
 is associated with. The character is used to determine the room for the output
 of the action in question. 
 
-obj: An object (an actual item – obj_data) used in the course of the action. 
+obj: An object (an actual item ï¿½ obj_data) used in the course of the action. 
 
 vict_obj: This can be either a character involved in the action, another 
 object, or even a predefined string of text. 
@@ -73,7 +73,7 @@ The next parameter vict_objcan be a number of things ranging from a game object
 null terminated character array (char *). 
 
 Do note, however, that obj and vict_obj are both ignored if there is no control
-character reference (see section 1.4 ‘Control Characters’) to them and the type
+character reference (see section 1.4 ï¿½Control Charactersï¿½) to them and the type
 is set to TO_ROOM or TO_CHAR. In these cases, NULL should be supplied as the 
 input to the function. 
 
@@ -96,7 +96,7 @@ TO_CHAR: Finally, this option sends the output to the ch.
 
 TO_SLEEP: This is a special option that must be combined with one of the above
 options. It tells act() that the output is to be sent even to characters that 
-are sleeping. It is combined with a bitwise ‘or’. i.e. TO_VICT | TO_SLEEP. 
+are sleeping. It is combined with a bitwise ï¿½orï¿½. i.e. TO_VICT | TO_SLEEP. 
 
 When the string has been parsed, it is capitalized and a newline is added. 
 
@@ -105,20 +105,20 @@ In a manner similar to the printf() family of functions, act() uses control
 characters. However, instead of using the % symbol, act() uses the $ character 
 to indicate control characters. 
 
-$n Write name, short description, or “someone”, for ch, depending on whether 
+$n Write name, short description, or ï¿½someoneï¿½, for ch, depending on whether 
 ch is a PC, a NPC, or an invisible PC/NPC. 
 $N Like $n, except insert the text for vict_obj.*
-$m “him,” “her,” or “it,” depending on the gender of ch. 
+$m ï¿½him,ï¿½ ï¿½her,ï¿½ or ï¿½it,ï¿½ depending on the gender of ch. 
 $M Like $m, for vict_obj.*
-$s “his,” “her,”or “it,” depending on the gender of ch. 
+$s ï¿½his,ï¿½ ï¿½her,ï¿½or ï¿½it,ï¿½ depending on the gender of ch. 
 $S Like $s, for vict_obj.* 
-$e “he,” “she,” “it,” depending on the gender of ch. 
+$e ï¿½he,ï¿½ ï¿½she,ï¿½ ï¿½it,ï¿½ depending on the gender of ch. 
 $E Like $e, for vict_obj.*
-$o Name or “something” for obj, depending on visibility. 
+$o Name or ï¿½somethingï¿½ for obj, depending on visibility. 
 $O Like $o, for vict_obj.*
-$p Short description or “something” for obj. 
+$p Short description or ï¿½somethingï¿½ for obj. 
 $P Like $p for vict_obj.*
-$a “an” or“a”, depending on the first character of obj’s name. 
+$a ï¿½anï¿½ orï¿½aï¿½, depending on the first character of objï¿½s name. 
 $A Like $a, for vict_obj.*
 $T Prints the string pointed to by vict_obj.*
 $F Processes the string pointed to by vict_obj with the fname() function prior
@@ -129,7 +129,7 @@ no action is taken.
 $U Processes the buffer and uppercases the first letter of the following word 
 (the word immediately after to the control code). If there is no following 
 word, no action is taken. 
-$$ Print the character ‘$’. 
+$$ Print the character ï¿½$ï¿½. 
 
 NOTE*: vict_obj must be a pointer of type struct char_data *. 
 
@@ -138,7 +138,7 @@ In all of the following examples, ch points to male character Ras, vict always
 points to the female character Anna. obj1 is a small sword, and obj2 is a small
 sack. 
 
-act("$n smiles happily.", TRUE, ch, NULL, NULL, TO_ROOM); 
+act("$n smiles happily.", true, ch, NULL, NULL, TO_ROOM);
 This is sent to the room that Ras is currently in, and the string that they see
 if they can see him is: 
 Ras smiles happily. 
@@ -148,7 +148,7 @@ act("You kiss $M.", FALSE, ch, NULL, vict, TO_CHAR);
 In this action, Ras is kissing Anna, and Ras will see: 
 You kiss her. 
 
-act("$n gives $p to $N.", TRUE, ch, obj1, vict, TO_NOTVICT); 
+act("$n gives $p to $N.", true, ch, obj1, vict, TO_NOTVICT);
 The output from this string is sent to everyone in the room except for Ras and 
 Anna. Of course, if they cannot see Ras, then they will not see any output at 
 all. The string that each character in the room will see is: 
@@ -165,7 +165,7 @@ Just as per the last example, if she cannot see Ras, someone will be used in
 place of his name, and if she cannot see the sword, then something will be 
 used in its place. 
 
-act("$n puts $p in $s $O.", TRUE, ch, obj1, obj2, TO_ROOM); 
+act("$n puts $p in $s $O.", true, ch, obj1, obj2, TO_ROOM);
 This action uses two objects rather than two characters, and is displayed to 
 the entire room (with the exception of Ras of course). If the character can 
 see Ras, they will see: 

@@ -201,19 +201,19 @@ void cleanup_olc(struct descriptor_data *d, int8_t cleanup_type)
     /* Restore descriptor playing status. */
     if (d->character) {
         REMOVE_BIT_AR(PLR_FLAGS(d->character), PLR_WRITING);
-        act("$n stops using OLC.", TRUE, d->character, NULL, NULL, TO_ROOM);
+        act("$n stops using OLC.", true, d->character, NULL, NULL, TO_ROOM);
 
         if (cleanup_type == CLEANUP_CONFIG) {
-            mudlog(BRF, MAX(LVL_IMMORT, GET_INVIS_LEV(d->character)), TRUE,
+            mudlog(BRF, MAX(LVL_IMMORT, GET_INVIS_LEV(d->character)), true,
                    "OLC: %s stops editing the game configuration", GET_NAME(d->character));
         } else if (STATE(d) == CON_TEDIT) {
-            mudlog(BRF, MAX(LVL_IMMORT, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s stops editing text files.",
+            mudlog(BRF, MAX(LVL_IMMORT, GET_INVIS_LEV(d->character)), true, "OLC: %s stops editing text files.",
                    GET_NAME(d->character));
         } else if (STATE(d) == CON_HEDIT) {
-            mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s stops editing help files.",
+            mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(d->character)), true, "OLC: %s stops editing help files.",
                    GET_NAME(d->character));
         } else {
-            mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(d->character)), TRUE,
+            mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(d->character)), true,
                    "OLC: %s stops editing zone %d allowed zone %d", GET_NAME(d->character),
                    zone_table[OLC_ZNUM(d)].number, GET_OLC_ZONE(d->character));
         }
@@ -262,60 +262,60 @@ static void free_config(struct config_data *data)
 
 /* Checks to see if a builder can modify the specified zone. Ch is the imm
  * requesting access to modify this zone. Rnum is the real number of the zone
- * attempted to be modified. Returns TRUE if the builder has access, otherwisei
- * FALSE. */
+ * attempted to be modified. Returns true if the builder has access, otherwisei
+ * false. */
 int can_edit_zone(struct char_data *ch, zone_rnum rnum)
 {
     /* no access if called with bad arguments */
     if (!ch->desc || IS_NPC(ch) || rnum == NOWHERE) {
-        return FALSE;
+        return false;
     }
 
     /* If zone is flagged NOBUILD, then No-one can edit it (use zunlock to open it) */
     if (rnum != HEDIT_PERMISSION && rnum != AEDIT_PERMISSION && ZONE_FLAGGED(rnum, ZONE_NOBUILD)) {
-        return FALSE;
+        return false;
     }
 
     if (GET_OLC_ZONE(ch) == ALL_PERMISSION) {
-        return TRUE;
+        return true;
     }
 
     if (GET_OLC_ZONE(ch) == HEDIT_PERMISSION && rnum == HEDIT_PERMISSION) {
-        return TRUE;
+        return true;
     }
 
     if (GET_OLC_ZONE(ch) == AEDIT_PERMISSION && rnum == AEDIT_PERMISSION) {
-        return TRUE;
+        return true;
     }
 
     /* always access if ch is high enough level */
     if (GET_LEVEL(ch) >= LVL_GRGOD) {
-        return (TRUE);
+        return (true);
     }
 
     /* always access if a player helped build the zone in the first place */
     if (rnum != HEDIT_PERMISSION && rnum != AEDIT_PERMISSION) {
         if (is_name(GET_NAME(ch), zone_table[rnum].builders)) {
-            return (TRUE);
+            return (true);
         }
     }
 
     /* no access if you haven't been assigned a zone */
     if (GET_OLC_ZONE(ch) == NOWHERE) {
-        return FALSE;
+        return false;
     }
 
     /* no access if you're not at least LVL_BUILDER */
     if (GET_LEVEL(ch) < LVL_BUILDER) {
-        return FALSE;
+        return false;
     }
 
     /* always access if you're assigned to this zone */
     if (real_zone(GET_OLC_ZONE(ch)) == rnum) {
-        return TRUE;
+        return true;
     }
 
-    return (FALSE);
+    return (false);
 }
 
 void send_cannot_edit(struct char_data *ch, zone_vnum zone)
@@ -329,6 +329,6 @@ void send_cannot_edit(struct char_data *ch, zone_vnum zone)
         send_to_char(ch, "You do not have permission to edit zone %d.\r\n", zone);
         sprintf(buf, "OLC: %s tried to edit zone %d.", GET_NAME(ch), zone);
     }
-    mudlog(BRF, LVL_IMPL, TRUE, "%s", buf);
+    mudlog(BRF, LVL_IMPL, true, "%s", buf);
 }
 

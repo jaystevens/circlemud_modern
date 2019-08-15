@@ -246,12 +246,12 @@ bool can_see_map(struct char_data *ch)
 {
     /* Is the map funcionality disabled? */
     if (CONFIG_MAP == MAP_OFF) {
-        return FALSE;
+        return false;
     } else if ((CONFIG_MAP == MAP_IMM_ONLY) && (GET_LEVEL(ch) < LVL_IMMORT)) {
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 /* MapArea function - create the actual map */
@@ -498,8 +498,8 @@ static void perform_map(struct char_data *ch, char *argument, bool worldmap)
         size = atoi(arg1);
     }
     if (*arg2) {
-        if (is_abbrev(arg2, "normal")) { worldmap = FALSE; }
-        else if (is_abbrev(arg2, "world")) { worldmap = TRUE; }
+        if (is_abbrev(arg2, "normal")) { worldmap = false; }
+        else if (is_abbrev(arg2, "world")) { worldmap = true; }
         else {
             send_to_char(ch, "Usage: \tymap <distance> [ normal | world ]\tn");
             return;
@@ -553,10 +553,10 @@ static void perform_map(struct char_data *ch, char *argument, bool worldmap)
     count += sprintf(buf + count, "\tn%s Flying\\\\", map_info[SECT_FLYING].disp);
     sprintf(buf + count, "\tn%s Underwater\\\\", map_info[SECT_UNDERWATER].disp);
 
-    strcpy(buf, strfrmt(buf, LEGEND_WIDTH, CANVAS_HEIGHT + 2, FALSE, TRUE, TRUE));
+    strcpy(buf, strfrmt(buf, LEGEND_WIDTH, CANVAS_HEIGHT + 2, false, true, true));
 
     /* Start with an empty column */
-    strcpy(buf1, strfrmt((char*)"", 0, CANVAS_HEIGHT + 2, FALSE, FALSE, TRUE));
+    strcpy(buf1, strfrmt((char*)"", 0, CANVAS_HEIGHT + 2, false, false, true));
 
     /* Paste the legend */
     strcpy(buf2, strpaste(buf1, buf, (char*)"\tD | \tn"));
@@ -591,14 +591,14 @@ void str_and_map(char *str, struct char_data *ch, room_vnum target_room)
 
     /* Check MUDs map config options - if disabled, just show room decsription */
     if (!can_see_map(ch)) {
-        send_to_char(ch, "%s", strfrmt(str, GET_SCREEN_WIDTH(ch), 1, FALSE, FALSE, FALSE));
+        send_to_char(ch, "%s", strfrmt(str, GET_SCREEN_WIDTH(ch), 1, false, false, false));
         return;
     }
 
     worldmap = show_worldmap(ch);
 
     if (!PRF_FLAGGED(ch, PRF_AUTOMAP)) {
-        send_to_char(ch, "%s", strfrmt(str, GET_SCREEN_WIDTH(ch), 1, FALSE, FALSE, FALSE));
+        send_to_char(ch, "%s", strfrmt(str, GET_SCREEN_WIDTH(ch), 1, false, false, false));
         return;
     }
 
@@ -625,10 +625,10 @@ void str_and_map(char *str, struct char_data *ch, room_vnum target_room)
     }
 
     if (worldmap) {
-        send_to_char(ch, "%s", strpaste(strfrmt(str, GET_SCREEN_WIDTH(ch) - char_size, size * 2 + 1, FALSE, TRUE, TRUE),
+        send_to_char(ch, "%s", strpaste(strfrmt(str, GET_SCREEN_WIDTH(ch) - char_size, size * 2 + 1, false, true, true),
                                         WorldMap(centre, size, MAP_CIRCLE, MAP_COMPACT), (char*)" \tn"));
     } else {
-        send_to_char(ch, "%s", strpaste(strfrmt(str, GET_SCREEN_WIDTH(ch) - char_size, size * 2 + 1, FALSE, TRUE, TRUE),
+        send_to_char(ch, "%s", strpaste(strfrmt(str, GET_SCREEN_WIDTH(ch) - char_size, size * 2 + 1, false, true, true),
                                         CompactStringMap(centre, size), (char*)" \tn"));
     }
 
@@ -639,10 +639,10 @@ static bool show_worldmap(struct char_data *ch)
     room_rnum rm = IN_ROOM(ch);
     zone_rnum zn = GET_ROOM_ZONE(rm);
 
-    if (ROOM_FLAGGED(rm, ROOM_WORLDMAP)) { return TRUE; }
-    if (ZONE_FLAGGED(zn, ZONE_WORLDMAP)) { return TRUE; }
+    if (ROOM_FLAGGED(rm, ROOM_WORLDMAP)) { return true; }
+    if (ZONE_FLAGGED(zn, ZONE_WORLDMAP)) { return true; }
 
-    return FALSE;
+    return false;
 }
 
 ACMD(do_map)

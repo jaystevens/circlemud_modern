@@ -356,7 +356,7 @@ void hcontrol_list_houses(struct char_data *ch, char *arg)
         send_to_char(ch, "%7d %7d  %-15s    %2d    %-12s %s\r\n", house_control[i].vnum, house_control[i].atrium,
                      built_on, house_control[i].num_of_guests, CAP(own_name), last_pay);
 
-        House_list_guests(ch, i, TRUE);
+        House_list_guests(ch, i, true);
     }
 }
 
@@ -396,7 +396,7 @@ static void hcontrol_build_house(struct char_data *ch, char *arg)
         send_to_char(ch, "%s", HCONTROL_FORMAT);
         return;
     }
-    if ((exit_num = search_block(arg1, dirs, FALSE)) < 0) {
+    if ((exit_num = search_block(arg1, dirs, false)) < 0) {
         send_to_char(ch, "'%s' is not a valid direction.\r\n", arg1);
         return;
     }
@@ -497,7 +497,7 @@ static void hcontrol_pay_house(struct char_data *ch, char *arg)
     } else if ((i = find_house(atoi(arg))) == NOWHERE) {
         send_to_char(ch, "Unknown house.\r\n");
     } else {
-        mudlog(NRM, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "Payment for house %s collected by %s.", arg,
+        mudlog(NRM, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "Payment for house %s collected by %s.", arg,
                GET_NAME(ch));
 
         house_control[i].last_payment = time(0);
@@ -545,7 +545,7 @@ ACMD(do_house)
     } else if (GET_IDNUM(ch) != house_control[i].owner) {
         send_to_char(ch, "Only the primary owner can set guests.\r\n");
     } else if (!*arg) {
-        House_list_guests(ch, i, FALSE);
+        House_list_guests(ch, i, false);
     } else if ((id = get_id_by_name(arg)) < 0) {
         send_to_char(ch, "No such player.\r\n");
     } else if (id == GET_IDNUM(ch)) {

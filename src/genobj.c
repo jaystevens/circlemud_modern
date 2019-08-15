@@ -187,13 +187,13 @@ int save_objects(zone_rnum zone_num)
 
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
         log("SYSERR: GenOLC: save_objects: Invalid real zone number %d. (0-%d)", zone_num, top_of_zone_table);
-        return FALSE;
+        return false;
     }
 
     snprintf(filename, sizeof(filename), "%s/%d.new", OBJ_PREFIX, zone_table[zone_num].number);
     if (!(fp = fopen(filename, "w+"))) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: OLC: Cannot open objects file %s!", filename);
-        return FALSE;
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: OLC: Cannot open objects file %s!", filename);
+        return false;
     }
     /* Start running through all objects in this zone. */
     for (counter = genolc_zone_bottom(zone_num); counter <= zone_table[zone_num].top; counter++) {
@@ -216,7 +216,7 @@ int save_objects(zone_rnum zone_num)
                              (obj->description && *obj->description) ? obj->description : "undefined", buf);
 
             if (n >= MAX_STRING_LENGTH) {
-                mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Could not save object #%d due to size (%d > maximum of %d).",
+                mudlog(BRF, LVL_BUILDER, true, "SYSERR: Could not save object #%d due to size (%d > maximum of %d).",
                        GET_OBJ_VNUM(obj), n, MAX_STRING_LENGTH);
                 continue;
             }
@@ -252,7 +252,7 @@ int save_objects(zone_rnum zone_num)
                 for (ex_desc = obj->ex_description; ex_desc; ex_desc = ex_desc->next) {
                     /* Sanity check to prevent nasty protection faults. */
                     if (!ex_desc->keyword || !ex_desc->description || !*ex_desc->keyword || !*ex_desc->description) {
-                        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: OLC: oedit_save_to_disk: Corrupt ex_desc!");
+                        mudlog(BRF, LVL_IMMORT, true, "SYSERR: OLC: oedit_save_to_disk: Corrupt ex_desc!");
                         continue;
                     }
                     strncpy(buf, ex_desc->description, sizeof(buf) - 1);
@@ -282,7 +282,7 @@ int save_objects(zone_rnum zone_num)
     if (in_save_list(zone_table[zone_num].number, SL_OBJ)) {
         remove_from_save_list(zone_table[zone_num].number, SL_OBJ);
     }
-    return TRUE;
+    return true;
 }
 
 /* Free all, unconditionally. */
@@ -368,19 +368,19 @@ static void copy_object_strings(struct obj_data *to, struct obj_data *from)
 int copy_object(struct obj_data *to, struct obj_data *from)
 {
     free_object_strings(to);
-    return copy_object_main(to, from, TRUE);
+    return copy_object_main(to, from, true);
 }
 
 int copy_object_preserve(struct obj_data *to, struct obj_data *from)
 {
-    return copy_object_main(to, from, FALSE);
+    return copy_object_main(to, from, false);
 }
 
 int copy_object_main(struct obj_data *to, struct obj_data *from, int free_object)
 {
     *to = *from;
     copy_object_strings(to, from);
-    return TRUE;
+    return true;
 }
 
 int delete_object(obj_rnum rnum)
@@ -501,7 +501,7 @@ bool oset_alias(struct obj_data *obj, char *argument)
     skip_spaces(&argument);
 
     if (strlen(argument) > max_len) {
-        return FALSE;
+        return false;
     }
 
     if (i != NOWHERE && obj->name && obj->name != obj_proto[i].name) {
@@ -510,7 +510,7 @@ bool oset_alias(struct obj_data *obj, char *argument)
 
     obj->name = strdup(argument);
 
-    return TRUE;
+    return true;
 }
 
 bool oset_apply(struct obj_data *obj, char *argument)
@@ -523,7 +523,7 @@ bool oset_apply(struct obj_data *obj, char *argument)
     skip_spaces(&argument);
 
     if ((value = atoi(argument)) == 0) {
-        return FALSE;
+        return false;
     }
 
     while (*apply_types[i] != '\n') {
@@ -535,7 +535,7 @@ bool oset_apply(struct obj_data *obj, char *argument)
     }
 
     if (apply == -1) {
-        return FALSE;
+        return false;
     }
 
     for (i = 0; i < MAX_OBJ_AFFECT; i++) {
@@ -555,7 +555,7 @@ bool oset_apply(struct obj_data *obj, char *argument)
 
     /* There is no slot already using our APPLY_XXX type, and no empty slots either */
     if (location == -1) {
-        return FALSE;
+        return false;
     }
 
     obj->affected[location].modifier = mod + value;
@@ -568,7 +568,7 @@ bool oset_apply(struct obj_data *obj, char *argument)
         obj->affected[location].location = APPLY_NONE;
     }
 
-    return TRUE;
+    return true;
 }
 
 bool oset_short_description(struct obj_data *obj, char *argument)
@@ -579,7 +579,7 @@ bool oset_short_description(struct obj_data *obj, char *argument)
     skip_spaces(&argument);
 
     if (strlen(argument) > max_len) {
-        return FALSE;
+        return false;
     }
 
     if (i != NOWHERE && obj->short_description && obj->short_description != obj_proto[i].short_description) {
@@ -588,7 +588,7 @@ bool oset_short_description(struct obj_data *obj, char *argument)
 
     obj->short_description = strdup(argument);
 
-    return TRUE;
+    return true;
 }
 
 bool oset_long_description(struct obj_data *obj, char *argument)
@@ -599,7 +599,7 @@ bool oset_long_description(struct obj_data *obj, char *argument)
     skip_spaces(&argument);
 
     if (strlen(argument) > max_len) {
-        return FALSE;
+        return false;
     }
 
     if (i != NOWHERE && obj->description && obj->description != obj_proto[i].description) {
@@ -608,5 +608,5 @@ bool oset_long_description(struct obj_data *obj, char *argument)
 
     obj->description = strdup(argument);
 
-    return TRUE;
+    return true;
 }

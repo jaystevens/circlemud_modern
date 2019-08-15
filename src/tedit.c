@@ -30,14 +30,14 @@ void tedit_string_cleanup(struct descriptor_data *d, int terminator)
     switch (terminator) {
         case STRINGADD_SAVE:
             if (!(fl = fopen(storage, "w"))) {
-                mudlog(CMP, LVL_IMPL, TRUE, "SYSERR: Can't write file '%s'.", storage);
+                mudlog(CMP, LVL_IMPL, true, "SYSERR: Can't write file '%s'.", storage);
             } else {
                 if (*d->str) {
                     strip_cr(*d->str);
                     fputs(*d->str, fl);
                 }
                 fclose(fl);
-                mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s saves '%s'.",
+                mudlog(CMP, MAX(LVL_GOD, GET_INVIS_LEV(d->character)), true, "OLC: %s saves '%s'.",
                        GET_NAME(d->character), storage);
                 write_to_output(d, "Saved.\r\n");
                 if (!strcmp(storage, NEWS_FILE)) {
@@ -50,7 +50,7 @@ void tedit_string_cleanup(struct descriptor_data *d, int terminator)
             break;
         case STRINGADD_ABORT:
             write_to_output(d, "Edit aborted.\r\n");
-            act("$n stops editing some scrolls.", TRUE, d->character, 0, 0, TO_ROOM);
+            act("$n stops editing some scrolls.", true, d->character, 0, 0, TO_ROOM);
             break;
         default:
             log("SYSERR: tedit_string_cleanup: Unknown terminator status.");
@@ -137,7 +137,7 @@ ACMD(do_tedit)
     send_to_char(ch, "Edit file below:\r\n\r\n");
 
     if (ch->desc->olc) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_tedit: Player already had olc structure.");
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_tedit: Player already had olc structure.");
         free(ch->desc->olc);
     }
     CREATE(ch->desc->olc, struct oasis_olc_data, 1);
@@ -150,7 +150,7 @@ ACMD(do_tedit)
     OLC_STORAGE(ch->desc) = strdup(fields[l].filename);
     string_write(ch->desc, (char **) fields[l].buffer, fields[l].size, 0, backstr);
 
-    act("$n begins editing a scroll.", TRUE, ch, 0, 0, TO_ROOM);
+    act("$n begins editing a scroll.", true, ch, 0, 0, TO_ROOM);
     SET_BIT_AR(PLR_FLAGS(ch), PLR_WRITING);
     STATE(ch->desc) = CON_TEDIT;
 }

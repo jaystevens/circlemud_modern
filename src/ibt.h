@@ -52,7 +52,7 @@ typedef struct ibt_data IBT_DATA;
                                 if ( !str_cmp( word, literal ) )        \
                                 {                                       \
                                     field  = value;                     \
-                                    fMatch = TRUE;                      \
+                                    fMatch = true;                      \
                                     break;                              \
                                 }
 
@@ -65,7 +65,7 @@ typedef struct ibt_data IBT_DATA;
                                 {                                       \
                                     if (field) STRFREE(field);          \
                                     field  = STRALLOC(value);           \
-                                    fMatch = TRUE;                      \
+                                    fMatch = false;                     \
                                     break;                              \
                                 }
 

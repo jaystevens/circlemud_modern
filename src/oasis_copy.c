@@ -114,7 +114,7 @@ ACMD(do_oasis_copy)
 
     /* Give the descriptor an OLC structure. */
     if (d->olc) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_oasis_copy: Player already had olc structure.");
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_oasis_copy: Player already had olc structure.");
         free(d->olc);
     }
 
@@ -178,7 +178,7 @@ ACMD(do_dig)
         rvnum = (room_vnum) rawvnum;
     }
     rrnum = real_room(rvnum);
-    dir = search_block(sdir, dirs, FALSE);
+    dir = search_block(sdir, dirs, false);
     zone = world[IN_ROOM(ch)].zone;
 
     if (dir < 0) {
@@ -238,7 +238,7 @@ ACMD(do_dig)
         /* Give the descriptor an olc struct. This way we can let
          * redit_save_internally handle the room adding. */
         if (d->olc) {
-            mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_dig: Player already had olc structure.");
+            mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_dig: Player already had olc structure.");
             free(d->olc);
         }
         CREATE(d->olc, struct oasis_olc_data, 1);
@@ -334,7 +334,7 @@ int buildwalk(struct char_data *ch, int dir)
             /* Give the descriptor an olc struct. This way we can let
              * redit_save_internally handle the room adding. */
             if (d->olc) {
-                mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: buildwalk(): Player already had olc structure.");
+                mudlog(BRF, LVL_IMMORT, true, "SYSERR: buildwalk(): Player already had olc structure.");
                 free(d->olc);
             }
             CREATE(d->olc, struct oasis_olc_data, 1);

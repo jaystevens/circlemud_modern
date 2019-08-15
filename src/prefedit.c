@@ -77,16 +77,16 @@ static void prefedit_save_to_char(struct descriptor_data *d)
         save_char(vict);
     } else {
         if (!vict) {
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Unable to save toggles (no vict)");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: Unable to save toggles (no vict)");
             send_to_char(d->character, "Unable to save toggles (no vict)");
         } else if (!vict->desc) {
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Unable to save toggles (no vict descriptor)");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: Unable to save toggles (no vict descriptor)");
             send_to_char(d->character, "Unable to save toggles (no vict descriptor)");
         } else if (!IS_PLAYING(vict->desc)) {
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Unable to save toggles (vict not playing)");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: Unable to save toggles (vict not playing)");
             send_to_char(d->character, "Unable to save toggles (vict not playing)");
         } else {
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Unable to save toggles (unknown reason)");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: Unable to save toggles (unknown reason)");
             send_to_char(d->character, "Unable to save toggles (unknown reason)");
         }
     }
@@ -390,7 +390,7 @@ void prefedit_parse(struct descriptor_data *d, char *arg)
                 case 'y':
                 case 'Y':
                     prefedit_save_to_char(d);
-                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s edits toggles for %s",
+                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), true, "OLC: %s edits toggles for %s",
                            GET_NAME(d->character), GET_NAME(OLC_PREFS(d)->ch));
                     /*. No strings to save - cleanup all .*/
                     cleanup_olc(d, CLEANUP_ALL);
@@ -767,7 +767,7 @@ void prefedit_parse(struct descriptor_data *d, char *arg)
 
         default:
             /* we should never get here */
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Reached default case in parse_prefedit");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: Reached default case in parse_prefedit");
             break;
     }
     /*. If we get this far, something has be changed .*/
@@ -965,7 +965,7 @@ ACMD(do_oasis_prefedit)
                 } else {
                     sprintf(buf, "$S$u preferences are currently being edited by %s.", PERS(d->character, ch));
                 }
-                act(buf, FALSE, ch, 0, vict, TO_CHAR);
+                act(buf, false, ch, 0, vict, TO_CHAR);
                 return;
             }
         }
@@ -980,7 +980,7 @@ ACMD(do_oasis_prefedit)
     /** Give the descriptor an OLC structure.                                  **/
     /****************************************************************************/
     if (d->olc) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_oasis_prefedit: Player already had olc structure.");
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_oasis_prefedit: Player already had olc structure.");
         free(d->olc);
     }
 
@@ -999,13 +999,13 @@ ACMD(do_oasis_prefedit)
     /****************************************************************************/
     /** Send the OLC message to the players in the same room as the builder.   **/
     /****************************************************************************/
-    act("$n starts editing toggles.", TRUE, d->character, 0, 0, TO_ROOM);
+    act("$n starts editing toggles.", true, d->character, 0, 0, TO_ROOM);
     SET_BIT_AR(PLR_FLAGS(ch), PLR_WRITING);
 
     /****************************************************************************/
     /** Log the OLC message.                                                   **/
     /****************************************************************************/
 /* No need - done elsewhere */
-//  mudlog(CMP, LVL_IMMORT, TRUE, "OLC: (prefedit) %s starts editing toggles for %s", GET_NAME(ch), GET_NAME(vict));
+//  mudlog(CMP, LVL_IMMORT, true, "OLC: (prefedit) %s starts editing toggles for %s", GET_NAME(ch), GET_NAME(vict));
 }
 

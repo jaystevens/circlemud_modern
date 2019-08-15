@@ -70,7 +70,7 @@ ACMD(do_oasis_sedit)
             return;
         }
 
-        save = TRUE;
+        save = true;
 
         if (is_number(buf2)) {
             number = atoi(buf2);
@@ -115,7 +115,7 @@ ACMD(do_oasis_sedit)
 
     /* Give the descriptor an OLC structure. */
     if (d->olc) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_oasis_sedit: Player already had olc structure.");
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_oasis_sedit: Player already had olc structure.");
         free(d->olc);
     }
 
@@ -141,7 +141,7 @@ ACMD(do_oasis_sedit)
 
     if (save) {
         send_to_char(ch, "Saving all shops in zone %d.\r\n", zone_table[OLC_ZNUM(d)].number);
-        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE, "OLC: %s saves shop info for zone %d.", GET_NAME(ch),
+        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), true, "OLC: %s saves shop info for zone %d.", GET_NAME(ch),
                zone_table[OLC_ZNUM(d)].number);
 
         /* Save the shops to the shop file. */
@@ -164,10 +164,10 @@ ACMD(do_oasis_sedit)
     sedit_disp_menu(d);
     STATE(d) = CON_SEDIT;
 
-    act("$n starts using OLC.", TRUE, d->character, 0, 0, TO_ROOM);
+    act("$n starts using OLC.", true, d->character, 0, 0, TO_ROOM);
     SET_BIT_AR(PLR_FLAGS(ch), PLR_WRITING);
 
-    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "OLC: %s starts editing zone %d allowed zone %d",
+    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "OLC: %s starts editing zone %d allowed zone %d",
            GET_NAME(ch), zone_table[OLC_ZNUM(d)].number, GET_OLC_ZONE(ch));
 }
 
@@ -213,7 +213,7 @@ void sedit_setup_existing(struct descriptor_data *d, int rshop_num)
     CREATE(OLC_SHOP(d), struct shop_data, 1);
 
     /* don't waste time trying to free NULL strings -- Welcor */
-    copy_shop(OLC_SHOP(d), shop_index + rshop_num, FALSE);
+    copy_shop(OLC_SHOP(d), shop_index + rshop_num, false);
 }
 
 /* Menu functions */
@@ -429,7 +429,7 @@ void sedit_parse(struct descriptor_data *d, char *arg)
                 case 'y':
                 case 'Y':
                     sedit_save_internally(d);
-                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s edits shop %d",
+                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), true, "OLC: %s edits shop %d",
                            GET_NAME(d->character), OLC_NUM(d));
                     if (CONFIG_OLC_SAVE) {
                         sedit_save_to_disk(real_zone_by_thing(OLC_NUM(d)));
@@ -770,7 +770,7 @@ void sedit_parse(struct descriptor_data *d, char *arg)
         default:
             /* We should never get here. */
             cleanup_olc(d, CLEANUP_ALL);
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: sedit_parse(): Reached default case!");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: sedit_parse(): Reached default case!");
             write_to_output(d, "Oops...\r\n");
             break;
     }

@@ -66,7 +66,7 @@ int genolc_checkstring(struct descriptor_data *d, char *arg)
 {
     smash_tilde(arg);
     parse_at(arg);
-    return TRUE;
+    return true;
 }
 
 char *str_udup(const char *txt)
@@ -112,7 +112,7 @@ int save_all(void)
             save_list = save_list->next;
         }      /* Fatal error, skip this one. */
     }
-    return TRUE;
+    return true;
 }
 
 /* NOTE: This changes the buffer passed in. */
@@ -179,11 +179,11 @@ int remove_from_save_list(zone_vnum zone, int type)
 
     if (ritem == NULL) {
         log("SYSERR: remove_from_save_list: Saved item not found. (%d/%d)", zone, type);
-        return FALSE;
+        return false;
     }
     REMOVE_FROM_LIST(ritem, save_list, next);
     free(ritem);
-    return TRUE;
+    return true;
 }
 
 int add_to_save_list(zone_vnum zone, int type)
@@ -192,7 +192,7 @@ int add_to_save_list(zone_vnum zone, int type)
     zone_rnum rznum;
 
     if (type == SL_CFG) {
-        return FALSE;
+        return false;
     }
 
     rznum = real_zone(zone);
@@ -200,13 +200,13 @@ int add_to_save_list(zone_vnum zone, int type)
         if (zone != AEDIT_PERMISSION && zone != HEDIT_PERMISSION) {
             log("SYSERR: add_to_save_list: Invalid zone number passed. (%d => %d, 0-%d)", zone, rznum,
                 top_of_zone_table);
-            return FALSE;
+            return false;
         }
     }
 
     for (nitem = save_list; nitem; nitem = nitem->next) {
         if (nitem->zone == zone && nitem->type == type) {
-            return FALSE;
+            return false;
         }
     }
 
@@ -215,7 +215,7 @@ int add_to_save_list(zone_vnum zone, int type)
     nitem->type = type;
     nitem->next = save_list;
     save_list = nitem;
-    return TRUE;
+    return true;
 }
 
 int in_save_list(zone_vnum zone, int type)
@@ -224,11 +224,11 @@ int in_save_list(zone_vnum zone, int type)
 
     for (nitem = save_list; nitem; nitem = nitem->next) {
         if (nitem->zone == zone && nitem->type == type) {
-            return TRUE;
+            return true;
         }
     }
 
-    return FALSE;
+    return false;
 }
 
 void free_save_list(void)
@@ -421,12 +421,12 @@ static int export_info_file(zone_rnum zrnum)
     FILE *info_file;
 
     if (!(info_file = fopen("world/export/qq.info", "w"))) {
-        mudlog(BRF, LVL_GOD, TRUE, "SYSERR: export_info_file : Cannot open file!");
-        return FALSE;
+        mudlog(BRF, LVL_GOD, true, "SYSERR: export_info_file : Cannot open file!");
+        return false;
     } else if (fprintf(info_file, "tbaMUD Area file.\n") < 0) {
-        mudlog(BRF, LVL_GOD, TRUE, "SYSERR: export_info_file: Cannot write to file!");
+        mudlog(BRF, LVL_GOD, true, "SYSERR: export_info_file: Cannot write to file!");
         fclose(info_file);
-        return FALSE;
+        return false;
     }
 
     fprintf(info_file, "The files accompanying this info file contain the area: %s\n", zone_table[zrnum].name);
@@ -486,7 +486,7 @@ static int export_info_file(zone_rnum zrnum)
     fprintf(info_file, "\ntelnet://tbamud.com:9091/\n");
 
     fclose(info_file);
-    return TRUE;
+    return true;
 }
 
 static int export_save_shops(zone_rnum zrnum)
@@ -496,12 +496,12 @@ static int export_save_shops(zone_rnum zrnum)
     struct shop_data *shop;
 
     if (!(shop_file = fopen("world/export/qq.shp", "w"))) {
-        mudlog(BRF, LVL_GOD, TRUE, "SYSERR: export_save_shops : Cannot open shop file!");
-        return FALSE;
+        mudlog(BRF, LVL_GOD, true, "SYSERR: export_save_shops : Cannot open shop file!");
+        return false;
     } else if (fprintf(shop_file, "CircleMUD v3.0 Shop File~\n") < 0) {
-        mudlog(BRF, LVL_GOD, TRUE, "SYSERR: export_save_shops: Cannot write to shop file!");
+        mudlog(BRF, LVL_GOD, true, "SYSERR: export_save_shops: Cannot write to shop file!");
         fclose(shop_file);
-        return FALSE;
+        return false;
     }
     /* Search database for shops in this zone. */
     for (i = genolc_zone_bottom(zrnum); i <= zone_table[zrnum].top; i++) {
@@ -564,7 +564,7 @@ static int export_save_shops(zone_rnum zrnum)
     fprintf(shop_file, "$~\n");
     fclose(shop_file);
 
-    return TRUE;
+    return true;
 }
 
 static int export_save_mobiles(zone_rnum rznum)
@@ -574,8 +574,8 @@ static int export_save_mobiles(zone_rnum rznum)
     mob_rnum rmob;
 
     if (!(mob_file = fopen("world/export/qq.mob", "w"))) {
-        mudlog(BRF, LVL_GOD, TRUE, "SYSERR: export_save_mobiles : Cannot open file!");
-        return FALSE;
+        mudlog(BRF, LVL_GOD, true, "SYSERR: export_save_mobiles : Cannot open file!");
+        return false;
     }
 
     for (i = genolc_zone_bottom(rznum); i <= zone_table[rznum].top; i++) {
@@ -589,7 +589,7 @@ static int export_save_mobiles(zone_rnum rznum)
     fputs("$\n", mob_file);
     fclose(mob_file);
 
-    return TRUE;
+    return true;
 }
 
 static int export_mobile_record(mob_vnum mvnum, struct char_data *mob, FILE *fd)
@@ -624,7 +624,7 @@ static int export_mobile_record(mob_vnum mvnum, struct char_data *mob, FILE *fd)
 
     export_script_save_to_disk(fd, mob, MOB_TRIGGER);
 
-    return TRUE;
+    return true;
 }
 
 static int export_save_zone(zone_rnum zrnum)
@@ -633,8 +633,8 @@ static int export_save_zone(zone_rnum zrnum)
     FILE *zone_file;
 
     if (!(zone_file = fopen("world/export/qq.zon", "w"))) {
-        mudlog(BRF, LVL_GOD, TRUE, "SYSERR: export_save_zone : Cannot open file!");
-        return FALSE;
+        mudlog(BRF, LVL_GOD, true, "SYSERR: export_save_zone : Cannot open file!");
+        return false;
     }
 
     /* Print zone header to file. */
@@ -717,7 +717,7 @@ static int export_save_zone(zone_rnum zrnum)
                 /* Invalid commands are replaced with '*' - Ignore them. */
                 continue;
             default:
-                mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: export_save_zone(): Unknown cmd '%c' - NOT saving",
+                mudlog(BRF, LVL_BUILDER, true, "SYSERR: export_save_zone(): Unknown cmd '%c' - NOT saving",
                        ZCMD(zrnum, subcmd).command);
                 continue;
         }
@@ -725,7 +725,7 @@ static int export_save_zone(zone_rnum zrnum)
     fputs("S\n$\n", zone_file);
     fclose(zone_file);
 
-    return TRUE;
+    return true;
 }
 
 static int export_save_objects(zone_rnum zrnum)
@@ -742,8 +742,8 @@ static int export_save_objects(zone_rnum zrnum)
     struct extra_descr_data *ex_desc;
 
     if (!(obj_file = fopen("world/export/qq.obj", "w"))) {
-        mudlog(BRF, LVL_GOD, TRUE, "SYSERR: export_save_objects : Cannot open file!");
-        return FALSE;
+        mudlog(BRF, LVL_GOD, true, "SYSERR: export_save_objects : Cannot open file!");
+        return false;
     }
     /* Start running through all objects in this zone. */
     for (ovnum = genolc_zone_bottom(zrnum); ovnum <= zone_table[zrnum].top; ovnum++) {
@@ -801,7 +801,7 @@ static int export_save_objects(zone_rnum zrnum)
                 for (ex_desc = obj->ex_description; ex_desc; ex_desc = ex_desc->next) {
                     /* Sanity check to prevent nasty protection faults. */
                     if (!ex_desc->keyword || !ex_desc->description || !*ex_desc->keyword || !*ex_desc->description) {
-                        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: OLC: export_save_objects: Corrupt ex_desc!");
+                        mudlog(BRF, LVL_IMMORT, true, "SYSERR: OLC: export_save_objects: Corrupt ex_desc!");
                         continue;
                     }
                     strncpy(buf, ex_desc->description, sizeof(buf) - 1);
@@ -825,7 +825,7 @@ static int export_save_objects(zone_rnum zrnum)
     fprintf(obj_file, "$~\n");
     fclose(obj_file);
 
-    return TRUE;
+    return true;
 }
 
 static int export_save_rooms(zone_rnum zrnum)
@@ -837,8 +837,8 @@ static int export_save_rooms(zone_rnum zrnum)
     char buf1[MAX_STRING_LENGTH];
 
     if (!(room_file = fopen("world/export/qq.wld", "w"))) {
-        mudlog(BRF, LVL_GOD, TRUE, "SYSERR: export_save_rooms : Cannot open file!");
-        return FALSE;
+        mudlog(BRF, LVL_GOD, true, "SYSERR: export_save_rooms : Cannot open file!");
+        return false;
     }
 
     for (i = genolc_zone_bottom(zrnum); i <= zone_table[zrnum].top; i++) {
@@ -934,7 +934,7 @@ static int export_save_rooms(zone_rnum zrnum)
     fprintf(room_file, "$~\n");
     fclose(room_file);
 
-    return TRUE;
+    return true;
 }
 
 static void export_script_save_to_disk(FILE *fp, void *item, int type)
@@ -968,8 +968,8 @@ static int export_save_triggers(zone_rnum zrnum)
     char bitBuf[MAX_INPUT_LENGTH];
 
     if (!(trig_file = fopen("world/export/qq.trg", "w"))) {
-        mudlog(BRF, LVL_GOD, TRUE, "SYSERR: export_save_triggers : Cannot open file!");
-        return FALSE;
+        mudlog(BRF, LVL_GOD, true, "SYSERR: export_save_triggers : Cannot open file!");
+        return false;
     }
 
     for (i = genolc_zone_bottom(zrnum); i <= zone_table[zrnum].top; i++) {
@@ -1001,5 +1001,5 @@ static int export_save_triggers(zone_rnum zrnum)
 
     fprintf(trig_file, "$%c\n", STRING_TERMINATOR);
     fclose(trig_file);
-    return TRUE;
+    return true;
 }

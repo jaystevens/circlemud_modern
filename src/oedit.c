@@ -74,7 +74,7 @@ ACMD(do_oasis_oedit)
             return;
         }
 
-        save = TRUE;
+        save = true;
 
         if (is_number(buf2)) {
             number = atoi(buf2);
@@ -119,7 +119,7 @@ ACMD(do_oasis_oedit)
 
     /* Give the descriptor an OLC structure. */
     if (d->olc) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_oasis: Player already had olc structure.");
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_oasis: Player already had olc structure.");
         free(d->olc);
     }
 
@@ -148,7 +148,7 @@ ACMD(do_oasis_oedit)
     /* If we need to save, save the objects. */
     if (save) {
         send_to_char(ch, "Saving all objects in zone %d.\r\n", zone_table[OLC_ZNUM(d)].number);
-        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE, "OLC: %s saves object info for zone %d.", GET_NAME(ch),
+        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), true, "OLC: %s saves object info for zone %d.", GET_NAME(ch),
                zone_table[OLC_ZNUM(d)].number);
 
         /* Save the objects in this zone. */
@@ -173,11 +173,11 @@ ACMD(do_oasis_oedit)
     STATE(d) = CON_OEDIT;
 
     /* Send the OLC message to the players in the same room as the builder. */
-    act("$n starts using OLC.", TRUE, d->character, 0, 0, TO_ROOM);
+    act("$n starts using OLC.", true, d->character, 0, 0, TO_ROOM);
     SET_BIT_AR(PLR_FLAGS(ch), PLR_WRITING);
 
     /* Log the OLC message. */
-    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "OLC: %s starts editing zone %d allowed zone %d",
+    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "OLC: %s starts editing zone %d allowed zone %d",
            GET_NAME(ch), zone_table[OLC_ZNUM(d)].number, GET_OLC_ZONE(ch));
 }
 
@@ -362,7 +362,7 @@ static void oedit_liquid_type(struct descriptor_data *d)
 {
     get_char_colors(d->character);
     clear_screen(d);
-    column_list(d->character, 0, drinks, NUM_LIQ_TYPES, TRUE);
+    column_list(d->character, 0, drinks, NUM_LIQ_TYPES, true);
     write_to_output(d, "\r\n%sEnter drink type : ", nrm);
     OLC_MODE(d) = OEDIT_VALUE_3;
 }
@@ -372,7 +372,7 @@ static void oedit_disp_apply_menu(struct descriptor_data *d)
 {
     get_char_colors(d->character);
     clear_screen(d);
-    column_list(d->character, 0, apply_types, NUM_APPLIES, TRUE);
+    column_list(d->character, 0, apply_types, NUM_APPLIES, true);
     write_to_output(d, "\r\nEnter apply type (0 is no apply) : ");
     OLC_MODE(d) = OEDIT_APPLY;
 }
@@ -458,7 +458,7 @@ static void oedit_disp_val1_menu(struct descriptor_data *d)
             oedit_disp_menu(d);
             break;
         default:
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: Reached default case in oedit_disp_val1_menu()!");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: Reached default case in oedit_disp_val1_menu()!");
             break;
     }
 }
@@ -691,7 +691,7 @@ void oedit_parse(struct descriptor_data *d, char *arg)
                 case 'y':
                 case 'Y':
                     oedit_save_internally(d);
-                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s edits obj %d",
+                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), true, "OLC: %s edits obj %d",
                            GET_NAME(d->character), OLC_NUM(d));
                     if (CONFIG_OLC_SAVE) {
                         oedit_save_to_disk(real_zone_by_thing(OLC_NUM(d)));
@@ -1209,7 +1209,7 @@ void oedit_parse(struct descriptor_data *d, char *arg)
             }
             return;
         default:
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: Reached default case in oedit_parse()!");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: Reached default case in oedit_parse()!");
             write_to_output(d, "Oops...\r\n");
             break;
     }

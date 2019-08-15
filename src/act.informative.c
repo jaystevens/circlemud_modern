@@ -128,7 +128,7 @@ static void show_obj_to_char(struct obj_data *obj, struct char_data *ch, int mod
 
                         snprintf(notebuf, sizeof(notebuf), "There is something written on it:\r\n\r\n%s",
                                  obj->action_description);
-                        page_string(ch->desc, notebuf, TRUE);
+                        page_string(ch->desc, notebuf, false);
                     } else {
                         send_to_char(ch, "It's blank.\r\n");
                     }
@@ -185,10 +185,8 @@ static void show_obj_modifiers(struct obj_data *obj, struct char_data *ch)
 static void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode, int show)
 {
     struct obj_data *i, *j, *display;
-    bool found;
+    bool found = false;
     int num;
-
-    found = FALSE;
 
     /* Loop through the list of objects */
     for (i = list; i; i = i->next_content) {
@@ -225,7 +223,7 @@ static void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mo
                 send_to_char(ch, "(%2i) ", num);
             show_obj_to_char(display, ch, mode);
             send_to_char(ch, "%s", CCNRM(ch, C_NRM));
-            found = TRUE;
+            found = true;
         }
     }
     if (!found && show) {
@@ -273,21 +271,21 @@ static void look_at_char(struct char_data *i, struct char_data *ch)
     if (i->player.description) {
         send_to_char(ch, "%s", i->player.description);
     } else {
-        act("You see nothing special about $m.", FALSE, i, 0, ch, TO_VICT);
+        act("You see nothing special about $m.", false, i, 0, ch, TO_VICT);
     }
 
     diag_char_to_char(i, ch);
 
-    found = FALSE;
+    found = false;
     for (j = 0; !found && j < NUM_WEARS; j++) {
         if (GET_EQ(i, j) && CAN_SEE_OBJ(ch, GET_EQ(i, j))) {
-            found = TRUE;
+            found = true;
         }
     }
 
     if (found) {
         send_to_char(ch, "\r\n");    /* act() does capitalization. */
-        act("$n is using:", FALSE, i, 0, ch, TO_VICT);
+        act("$n is using:", false, i, 0, ch, TO_VICT);
         for (j = 0; j < NUM_WEARS; j++) {
             if (GET_EQ(i, j) && CAN_SEE_OBJ(ch, GET_EQ(i, j))) {
                 send_to_char(ch, "%s", wear_where[j]);
@@ -296,8 +294,8 @@ static void look_at_char(struct char_data *i, struct char_data *ch)
         }
     }
     if (ch != i && (IS_THIEF(ch) || GET_LEVEL(ch) >= LVL_IMMORT)) {
-        act("\r\nYou attempt to peek at $s inventory:", FALSE, i, 0, ch, TO_VICT);
-        list_obj_to_char(i->carrying, ch, SHOW_OBJ_SHORT, TRUE);
+        act("\r\nYou attempt to peek at $s inventory:", false, i, 0, ch, TO_VICT);
+        list_obj_to_char(i->carrying, ch, SHOW_OBJ_SHORT, true);
     }
 }
 
@@ -353,10 +351,10 @@ static void list_one_char(struct char_data *i, struct char_data *ch)
         send_to_char(ch, "%s", i->player.long_descr);
 
         if (AFF_FLAGGED(i, AFF_SANCTUARY)) {
-            act("...$e glows with a bright light!", FALSE, i, 0, ch, TO_VICT);
+            act("...$e glows with a bright light!", false, i, 0, ch, TO_VICT);
         }
         if (AFF_FLAGGED(i, AFF_BLIND) && GET_LEVEL(i) < LVL_IMMORT) {
-            act("...$e is groping around blindly!", FALSE, i, 0, ch, TO_VICT);
+            act("...$e is groping around blindly!", false, i, 0, ch, TO_VICT);
         }
 
         return;
@@ -424,7 +422,7 @@ static void list_one_char(struct char_data *i, struct char_data *ch)
     send_to_char(ch, "\r\n");
 
     if (AFF_FLAGGED(i, AFF_SANCTUARY)) {
-        act("...$e glows with a bright light!", FALSE, i, 0, ch, TO_VICT);
+        act("...$e glows with a bright light!", false, i, 0, ch, TO_VICT);
     }
 }
 
@@ -578,7 +576,7 @@ void look_at_room(struct char_data *ch, int ignore_brief)
     }
 
     /* now list characters & objects */
-    list_obj_to_char(world[IN_ROOM(ch)].contents, ch, SHOW_OBJ_LONG, FALSE);
+    list_obj_to_char(world[IN_ROOM(ch)].contents, ch, SHOW_OBJ_LONG, false);
     list_char_to_char(world[IN_ROOM(ch)].people, ch);
 }
 
@@ -632,7 +630,7 @@ static void look_in_obj(struct char_data *ch, char *arg)
                         break;
                 }
 
-                list_obj_to_char(obj->contains, ch, SHOW_OBJ_SHORT, TRUE);
+                list_obj_to_char(obj->contains, ch, SHOW_OBJ_SHORT, true);
             }
         } else {        /* item must be a fountain or drink container */
             if ((GET_OBJ_VAL(obj, 1) == 0) && (GET_OBJ_VAL(obj, 0) != -1)) {
@@ -674,7 +672,7 @@ char *find_exdesc(char *word, struct extra_descr_data *list)
  * the suggested fix to this problem. */
 static void look_at_target(struct char_data *ch, char *arg)
 {
-    int bits, found = FALSE, j, fnum, i = 0;
+    int bits, found = false, j, fnum, i = 0;
     struct char_data *found_char = NULL;
     struct obj_data *obj, *found_obj = NULL;
     char *desc;
@@ -696,9 +694,9 @@ static void look_at_target(struct char_data *ch, char *arg)
         look_at_char(found_char, ch);
         if (ch != found_char) {
             if (CAN_SEE(found_char, ch)) {
-                act("$n looks at you.", TRUE, ch, 0, found_char, TO_VICT);
+                act("$n looks at you.", true, ch, 0, found_char, TO_VICT);
             }
-            act("$n looks at $N.", TRUE, ch, 0, found_char, TO_NOTVICT);
+            act("$n looks at $N.", true, ch, 0, found_char, TO_NOTVICT);
         }
         return;
     }
@@ -711,7 +709,7 @@ static void look_at_target(struct char_data *ch, char *arg)
 
     /* Does the argument match an extra desc in the room? */
     if ((desc = find_exdesc(arg, world[IN_ROOM(ch)].ex_description)) != NULL && ++i == fnum) {
-        page_string(ch->desc, desc, FALSE);
+        page_string(ch->desc, desc, false);
         return;
     }
 
@@ -720,7 +718,7 @@ static void look_at_target(struct char_data *ch, char *arg)
         if (GET_EQ(ch, j) && CAN_SEE_OBJ(ch, GET_EQ(ch, j))) {
             if ((desc = find_exdesc(arg, GET_EQ(ch, j)->ex_description)) != NULL && ++i == fnum) {
                 send_to_char(ch, "%s", desc);
-                found = TRUE;
+                found = true;
             }
         }
     }
@@ -730,7 +728,7 @@ static void look_at_target(struct char_data *ch, char *arg)
         if (CAN_SEE_OBJ(ch, obj)) {
             if ((desc = find_exdesc(arg, obj->ex_description)) != NULL && ++i == fnum) {
                 send_to_char(ch, "%s", desc);
-                found = TRUE;
+                found = true;
             }
         }
     }
@@ -740,7 +738,7 @@ static void look_at_target(struct char_data *ch, char *arg)
         if (CAN_SEE_OBJ(ch, obj)) {
             if ((desc = find_exdesc(arg, obj->ex_description)) != NULL && ++i == fnum) {
                 send_to_char(ch, "%s", desc);
-                found = TRUE;
+                found = true;
             }
         }
     }
@@ -793,7 +791,7 @@ ACMD(do_look)
         } else if (is_abbrev(arg, "in")) {
             look_in_obj(ch, arg2);
             /* did the char type 'look <direction>?' */
-        } else if ((look_type = search_block(arg, dirs, FALSE)) >= 0) {
+        } else if ((look_type = search_block(arg, dirs, false)) >= 0) {
             look_in_direction(ch, look_type);
         } else if (is_abbrev(arg, "at")) {
             look_at_target(ch, strcpy(tempsave, arg2));
@@ -1010,7 +1008,7 @@ ACMD(do_score)
 ACMD(do_inventory)
 {
     send_to_char(ch, "You are carrying:\r\n");
-    list_obj_to_char(ch->carrying, ch, SHOW_OBJ_SHORT, TRUE);
+    list_obj_to_char(ch->carrying, ch, SHOW_OBJ_SHORT, true);
 }
 
 ACMD(do_equipment)
@@ -1020,7 +1018,7 @@ ACMD(do_equipment)
     send_to_char(ch, "You are using:\r\n");
     for (i = 0; i < NUM_WEARS; i++) {
         if (GET_EQ(ch, i)) {
-            found = TRUE;
+            found = true;
             if (CAN_SEE_OBJ(ch, GET_EQ(ch, i))) {
                 send_to_char(ch, "%s", wear_where[i]);
                 show_obj_to_char(GET_EQ(ch, i), ch, SHOW_OBJ_SHORT);
@@ -1162,7 +1160,7 @@ ACMD(do_help)
 
     if ((mid = search_help(argument, GET_LEVEL(ch))) == NOWHERE) {
         send_to_char(ch, "There is no help on that word.\r\n");
-        mudlog(NRM, MIN(LVL_IMPL, GET_INVIS_LEV(ch)), TRUE, "%s tried to get help on %s", GET_NAME(ch), argument);
+        mudlog(NRM, MIN(LVL_IMPL, GET_INVIS_LEV(ch)), true, "%s tried to get help on %s", GET_NAME(ch), argument);
         for (i = 0; i < top_of_helpt; i++) {
             if (help_table[i].min_level > GET_LEVEL(ch)) {
                 continue;
@@ -1807,7 +1805,7 @@ static void perform_immort_where(struct char_data *ch, char *arg)
         for (num = 0, k = object_list; k; k = k->next) {
             if (CAN_SEE_OBJ(ch, k) && isname(arg, k->name)) {
                 found = 1;
-                print_object_location(++num, k, ch, TRUE);
+                print_object_location(++num, k, ch, true);
             }
         }
         if (!found) {
@@ -1898,7 +1896,7 @@ ACMD(do_levels)
         snprintf(buf + len, sizeof(buf) - len, "[%2d] %8d          : Immortality\r\n", LVL_IMMORT,
                  level_exp(GET_CLASS(ch), LVL_IMMORT));
     }
-    page_string(ch->desc, buf, TRUE);
+    page_string(ch->desc, buf, true);
 }
 
 ACMD(do_consider)
@@ -2146,7 +2144,7 @@ ACMD(do_toggle)
                 return;
             }
 
-            if (((tp = search_block(arg2, types, FALSE)) == -1)) {
+            if (((tp = search_block(arg2, types, false)) == -1)) {
                 send_to_char(ch, "Usage: toggle color { Off | Brief | Normal | On }\r\n");
                 return;
             }
@@ -2163,7 +2161,7 @@ ACMD(do_toggle)
                              types[(PRF_FLAGGED(ch, PRF_LOG1) ? 1 : 0) + (PRF_FLAGGED(ch, PRF_LOG2) ? 2 : 0)]);
                 return;
             }
-            if (((tp = search_block(arg2, types, FALSE)) == -1)) {
+            if (((tp = search_block(arg2, types, false)) == -1)) {
                 send_to_char(ch, "Usage: toggle syslog { Off | Brief | Normal | On }\r\n");
                 return;
             }
@@ -2197,18 +2195,18 @@ ACMD(do_toggle)
                 }
                 GET_BUILDWALK_SECTOR(ch) = i;
                 send_to_char(ch, "Default sector type is %s\r\n", sector_types[i]);
-                mudlog(CMP, GET_LEVEL(ch), TRUE, "OLC: %s turned buildwalk on.  Allowed zone %d", GET_NAME(ch),
+                mudlog(CMP, GET_LEVEL(ch), true, "OLC: %s turned buildwalk on.  Allowed zone %d", GET_NAME(ch),
                        GET_OLC_ZONE(ch));
             } else {
-                mudlog(CMP, GET_LEVEL(ch), TRUE, "OLC: %s turned buildwalk off.  Allowed zone %d", GET_NAME(ch),
+                mudlog(CMP, GET_LEVEL(ch), true, "OLC: %s turned buildwalk off.  Allowed zone %d", GET_NAME(ch),
                        GET_OLC_ZONE(ch));
             }
             break;
         case SCMD_AFK:
             if ((result = PRF_TOG_CHK(ch, PRF_AFK))) {
-                act("$n is now away from $s keyboard.", TRUE, ch, 0, 0, TO_ROOM);
+                act("$n is now away from $s keyboard.", true, ch, 0, 0, TO_ROOM);
             } else {
-                act("$n has returned to $s keyboard.", TRUE, ch, 0, 0, TO_ROOM);
+                act("$n has returned to $s keyboard.", true, ch, 0, 0, TO_ROOM);
                 if (has_mail(GET_IDNUM(ch))) {
                     send_to_char(ch, "You have mail waiting.\r\n");
                 }
@@ -2347,7 +2345,7 @@ ACMD(do_commands)
     }
 
     /* display commands list in a nice columnized format */
-    column_list(ch, 0, commands, no, FALSE);
+    column_list(ch, 0, commands, no, false);
 }
 
 void free_history(struct char_data *ch, int type)
@@ -2371,7 +2369,7 @@ ACMD(do_history)
 
     one_argument(argument, arg);
 
-    type = search_block(arg, history_types, FALSE);
+    type = search_block(arg, history_types, false);
     if (!*arg || type < 0) {
         int i;
 
@@ -2515,9 +2513,9 @@ ACMD(do_whois)
     }
 
     if (has_mail(GET_IDNUM(victim))) {
-        act("$E$u has mail waiting.", FALSE, ch, 0, victim, TO_CHAR);
+        act("$E$u has mail waiting.", false, ch, 0, victim, TO_CHAR);
     } else {
-        act("$E$u has no mail waiting.", FALSE, ch, 0, victim, TO_CHAR);
+        act("$E$u has no mail waiting.", false, ch, 0, victim, TO_CHAR);
     }
 
     if (PLR_FLAGGED(victim, PLR_DELETED)) {
@@ -2549,28 +2547,28 @@ static bool get_zone_levels(zone_rnum znum, char *buf)
     /* Create a string for the level restrictions for this zone. */
     if ((zone_table[znum].min_level == -1) && (zone_table[znum].max_level == -1)) {
         sprintf(buf, "<Not Set!>");
-        return FALSE;
+        return false;
     }
 
     if (zone_table[znum].min_level == -1) {
         sprintf(buf, "Up to level %d", zone_table[znum].max_level);
-        return TRUE;
+        return true;
     }
 
     if (zone_table[znum].max_level == -1) {
         sprintf(buf, "Above level %d", zone_table[znum].min_level);
-        return TRUE;
+        return true;
     }
 
     sprintf(buf, "Levels %d to %d", zone_table[znum].min_level, zone_table[znum].max_level);
-    return TRUE;
+    return true;
 }
 
 ACMD(do_areas)
 {
     int i, hilev = -1, lolev = -1, zcount = 0, lev_set, len = 0, tmp_len = 0;
     char arg[MAX_INPUT_LENGTH], *second, lev_str[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
-    bool show_zone = FALSE, overlap = FALSE, overlap_shown = FALSE;
+    bool show_zone = false, overlap = false, overlap_shown = false;
 
     one_argument(argument, arg);
 
@@ -2613,36 +2611,36 @@ ACMD(do_areas)
     }
 
     for (i = 0; i <= top_of_zone_table; i++) {    /* Go through the whole zone table */
-        show_zone = FALSE;
-        overlap = FALSE;
+        show_zone = false;
+        overlap = false;
 
         if (ZONE_FLAGGED(i, ZONE_GRID)) {           /* Is this zone 'on the grid' ?    */
             if (lolev == -1) {
                 /* No range supplied, show all zones */
-                show_zone = TRUE;
+                show_zone = true;
             } else if ((hilev == -1) && (lolev >= ZONE_MINLVL(i)) && (lolev <= ZONE_MAXLVL(i))) {
                 /* Single number supplied, it's in this zone's range */
-                show_zone = TRUE;
+                show_zone = true;
             } else if ((hilev != -1) && (lolev >= ZONE_MINLVL(i)) && (hilev <= ZONE_MAXLVL(i))) {
                 /* Range supplied, it's completely within this zone's range (no overlap) */
-                show_zone = TRUE;
+                show_zone = true;
             } else if ((hilev != -1) && ((lolev >= ZONE_MINLVL(i) && lolev <= ZONE_MAXLVL(i)) ||
                                          (hilev <= ZONE_MAXLVL(i) && hilev >= ZONE_MINLVL(i)))) {
                 /* Range supplied, it overlaps this zone's range */
-                show_zone = TRUE;
-                overlap = TRUE;
+                show_zone = true;
+                overlap = true;
             } else if (ZONE_MAXLVL(i) < 0 && (lolev >= ZONE_MINLVL(i))) {
                 /* Max level not set for this zone, but specified min in range */
-                show_zone = TRUE;
+                show_zone = true;
             } else if (ZONE_MAXLVL(i) < 0 && (hilev >= ZONE_MINLVL(i))) {
                 /* Max level not set for this zone, so just display it as red */
-                show_zone = TRUE;
-                overlap = TRUE;
+                show_zone = true;
+                overlap = true;
             }
         }
 
         if (show_zone) {
-            if (overlap) { overlap_shown = TRUE; }
+            if (overlap) { overlap_shown = true; }
             lev_set = get_zone_levels(i, lev_str);
             tmp_len = snprintf(buf + len, sizeof(buf) - len, "\tn(%3d) %s%-*s\tn %s%s\tn\r\n", ++zcount,
                                overlap ? QRED : QCYN, count_color_chars(zone_table[i].name) + 30, zone_table[i].name,
@@ -2662,7 +2660,7 @@ ACMD(do_areas)
     if (zcount == 0) {
         send_to_char(ch, "No areas found.\r\n");
     } else {
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
     }
 }
 
@@ -2726,7 +2724,7 @@ static void list_scanned_chars(struct char_data *list, struct char_data *ch, int
 ACMD(do_scan)
 {
     int door;
-    bool found = FALSE;
+    bool found = false;
 
     int range;
     int maxrange = 3;
@@ -2750,11 +2748,11 @@ ACMD(do_scan)
                     } else {
                         send_to_char(ch, "%s: It is too dark to see anything.\r\n", dirs[door]);
                     }
-                    found = TRUE;
+                    found = true;
                 } else {
                     if (world[scanned_room].people) {
                         list_scanned_chars(world[scanned_room].people, ch, range - 1, door);
-                        found = TRUE;
+                        found = true;
                     }
                 }
             }                  // end of if

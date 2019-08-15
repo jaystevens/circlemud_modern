@@ -183,7 +183,7 @@ static void show_messages(struct char_data *ch)
     }
 
     snprintf(buf + len, sizeof(buf) - len, "Total Messages: %d\r\n", count);
-    page_string(ch->desc, buf, TRUE);
+    page_string(ch->desc, buf, true);
 }
 
 #define PRINT_MSG(msg) (msg == NULL ? "#" : msg)
@@ -343,7 +343,7 @@ ACMD(do_msgedit)
 
     /* Give the descriptor an OLC structure. */
     if (d->olc) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_msg_edit: Player already had olc structure.");
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_msg_edit: Player already had olc structure.");
         free(d->olc);
     }
 
@@ -357,10 +357,10 @@ ACMD(do_msgedit)
     msgedit_main_menu(ch->desc);
     STATE(d) = CON_MSGEDIT;
 
-    act("$n starts using OLC.", TRUE, d->character, 0, 0, TO_ROOM);
+    act("$n starts using OLC.", true, d->character, 0, 0, TO_ROOM);
     SET_BIT_AR(PLR_FLAGS(ch), PLR_WRITING);
 
-    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "OLC: %s starts editing message %d", GET_NAME(ch),
+    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "OLC: %s starts editing message %d", GET_NAME(ch),
            OLC_NUM(d));
 }
 
@@ -418,7 +418,7 @@ static void msgedit_main_menu(struct descriptor_data *d)
 void msgedit_parse(struct descriptor_data *d, char *arg)
 {
     struct message_type *temp;
-    static bool quit = FALSE;
+    static bool quit = false;
 
     switch (OLC_MODE(d)) {
         case MSGEDIT_MAIN_MENU:
@@ -540,7 +540,7 @@ void msgedit_parse(struct descriptor_data *d, char *arg)
                 case 'q':
                     if (OLC_VAL(d)) {
                         OLC_MODE(d) = MSGEDIT_CONFIRM_SAVE;
-                        quit = TRUE;
+                        quit = true;
                         write_to_output(d, "Do you wish to save? Y/N : ");
                         return;
                     }
@@ -560,7 +560,7 @@ void msgedit_parse(struct descriptor_data *d, char *arg)
             }
 
             if (quit) {
-                quit = FALSE;
+                quit = false;
                 write_to_output(d, "Exiting message editor.\r\n");
                 cleanup_olc(d, CLEANUP_ALL);
                 return;

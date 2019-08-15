@@ -48,14 +48,14 @@ int copy_quest_strings(struct aq_data *to, struct aq_data *from)
 {
     if (from == NULL || to == NULL) {
         log("SYSERR: GenQST: copy_quest_strings: Null values passed.");
-        return FALSE;
+        return false;
     }
     to->name = str_udup(from->name);
     to->desc = str_udup(from->desc);
     to->info = str_udup(from->info);
     to->done = str_udup(from->done);
     to->quit = str_udup(from->quit);
-    return TRUE;
+    return true;
 }
 
 void free_quest_strings(struct aq_data *quest)
@@ -93,7 +93,7 @@ int add_quest(struct aq_data *nqst)
 
     /* The quest already exists, just update it.  */
     if ((rnum = real_quest(nqst->vnum)) != NOWHERE) {
-        copy_quest(&aquest_table[rnum], nqst, TRUE);
+        copy_quest(&aquest_table[rnum], nqst, true);
     } else {
         /* increase the number of quest table entries */
         total_quests++;
@@ -111,7 +111,7 @@ int add_quest(struct aq_data *nqst)
             } //found the place
             aquest_table[rnum] = aquest_table[rnum - 1]; //shift quest up one
         }
-        copy_quest(&aquest_table[rnum], nqst, FALSE);
+        copy_quest(&aquest_table[rnum], nqst, false);
     }
     qmrnum = real_mobile(QST_MASTER(rnum));
     /* Make sure we assign spec procs to the questmaster */
@@ -125,7 +125,7 @@ int add_quest(struct aq_data *nqst)
     if (rznum != NOWHERE) {
         add_to_save_list(zone_table[rznum].number, SL_QST);
     } else {
-        mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: GenOLC: Cannot determine quest zone.");
+        mudlog(BRF, LVL_BUILDER, true, "SYSERR: GenOLC: Cannot determine quest zone.");
     }
 
     return rnum;
@@ -142,7 +142,7 @@ int delete_quest(qst_rnum rnum)
     int quests_remaining = 0;
 
     if (rnum >= total_quests) {
-        return FALSE;
+        return false;
     }
     rznum = real_zone_by_thing(QST_NUM(rnum));
     log("GenOLC: delete_quest: Deleting quest #%d (%s).", QST_NUM(rnum), QST_NAME(rnum));
@@ -164,7 +164,7 @@ int delete_quest(qst_rnum rnum)
     if (rznum != NOWHERE) {
         add_to_save_list(zone_table[rznum].number, SL_QST);
     } else {
-        mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: GenOLC: Cannot determine quest zone.");
+        mudlog(BRF, LVL_BUILDER, true, "SYSERR: GenOLC: Cannot determine quest zone.");
     }
     /* does the questmaster mob have any quests left? */
     if (qm != NOBODY) {
@@ -177,7 +177,7 @@ int delete_quest(qst_rnum rnum)
             mob_index[qm].func = tempfunc;
         } // point back to original spec proc
     }
-    return TRUE;
+    return true;
 }
 
 /*-------------------------------------------------------------------*/
@@ -193,7 +193,7 @@ int save_quests(zone_rnum zone_num)
 
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
         log("SYSERR: GenOLC: save_quests: Invalid zone number %d passed! (0-%d)", zone_num, top_of_zone_table);
-        return FALSE;
+        return false;
     }
 
     log("GenOLC: save_quests: Saving quests in zone #%d (%d-%d).", zone_table[zone_num].number,
@@ -202,7 +202,7 @@ int save_quests(zone_rnum zone_num)
     snprintf(filename, sizeof(filename), "%s/%d.new", QST_PREFIX, zone_table[zone_num].number);
     if (!(sf = fopen(filename, "w"))) {
         perror("SYSERR: save_quests");
-        return FALSE;
+        return false;
     }
     for (i = genolc_zone_bottom(zone_num); i <= zone_table[zone_num].top; i++) {
         qst_rnum rnum;
@@ -243,7 +243,7 @@ int save_quests(zone_rnum zone_num)
                 fprintf(sf, "%s", convert_from_tabs(buf));
                 num_quests++;
             } else {
-                mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Could not save quest #%d due to size (%d > maximum of %d).",
+                mudlog(BRF, LVL_BUILDER, true, "SYSERR: Could not save quest #%d due to size (%d > maximum of %d).",
                        QST_NUM(rnum), n, MAX_STRING_LENGTH);
             }
         }
@@ -265,6 +265,6 @@ int save_quests(zone_rnum zone_num)
     if (in_save_list(zone_table[zone_num].number, SL_QST)) {
         remove_from_save_list(zone_table[zone_num].number, SL_QST);
     }
-    return TRUE;
+    return true;
 }
 

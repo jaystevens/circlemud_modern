@@ -145,8 +145,8 @@ static OCMD(do_oecho)
         obj_log(obj, "oecho called with no args");
     } else if ((room = obj_room(obj)) != NOWHERE) {
         if (world[room].people) {
-            sub_write(argument, world[room].people, TRUE, TO_ROOM);
-            sub_write(argument, world[room].people, TRUE, TO_CHAR);
+            sub_write(argument, world[room].people, true, TO_ROOM);
+            sub_write(argument, world[room].people, true, TO_CHAR);
         }
     } else {
         obj_log(obj, "oecho called by object in NOWHERE");
@@ -236,9 +236,9 @@ static OCMD(do_osend)
 
     if ((ch = get_char_by_obj(obj, buf))) {
         if (subcmd == SCMD_OSEND) {
-            sub_write(msg, ch, TRUE, TO_CHAR);
+            sub_write(msg, ch, true, TO_CHAR);
         } else if (subcmd == SCMD_OECHOAROUND) {
-            sub_write(msg, ch, TRUE, TO_ROOM);
+            sub_write(msg, ch, true, TO_ROOM);
         }
     } else {
         obj_log(obj, "no target found for osend");
@@ -566,8 +566,8 @@ static OCMD(do_oasound)
     for (door = 0; door < DIR_COUNT; door++) {
         if (world[room].dir_option[door] != NULL && (world[room].dir_option[door])->to_room != NOWHERE &&
             (world[room].dir_option[door])->to_room != room && world[(world[room].dir_option[door])->to_room].people) {
-            sub_write(argument, world[(world[room].dir_option[door])->to_room].people, TRUE, TO_ROOM);
-            sub_write(argument, world[(world[room].dir_option[door])->to_room].people, TRUE, TO_CHAR);
+            sub_write(argument, world[(world[room].dir_option[door])->to_room].people, true, TO_ROOM);
+            sub_write(argument, world[(world[room].dir_option[door])->to_room].people, true, TO_CHAR);
         }
     }
 }
@@ -603,12 +603,12 @@ static OCMD(do_odoor)
         return;
     }
 
-    if ((dir = search_block(direction, dirs, FALSE)) == -1) {
+    if ((dir = search_block(direction, dirs, false)) == -1) {
         obj_log(obj, "odoor: invalid direction");
         return;
     }
 
-    if ((fd = search_block(field, door_field, FALSE)) == -1) {
+    if ((fd = search_block(field, door_field, false)) == -1) {
         obj_log(obj, "odoor: invalid field");
         return;
     }

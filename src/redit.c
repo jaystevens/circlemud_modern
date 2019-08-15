@@ -55,7 +55,7 @@ ACMD(do_oasis_redit)
             return;
         }
 
-        save = TRUE;
+        save = true;
 
         if (is_number(buf2)) {
             number = atoi(buf2);
@@ -100,7 +100,7 @@ ACMD(do_oasis_redit)
 
     /* Give the descriptor an OLC structure. */
     if (d->olc) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_oasis_redit: Player already had olc structure.");
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_oasis_redit: Player already had olc structure.");
         free(d->olc);
     }
 
@@ -127,7 +127,7 @@ ACMD(do_oasis_redit)
 
     if (save) {
         send_to_char(ch, "Saving all rooms in zone %d.\r\n", zone_table[OLC_ZNUM(d)].number);
-        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE, "OLC: %s saves room info for zone %d.", GET_NAME(ch),
+        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), true, "OLC: %s saves room info for zone %d.", GET_NAME(ch),
                zone_table[OLC_ZNUM(d)].number);
 
         /* Save the rooms. */
@@ -149,10 +149,10 @@ ACMD(do_oasis_redit)
 
     redit_disp_menu(d);
     STATE(d) = CON_REDIT;
-    act("$n starts using OLC.", TRUE, d->character, 0, 0, TO_ROOM);
+    act("$n starts using OLC.", true, d->character, 0, 0, TO_ROOM);
     SET_BIT_AR(PLR_FLAGS(ch), PLR_WRITING);
 
-    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "OLC: %s starts editing zone %d allowed zone %d",
+    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "OLC: %s starts editing zone %d allowed zone %d",
            GET_NAME(ch), zone_table[OLC_ZNUM(d)].number, GET_OLC_ZONE(ch));
 }
 
@@ -241,11 +241,11 @@ void redit_setup_existing(struct descriptor_data *d, int real_num)
 
 void redit_save_internally(struct descriptor_data *d)
 {
-    int j, room_num, new_room = FALSE;
+    int j, room_num, new_room = false;
     struct descriptor_data *dsc;
 
     if (OLC_ROOM(d)->number == NOWHERE) {
-        new_room = TRUE;
+        new_room = true;
     }
 
     OLC_ROOM(d)->number = OLC_NUM(d);
@@ -406,7 +406,7 @@ static void redit_disp_flag_menu(struct descriptor_data *d)
 
     get_char_colors(d->character);
     clear_screen(d);
-    column_list(d->character, 0, room_bits, NUM_ROOM_FLAGS, TRUE);
+    column_list(d->character, 0, room_bits, NUM_ROOM_FLAGS, true);
 
     sprintbitarray(OLC_ROOM(d)->room_flags, room_bits, RF_ARRAY_MAX, bits);
     write_to_output(d, "\r\nRoom flags: %s%s%s\r\n"
@@ -418,7 +418,7 @@ static void redit_disp_flag_menu(struct descriptor_data *d)
 static void redit_disp_sector_menu(struct descriptor_data *d)
 {
     clear_screen(d);
-    column_list(d->character, 0, sector_types, NUM_ROOM_SECTORS, TRUE);
+    column_list(d->character, 0, sector_types, NUM_ROOM_SECTORS, true);
     write_to_output(d, "\r\nEnter sector type : ");
     OLC_MODE(d) = REDIT_SECTOR;
 }
@@ -508,7 +508,7 @@ void redit_parse(struct descriptor_data *d, char *arg)
                 case 'y':
                 case 'Y':
                     redit_save_internally(d);
-                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s edits room %d.",
+                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), true, "OLC: %s edits room %d.",
                            GET_NAME(d->character), OLC_NUM(d));
                     if (CONFIG_OLC_SAVE) {
                         redit_save_to_disk(real_zone_by_thing(OLC_NUM(d)));
@@ -686,7 +686,7 @@ void redit_parse(struct descriptor_data *d, char *arg)
 
         case REDIT_DESC:
             /* We will NEVER get here, we hope. */
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Reached REDIT_DESC case in parse_redit().");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: Reached REDIT_DESC case in parse_redit().");
             write_to_output(d, "Oops, in REDIT_DESC.\r\n");
             break;
 
@@ -778,7 +778,7 @@ void redit_parse(struct descriptor_data *d, char *arg)
 
         case REDIT_EXIT_DESCRIPTION:
             /* We should NEVER get here, hopefully. */
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Reached REDIT_EXIT_DESC case in parse_redit");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: Reached REDIT_EXIT_DESC case in parse_redit");
             write_to_output(d, "Oops, in REDIT_EXIT_DESCRIPTION.\r\n");
             break;
 
@@ -914,7 +914,7 @@ void redit_parse(struct descriptor_data *d, char *arg)
 
         default:
             /* We should never get here. */
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Reached default case in parse_redit");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: Reached default case in parse_redit");
             break;
     }
     /* If we get this far, something has been changed. */

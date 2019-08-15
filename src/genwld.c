@@ -26,7 +26,7 @@ room_rnum add_room(struct room_data *room)
 {
     struct char_data *tch;
     struct obj_data *tobj;
-    int j, found = FALSE;
+    int j, found = false;
     room_rnum i;
 
     if (room == NULL) {
@@ -98,7 +98,7 @@ room_rnum add_room(struct room_data *room)
                     /* Known zone entries we don't care about. */
                     break;
                 default:
-                    mudlog(BRF, LVL_GOD, TRUE, "SYSERR: GenOLC: add_room: Unknown zone entry found!");
+                    mudlog(BRF, LVL_GOD, true, "SYSERR: GenOLC: add_room: Unknown zone entry found!");
             }
         }
     }
@@ -133,7 +133,7 @@ int delete_room(room_rnum rnum)
     struct room_data *room;
 
     if (rnum <= 0 || rnum > top_of_world) {    /* Can't delete void yet. */
-        return FALSE;
+        return false;
     }
 
     room = &world[rnum];
@@ -243,7 +243,7 @@ int delete_room(room_rnum rnum)
                     /* Known zone entries we don't care about. */
                     break;
                 default:
-                    mudlog(BRF, LVL_GOD, TRUE, "SYSERR: GenOLC: delete_room: Unknown zone entry found!");
+                    mudlog(BRF, LVL_GOD, true, "SYSERR: GenOLC: delete_room: Unknown zone entry found!");
             }
         }
     }
@@ -270,7 +270,7 @@ int delete_room(room_rnum rnum)
     top_of_world--;
     RECREATE(world, struct room_data, top_of_world + 1);
 
-    return TRUE;
+    return true;
 }
 
 int save_rooms(zone_rnum rzone)
@@ -285,7 +285,7 @@ int save_rooms(zone_rnum rzone)
 
     if (rzone == NOWHERE || rzone > top_of_zone_table) {
         log("SYSERR: GenOLC: save_rooms: Invalid zone number %d passed! (0-%d)", rzone, top_of_zone_table);
-        return FALSE;
+        return false;
     }
 
     log("GenOLC: save_rooms: Saving rooms in zone #%d (%d-%d).", zone_table[rzone].number, genolc_zone_bottom(rzone),
@@ -294,7 +294,7 @@ int save_rooms(zone_rnum rzone)
     snprintf(filename, sizeof(filename), "%s/%d.new", WLD_PREFIX, zone_table[rzone].number);
     if (!(sf = fopen(filename, "w"))) {
         perror("SYSERR: save_rooms");
-        return FALSE;
+        return false;
     }
 
     for (i = genolc_zone_bottom(rzone); i <= zone_table[rzone].top; i++) {
@@ -319,7 +319,7 @@ int save_rooms(zone_rnum rzone)
                              room->room_flags[2], room->room_flags[3], room->sector_type);
 
             if (n >= MAX_STRING_LENGTH) {
-                mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Could not save room #%d due to size (%d > maximum of %d).",
+                mudlog(BRF, LVL_BUILDER, true, "SYSERR: Could not save room #%d due to size (%d > maximum of %d).",
                        room->number, n, MAX_STRING_LENGTH);
                 continue;
             }
@@ -400,7 +400,7 @@ int save_rooms(zone_rnum rzone)
     if (in_save_list(zone_table[rzone].number, SL_WLD)) {
         remove_from_save_list(zone_table[rzone].number, SL_WLD);
     }
-    return TRUE;
+    return true;
 }
 
 int copy_room(struct room_data *to, struct room_data *from)
@@ -415,7 +415,7 @@ int copy_room(struct room_data *to, struct room_data *from)
     from->contents = NULL;
     from->events = NULL;
 
-    return TRUE;
+    return true;
 }
 
 /* Copy strings over so bad things don't happen.  We do not free the existing 
@@ -428,7 +428,7 @@ int copy_room_strings(struct room_data *dest, struct room_data *source)
 
     if (dest == NULL || source == NULL) {
         log("SYSERR: GenOLC: copy_room_strings: NULL values passed.");
-        return FALSE;
+        return false;
     }
 
     dest->description = str_udup(source->description);
@@ -451,7 +451,7 @@ int copy_room_strings(struct room_data *dest, struct room_data *source)
         copy_ex_descriptions(&dest->ex_description, source->ex_description);
     }
 
-    return TRUE;
+    return true;
 }
 
 int free_room_strings(struct room_data *room)
@@ -485,5 +485,5 @@ int free_room_strings(struct room_data *room)
         }
     }
 
-    return TRUE;
+    return true;
 }

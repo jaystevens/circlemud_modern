@@ -74,7 +74,7 @@ static void perform_mob_flag_list(struct char_data *ch, char *arg)
     if (!found) {
         send_to_char(ch, "None Found!\r\n");
     } else {
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
     }
     return;
 }
@@ -111,7 +111,7 @@ static void perform_mob_level_list(struct char_data *ch, char *arg)
     if (!found) {
         send_to_char(ch, "None Found!\r\n");
     } else {
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
     }
 
     return;
@@ -265,7 +265,7 @@ static void perform_obj_type_list(struct char_data *ch, char *arg)
             }
         }
     }
-    page_string(ch->desc, buf, TRUE);
+    page_string(ch->desc, buf, true);
 }
 
 static void perform_obj_aff_list(struct char_data *ch, char *arg)
@@ -325,7 +325,7 @@ static void perform_obj_aff_list(struct char_data *ch, char *arg)
                 }
             }
         }
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
         return;  /* End of special-case handling */
     }
     /* Non-special cases, list objects by affect */
@@ -355,7 +355,7 @@ static void perform_obj_aff_list(struct char_data *ch, char *arg)
             len += tmp_len;
         }
     }
-    page_string(ch->desc, buf, TRUE);
+    page_string(ch->desc, buf, true);
 }
 
 static void perform_obj_name_list(struct char_data *ch, char *arg)
@@ -384,7 +384,7 @@ static void perform_obj_name_list(struct char_data *ch, char *arg)
         }
     }
 
-    page_string(ch->desc, buf, TRUE);
+    page_string(ch->desc, buf, true);
 }
 
 /* Ingame Commands */
@@ -396,7 +396,7 @@ ACMD(do_oasis_list)
     char smin[MAX_INPUT_LENGTH];
     char smax[MAX_INPUT_LENGTH];
     char arg[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
-    bool use_name = FALSE;
+    bool use_name = false;
     int i;
 
     two_arguments(argument, smin, smax);
@@ -408,7 +408,7 @@ ACMD(do_oasis_list)
 
         if ((rzone == NOWHERE || rzone == 0) && subcmd == SCMD_OASIS_ZLIST && !isdigit(*smin)) {
             /* Must be zlist, with builder name as arg */
-            use_name = TRUE;
+            use_name = true;
         } else if (rzone == NOWHERE) {
             send_to_char(ch, "Sorry, there's no zone with that number\r\n");
             return;
@@ -540,7 +540,7 @@ ACMD(do_oasis_list)
             break;
         default:
             send_to_char(ch, "You can't list that!\r\n");
-            mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_oasis_list: Unknown list option: %d", subcmd);
+            mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_oasis_list: Unknown list option: %d", subcmd);
     }
 }
 
@@ -656,7 +656,7 @@ static void list_rooms(struct char_data *ch, zone_rnum rnum, room_vnum vmin, roo
     if (counter == 0) {
         send_to_char(ch, "No rooms found for zone/range specified.\r\n");
     } else {
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
     }
 }
 
@@ -701,7 +701,7 @@ static void list_mobiles(struct char_data *ch, zone_rnum rnum, mob_vnum vmin, mo
     if (counter == 0) {
         send_to_char(ch, "None found.\r\n");
     } else {
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
     }
 }
 
@@ -748,7 +748,7 @@ static void list_objects(struct char_data *ch, zone_rnum rnum, obj_vnum vmin, ob
     if (counter == 0) {
         send_to_char(ch, "None found.\r\n");
     } else {
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
     }
 }
 
@@ -805,7 +805,7 @@ static void list_zones(struct char_data *ch, zone_rnum rnum, zone_vnum vmin, zon
     zone_rnum i;
     zone_vnum bottom, top;
     char buf[MAX_STRING_LENGTH];
-    bool use_name = FALSE;
+    bool use_name = false;
 
     bottom = vmin;
     top = vmax;
@@ -815,7 +815,7 @@ static void list_zones(struct char_data *ch, zone_rnum rnum, zone_vnum vmin, zon
         print_zone(ch, zone_table[rnum].number);
         return;
     } else if (name && *name) {
-        use_name = TRUE;
+        use_name = true;
         if (!vmin) {
             bottom = zone_table[0].number;
         }                 /* Lowest Zone  */
@@ -850,7 +850,7 @@ static void list_zones(struct char_data *ch, zone_rnum rnum, zone_vnum vmin, zon
     if (!counter) {
         send_to_char(ch, "  None found within those parameters.\r\n");
     } else {
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
     }
 }
 

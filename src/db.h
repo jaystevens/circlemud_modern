@@ -151,7 +151,7 @@
 struct reset_com {
     char command;   /* current command                      */
 
-    bool if_flag;    /* if TRUE: exe only if preceding exe'd */
+    bool if_flag;    /* if true: exe only if preceding exe'd */
     int arg1;        /*                                      */
     int arg2;        /* Arguments to the command             */
     int arg3;        /*                                      */

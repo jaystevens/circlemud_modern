@@ -142,7 +142,7 @@ static IBT_DATA *read_ibt(char *filename, FILE *fp)
 
     for (;;) {
         word = feof(fp) ? "End" : fread_word(fp);
-        fMatch = FALSE;
+        fMatch = false;
 
         switch (UPPER(word[0])) {
             case 'B':
@@ -208,7 +208,7 @@ static IBT_DATA *read_ibt(char *filename, FILE *fp)
 
             case '*':  /* Handle comments */
                 fread_to_eol(fp);
-                fMatch = TRUE;
+                fMatch = true;
                 break;
 
             default:
@@ -414,21 +414,21 @@ static bool ibt_in_list(int mode, IBT_DATA *ibt)
 {
     IBT_DATA *target_ibt, *first_ibt;
 
-    if ((first_ibt = get_first_ibt(mode)) == NULL) { return FALSE; }
+    if ((first_ibt = get_first_ibt(mode)) == NULL) { return false; }
 
     for (target_ibt = first_ibt; target_ibt; target_ibt = target_ibt->next) {
         if (target_ibt == ibt) {
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
 /* Free up an IBT struct, removing it from the list if necessary */
-/* returns TRUE on success                                       */
+/* returns true on success                                       */
 static bool free_ibt(int mode, IBT_DATA *ibtData)
 {
-    if (ibtData == NULL) { return FALSE; }
+    if (ibtData == NULL) { return false; }
 
     /* If this IBT is in the IBT list, take it out */
     if (ibt_in_list(mode, ibtData)) {
@@ -453,25 +453,25 @@ static bool free_ibt(int mode, IBT_DATA *ibtData)
     /* And free the struct */
     DISPOSE(ibtData);
 
-    return TRUE;
+    return true;
 }
 
-/* Return TRUE if 'ch' is the person who logged the IBT */
+/* Return true if 'ch' is the person who logged the IBT */
 static bool is_ibt_logger(IBT_DATA *ibtData, struct char_data *ch)
 {
     if (ch && !IS_NPC(ch) && ibtData) {
 
         /* Check the ID number first (in case of name change)   */
         if ((ibtData->id_num != NOBODY) && (ibtData->id_num == GET_IDNUM(ch))) {
-            return TRUE;
+            return true;
         }
 
         /* Check the name next (in case of deletion/recreation) */
         if (strcmp(ibtData->name, GET_NAME(ch)) == 0) {
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
 ACMD(do_ibt)
@@ -640,7 +640,7 @@ ACMD(do_ibt)
             snprintf(buf + len, sizeof(buf) - len, "No %ss have been reported!\r\n", CMD_NAME);
         }
 
-        page_string(ch->desc, buf, TRUE);
+        page_string(ch->desc, buf, true);
         return;
     } else if (is_abbrev(arg, "submit")) {
         if (!*arg_text) {
@@ -668,7 +668,7 @@ ACMD(do_ibt)
         send_editor_help(ch->desc);
 
         sprintf(buf, "$n starts to give %s %s.", TANA(CMD_NAME), CMD_NAME);
-        act(buf, TRUE, ch, 0, 0, TO_ROOM);
+        act(buf, true, ch, 0, 0, TO_ROOM);
 
         string_write(ch->desc, &(ibtData->body), MAX_IBT_LENGTH, 0, NULL);
 
@@ -690,7 +690,7 @@ ACMD(do_ibt)
                 LINK(ibtData, first_typo, last_typo, next, prev);
                 break;
         }
-        mudlog(NRM, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), FALSE, "%s has posted %s %s!", GET_NAME(ch), TANA(CMD_NAME),
+        mudlog(NRM, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), false, "%s has posted %s %s!", GET_NAME(ch), TANA(CMD_NAME),
                CMD_NAME);
         return;
     } else if (is_abbrev(arg, "resolve")) {
@@ -824,7 +824,7 @@ ACMD(do_oasis_ibtedit)
 
     /* Give descriptor an OLC structure. */
     if (d->olc) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_oasis_ibtedit: Player already had olc structure.");
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_oasis_ibtedit: Player already had olc structure.");
         free(d->olc);
     }
 
@@ -844,10 +844,10 @@ ACMD(do_oasis_ibtedit)
 
     /* Display the OLC messages to the players in the same room as the
        editor and also log it. */
-    act("$n starts using OLC.", TRUE, d->character, 0, 0, TO_ROOM);
+    act("$n starts using OLC.", true, d->character, 0, 0, TO_ROOM);
     SET_BIT_AR(PLR_FLAGS(ch), PLR_WRITING);
 
-    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "OLC: %s starts editing %s %d", GET_NAME(ch), IBT_TYPE,
+    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "OLC: %s starts editing %s %d", GET_NAME(ch), IBT_TYPE,
            OLC_NUM(d));
 }
 
@@ -992,7 +992,7 @@ static void ibtedit_disp_flags(struct descriptor_data *d)
     get_char_colors(d->character);
     clear_screen(d);
 
-    column_list(d->character, 2, ibt_bits, NUM_IBT_FLAGS, TRUE);
+    column_list(d->character, 2, ibt_bits, NUM_IBT_FLAGS, true);
 
     sprintbitarray(OLC_IBT(d)->flags, ibt_bits, IBT_ARRAY_MAX, buf);
     write_to_output(d, "\r\nCurrent flags : %s%s%s\r\nEnter flags (0 to quit) : ", cyn, buf, nrm);
@@ -1013,7 +1013,7 @@ void ibtedit_parse(struct descriptor_data *d, char *arg)
                 case 'Y':
                     /* Save the IBT in memory and to disk. */
                     ibtedit_save(d);
-                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s edits %s %d",
+                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), true, "OLC: %s edits %s %d",
                            GET_NAME(d->character), IBT_TYPE, OLC_NUM(d));
                     cleanup_olc(d, CLEANUP_ALL);
                     return;
@@ -1128,21 +1128,21 @@ void ibtedit_parse(struct descriptor_data *d, char *arg)
         case IBTEDIT_BODY:
             /* We should never get here, modify.c throws user through ibtedit_string_cleanup. */
             cleanup_olc(d, CLEANUP_ALL);
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: ibtedit_parse(): Reached BODY case!");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: ibtedit_parse(): Reached BODY case!");
             write_to_output(d, "Oops...\r\n");
             break;
 
         case IBTEDIT_NOTES:
             /* We should never get here, modify.c throws user through ibtedit_string_cleanup. */
             cleanup_olc(d, CLEANUP_ALL);
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: ibtedit_parse(): Reached NOTES case!");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: ibtedit_parse(): Reached NOTES case!");
             write_to_output(d, "Oops...\r\n");
             break;
 
         default:
             /* We should never get here. */
             cleanup_olc(d, CLEANUP_ALL);
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: ibtedit_parse(): Reached default case!");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: ibtedit_parse(): Reached default case!");
             write_to_output(d, "Oops...\r\n");
             break;
     }

@@ -157,7 +157,7 @@ static void say_spell(struct char_data *ch, int spellnum, struct char_data *tch,
     if (tch != NULL && tch != ch && IN_ROOM(tch) == IN_ROOM(ch)) {
         snprintf(buf1, sizeof(buf1), "$n stares at you and utters the words, '%s'.",
                  GET_CLASS(ch) == GET_CLASS(tch) ? skill_name(spellnum) : buf);
-        act(buf1, FALSE, ch, NULL, tch, TO_VICT);
+        act(buf1, false, ch, NULL, tch, TO_VICT);
     }
 }
 
@@ -186,13 +186,13 @@ int find_skill_num(char *name)
             return (skindex);
         }
 
-        ok = TRUE;
+        ok = true;
         strlcpy(tempbuf, spell_info[skindex].name, sizeof(tempbuf));    /* strlcpy: OK */
         temp = any_one_arg(tempbuf, first);
         temp2 = any_one_arg(name, first2);
         while (*first && *first2 && ok) {
             if (!is_abbrev(first2, first)) {
-                ok = FALSE;
+                ok = false;
             }
             temp = any_one_arg(temp, first);
             temp2 = any_one_arg(temp2, first2);
@@ -232,12 +232,12 @@ int call_magic(struct char_data *caster, struct char_data *cvict, struct obj_dat
 
     if (ROOM_FLAGGED(IN_ROOM(caster), ROOM_NOMAGIC)) {
         send_to_char(caster, "Your magic fizzles out and dies.\r\n");
-        act("$n's magic fizzles out and dies.", FALSE, caster, 0, 0, TO_ROOM);
+        act("$n's magic fizzles out and dies.", false, caster, 0, 0, TO_ROOM);
         return (0);
     }
     if (ROOM_FLAGGED(IN_ROOM(caster), ROOM_PEACEFUL) && (SINFO.violent || IS_SET(SINFO.routines, MAG_DAMAGE))) {
         send_to_char(caster, "A flash of white light fills the room, dispelling your violent magic!\r\n");
-        act("White light from no particular source suddenly fills the room, then vanishes.", FALSE, caster, 0, 0,
+        act("White light from no particular source suddenly fills the room, then vanishes.", false, caster, 0, 0,
             TO_ROOM);
         return (0);
     }
@@ -353,16 +353,16 @@ void mag_objectmagic(struct char_data *ch, struct obj_data *obj, char *argument)
 
     switch (GET_OBJ_TYPE(obj)) {
         case ITEM_STAFF:
-            act("You tap $p three times on the ground.", FALSE, ch, obj, 0, TO_CHAR);
+            act("You tap $p three times on the ground.", false, ch, obj, 0, TO_CHAR);
             if (obj->action_description) {
-                act(obj->action_description, FALSE, ch, obj, 0, TO_ROOM);
+                act(obj->action_description, false, ch, obj, 0, TO_ROOM);
             } else {
-                act("$n taps $p three times on the ground.", FALSE, ch, obj, 0, TO_ROOM);
+                act("$n taps $p three times on the ground.", false, ch, obj, 0, TO_ROOM);
             }
 
             if (GET_OBJ_VAL(obj, 2) <= 0) {
                 send_to_char(ch, "It seems powerless.\r\n");
-                act("Nothing seems to happen.", FALSE, ch, obj, 0, TO_ROOM);
+                act("Nothing seems to happen.", false, ch, obj, 0, TO_ROOM);
             } else {
                 GET_OBJ_VAL(obj, 2)--;
                 WAIT_STATE(ch, PULSE_VIOLENCE);
@@ -391,35 +391,35 @@ void mag_objectmagic(struct char_data *ch, struct obj_data *obj, char *argument)
         case ITEM_WAND:
             if (k == FIND_CHAR_ROOM) {
                 if (tch == ch) {
-                    act("You point $p at yourself.", FALSE, ch, obj, 0, TO_CHAR);
-                    act("$n points $p at $mself.", FALSE, ch, obj, 0, TO_ROOM);
+                    act("You point $p at yourself.", false, ch, obj, 0, TO_CHAR);
+                    act("$n points $p at $mself.", false, ch, obj, 0, TO_ROOM);
                 } else {
-                    act("You point $p at $N.", FALSE, ch, obj, tch, TO_CHAR);
+                    act("You point $p at $N.", false, ch, obj, tch, TO_CHAR);
                     if (obj->action_description) {
-                        act(obj->action_description, FALSE, ch, obj, tch, TO_ROOM);
+                        act(obj->action_description, false, ch, obj, tch, TO_ROOM);
                     } else {
-                        act("$n points $p at $N.", TRUE, ch, obj, tch, TO_ROOM);
+                        act("$n points $p at $N.", true, ch, obj, tch, TO_ROOM);
                     }
                 }
             } else if (tobj != NULL) {
-                act("You point $p at $P.", FALSE, ch, obj, tobj, TO_CHAR);
+                act("You point $p at $P.", false, ch, obj, tobj, TO_CHAR);
                 if (obj->action_description) {
-                    act(obj->action_description, FALSE, ch, obj, tobj, TO_ROOM);
+                    act(obj->action_description, false, ch, obj, tobj, TO_ROOM);
                 } else {
-                    act("$n points $p at $P.", TRUE, ch, obj, tobj, TO_ROOM);
+                    act("$n points $p at $P.", true, ch, obj, tobj, TO_ROOM);
                 }
             } else if (IS_SET(spell_info[GET_OBJ_VAL(obj, 3)].routines, MAG_AREAS | MAG_MASSES)) {
                 /* Wands with area spells don't need to be pointed. */
-                act("You point $p outward.", FALSE, ch, obj, NULL, TO_CHAR);
-                act("$n points $p outward.", TRUE, ch, obj, NULL, TO_ROOM);
+                act("You point $p outward.", false, ch, obj, NULL, TO_CHAR);
+                act("$n points $p outward.", true, ch, obj, NULL, TO_ROOM);
             } else {
-                act("At what should $p be pointed?", FALSE, ch, obj, NULL, TO_CHAR);
+                act("At what should $p be pointed?", false, ch, obj, NULL, TO_CHAR);
                 return;
             }
 
             if (GET_OBJ_VAL(obj, 2) <= 0) {
                 send_to_char(ch, "It seems powerless.\r\n");
-                act("Nothing seems to happen.", FALSE, ch, obj, 0, TO_ROOM);
+                act("Nothing seems to happen.", false, ch, obj, 0, TO_ROOM);
                 return;
             }
             GET_OBJ_VAL(obj, 2)--;
@@ -433,18 +433,18 @@ void mag_objectmagic(struct char_data *ch, struct obj_data *obj, char *argument)
         case ITEM_SCROLL:
             if (*arg) {
                 if (!k) {
-                    act("There is nothing to here to affect with $p.", FALSE, ch, obj, NULL, TO_CHAR);
+                    act("There is nothing to here to affect with $p.", false, ch, obj, NULL, TO_CHAR);
                     return;
                 }
             } else {
                 tch = ch;
             }
 
-            act("You recite $p which dissolves.", TRUE, ch, obj, 0, TO_CHAR);
+            act("You recite $p which dissolves.", true, ch, obj, 0, TO_CHAR);
             if (obj->action_description) {
-                act(obj->action_description, FALSE, ch, obj, tch, TO_ROOM);
+                act(obj->action_description, false, ch, obj, tch, TO_ROOM);
             } else {
-                act("$n recites $p.", FALSE, ch, obj, NULL, TO_ROOM);
+                act("$n recites $p.", false, ch, obj, NULL, TO_ROOM);
             }
 
             WAIT_STATE(ch, PULSE_VIOLENCE);
@@ -465,11 +465,11 @@ void mag_objectmagic(struct char_data *ch, struct obj_data *obj, char *argument)
                 return;
             }
 
-            act("You quaff $p.", FALSE, ch, obj, NULL, TO_CHAR);
+            act("You quaff $p.", false, ch, obj, NULL, TO_CHAR);
             if (obj->action_description) {
-                act(obj->action_description, FALSE, ch, obj, NULL, TO_ROOM);
+                act(obj->action_description, false, ch, obj, NULL, TO_ROOM);
             } else {
-                act("$n quaffs $p.", TRUE, ch, obj, NULL, TO_ROOM);
+                act("$n quaffs $p.", true, ch, obj, NULL, TO_ROOM);
             }
 
             WAIT_STATE(ch, PULSE_VIOLENCE);
@@ -600,23 +600,23 @@ ACMD(do_cast)
         strcpy(cast_arg2, t);
     }
     if (IS_SET(SINFO.targets, TAR_IGNORE)) {
-        target = TRUE;
+        target = true;
     } else if (t != NULL && *t) {
         number = get_number(&t);
         if (!target && (IS_SET(SINFO.targets, TAR_CHAR_ROOM))) {
             if ((tch = get_char_vis(ch, t, &number, FIND_CHAR_ROOM)) != NULL) {
-                target = TRUE;
+                target = true;
             }
         }
         if (!target && IS_SET(SINFO.targets, TAR_CHAR_WORLD)) {
             if ((tch = get_char_vis(ch, t, &number, FIND_CHAR_WORLD)) != NULL) {
-                target = TRUE;
+                target = true;
             }
         }
 
         if (!target && IS_SET(SINFO.targets, TAR_OBJ_INV)) {
             if ((tobj = get_obj_in_list_vis(ch, t, &number, ch->carrying)) != NULL) {
-                target = TRUE;
+                target = true;
             }
         }
 
@@ -624,19 +624,19 @@ ACMD(do_cast)
             for (i = 0; !target && i < NUM_WEARS; i++) {
                 if (GET_EQ(ch, i) && isname(t, GET_EQ(ch, i)->name)) {
                     tobj = GET_EQ(ch, i);
-                    target = TRUE;
+                    target = true;
                 }
             }
         }
         if (!target && IS_SET(SINFO.targets, TAR_OBJ_ROOM)) {
             if ((tobj = get_obj_in_list_vis(ch, t, &number, world[IN_ROOM(ch)].contents)) != NULL) {
-                target = TRUE;
+                target = true;
             }
         }
 
         if (!target && IS_SET(SINFO.targets, TAR_OBJ_WORLD)) {
             if ((tobj = get_obj_vis(ch, t, &number)) != NULL) {
-                target = TRUE;
+                target = true;
             }
         }
 
@@ -644,19 +644,19 @@ ACMD(do_cast)
         if (!target && IS_SET(SINFO.targets, TAR_FIGHT_SELF)) {
             if (FIGHTING(ch) != NULL) {
                 tch = ch;
-                target = TRUE;
+                target = true;
             }
         }
         if (!target && IS_SET(SINFO.targets, TAR_FIGHT_VICT)) {
             if (FIGHTING(ch) != NULL) {
                 tch = FIGHTING(ch);
-                target = TRUE;
+                target = true;
             }
         }
         /* if no target specified, and the spell isn't violent, default to self */
         if (!target && IS_SET(SINFO.targets, TAR_CHAR_ROOM) && !SINFO.violent) {
             tch = ch;
-            target = TRUE;
+            target = true;
         }
         if (!target) {
             send_to_char(ch, "Upon %s should the spell be cast?\r\n",
@@ -779,7 +779,7 @@ void unused_spell(int spl)
  * minpos  :  Minimum position the caster must be in for the spell to work
  *  (usually fighting or standing). targets :  A "list" of the valid targets
  *  for the spell, joined with bitwise OR ('|').
- * violent :  TRUE or FALSE, depending on if this is considered a violent
+ * violent :  true or false, depending on if this is considered a violent
  *  spell and should not be cast in PEACEFUL rooms or on yourself.  Should be
  *  set on any spell that inflicts damage, is considered aggressive (i.e.
  *  charm, curse), or is otherwise nasty.
@@ -798,147 +798,147 @@ void mag_assign_spells(void)
     }
     /* Do not change the loop above. */
 
-    spello(SPELL_ANIMATE_DEAD, "animate dead", 35, 10, 3, POS_STANDING, TAR_OBJ_ROOM, FALSE, MAG_SUMMONS, NULL);
+    spello(SPELL_ANIMATE_DEAD, "animate dead", 35, 10, 3, POS_STANDING, TAR_OBJ_ROOM, false, MAG_SUMMONS, NULL);
 
-    spello(SPELL_ARMOR, "armor", 30, 15, 3, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
+    spello(SPELL_ARMOR, "armor", 30, 15, 3, POS_FIGHTING, TAR_CHAR_ROOM, false, MAG_AFFECTS,
            "You feel less protected.");
 
-    spello(SPELL_BLESS, "bless", 35, 5, 3, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV, FALSE,
+    spello(SPELL_BLESS, "bless", 35, 5, 3, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV, false,
            MAG_AFFECTS | MAG_ALTER_OBJS, "You feel less righteous.");
 
-    spello(SPELL_BLINDNESS, "blindness", 35, 25, 1, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_AFFECTS,
+    spello(SPELL_BLINDNESS, "blindness", 35, 25, 1, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, false, MAG_AFFECTS,
            "You feel a cloak of blindness dissolve.");
 
-    spello(SPELL_BURNING_HANDS, "burning hands", 30, 10, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE,
+    spello(SPELL_BURNING_HANDS, "burning hands", 30, 10, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true,
            MAG_DAMAGE, NULL);
 
-    spello(SPELL_CALL_LIGHTNING, "call lightning", 40, 25, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE,
+    spello(SPELL_CALL_LIGHTNING, "call lightning", 40, 25, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true,
            MAG_DAMAGE, NULL);
 
-    spello(SPELL_CHARM, "charm person", 75, 50, 2, POS_FIGHTING, TAR_CHAR_ROOM | TAR_NOT_SELF, TRUE, MAG_MANUAL,
+    spello(SPELL_CHARM, "charm person", 75, 50, 2, POS_FIGHTING, TAR_CHAR_ROOM | TAR_NOT_SELF, true, MAG_MANUAL,
            "You feel more self-confident.");
 
-    spello(SPELL_CHILL_TOUCH, "chill touch", 30, 10, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE,
+    spello(SPELL_CHILL_TOUCH, "chill touch", 30, 10, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true,
            MAG_DAMAGE | MAG_AFFECTS, "You feel your strength return.");
 
-    spello(SPELL_CLONE, "clone", 80, 65, 5, POS_STANDING, TAR_IGNORE, FALSE, MAG_SUMMONS, NULL);
+    spello(SPELL_CLONE, "clone", 80, 65, 5, POS_STANDING, TAR_IGNORE, false, MAG_SUMMONS, NULL);
 
-    spello(SPELL_COLOR_SPRAY, "color spray", 30, 15, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
+    spello(SPELL_COLOR_SPRAY, "color spray", 30, 15, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true, MAG_DAMAGE,
            NULL);
 
-    spello(SPELL_CONTROL_WEATHER, "control weather", 75, 25, 5, POS_STANDING, TAR_IGNORE, FALSE, MAG_MANUAL, NULL);
+    spello(SPELL_CONTROL_WEATHER, "control weather", 75, 25, 5, POS_STANDING, TAR_IGNORE, false, MAG_MANUAL, NULL);
 
-    spello(SPELL_CREATE_FOOD, "create food", 30, 5, 4, POS_STANDING, TAR_IGNORE, FALSE, MAG_CREATIONS, NULL);
+    spello(SPELL_CREATE_FOOD, "create food", 30, 5, 4, POS_STANDING, TAR_IGNORE, false, MAG_CREATIONS, NULL);
 
-    spello(SPELL_CREATE_WATER, "create water", 30, 5, 4, POS_STANDING, TAR_OBJ_INV | TAR_OBJ_EQUIP, FALSE, MAG_MANUAL,
+    spello(SPELL_CREATE_WATER, "create water", 30, 5, 4, POS_STANDING, TAR_OBJ_INV | TAR_OBJ_EQUIP, false, MAG_MANUAL,
            NULL);
 
-    spello(SPELL_CURE_BLIND, "cure blind", 30, 5, 2, POS_STANDING, TAR_CHAR_ROOM, FALSE, MAG_UNAFFECTS, NULL);
+    spello(SPELL_CURE_BLIND, "cure blind", 30, 5, 2, POS_STANDING, TAR_CHAR_ROOM, false, MAG_UNAFFECTS, NULL);
 
-    spello(SPELL_CURE_CRITIC, "cure critic", 30, 10, 2, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_POINTS, NULL);
+    spello(SPELL_CURE_CRITIC, "cure critic", 30, 10, 2, POS_FIGHTING, TAR_CHAR_ROOM, false, MAG_POINTS, NULL);
 
-    spello(SPELL_CURE_LIGHT, "cure light", 30, 10, 2, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_POINTS, NULL);
+    spello(SPELL_CURE_LIGHT, "cure light", 30, 10, 2, POS_FIGHTING, TAR_CHAR_ROOM, false, MAG_POINTS, NULL);
 
-    spello(SPELL_CURSE, "curse", 80, 50, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV, TRUE,
+    spello(SPELL_CURSE, "curse", 80, 50, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV, true,
            MAG_AFFECTS | MAG_ALTER_OBJS, "You feel more optimistic.");
 
-    spello(SPELL_DARKNESS, "darkness", 30, 5, 4, POS_STANDING, TAR_IGNORE, FALSE, MAG_ROOMS, NULL);
+    spello(SPELL_DARKNESS, "darkness", 30, 5, 4, POS_STANDING, TAR_IGNORE, false, MAG_ROOMS, NULL);
 
-    spello(SPELL_DETECT_ALIGN, "detect alignment", 20, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE,
+    spello(SPELL_DETECT_ALIGN, "detect alignment", 20, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, false,
            MAG_AFFECTS, "You feel less aware.");
 
-    spello(SPELL_DETECT_INVIS, "detect invisibility", 20, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE,
+    spello(SPELL_DETECT_INVIS, "detect invisibility", 20, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, false,
            MAG_AFFECTS, "Your eyes stop tingling.");
 
-    spello(SPELL_DETECT_MAGIC, "detect magic", 20, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE,
+    spello(SPELL_DETECT_MAGIC, "detect magic", 20, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, false,
            MAG_AFFECTS, "The detect magic wears off.");
 
     spello(SPELL_DETECT_POISON, "detect poison", 15, 5, 1, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM,
-           FALSE, MAG_MANUAL, "The detect poison wears off.");
+           false, MAG_MANUAL, "The detect poison wears off.");
 
-    spello(SPELL_DISPEL_EVIL, "dispel evil", 40, 25, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
+    spello(SPELL_DISPEL_EVIL, "dispel evil", 40, 25, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true, MAG_DAMAGE,
            NULL);
 
-    spello(SPELL_DISPEL_GOOD, "dispel good", 40, 25, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
+    spello(SPELL_DISPEL_GOOD, "dispel good", 40, 25, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true, MAG_DAMAGE,
            NULL);
 
-    spello(SPELL_EARTHQUAKE, "earthquake", 40, 25, 3, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
+    spello(SPELL_EARTHQUAKE, "earthquake", 40, 25, 3, POS_FIGHTING, TAR_IGNORE, true, MAG_AREAS, NULL);
 
-    spello(SPELL_ENCHANT_WEAPON, "enchant weapon", 150, 100, 10, POS_STANDING, TAR_OBJ_INV, FALSE, MAG_MANUAL, NULL);
+    spello(SPELL_ENCHANT_WEAPON, "enchant weapon", 150, 100, 10, POS_STANDING, TAR_OBJ_INV, false, MAG_MANUAL, NULL);
 
-    spello(SPELL_ENERGY_DRAIN, "energy drain", 40, 25, 1, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE,
+    spello(SPELL_ENERGY_DRAIN, "energy drain", 40, 25, 1, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true,
            MAG_DAMAGE | MAG_MANUAL, NULL);
 
-    spello(SPELL_GROUP_ARMOR, "group armor", 50, 30, 2, POS_STANDING, TAR_IGNORE, FALSE, MAG_GROUPS, NULL);
+    spello(SPELL_GROUP_ARMOR, "group armor", 50, 30, 2, POS_STANDING, TAR_IGNORE, false, MAG_GROUPS, NULL);
 
-    spello(SPELL_FIREBALL, "fireball", 40, 30, 2, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+    spello(SPELL_FIREBALL, "fireball", 40, 30, 2, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true, MAG_DAMAGE, NULL);
 
-    spello(SPELL_FLY, "fly", 40, 20, 2, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
+    spello(SPELL_FLY, "fly", 40, 20, 2, POS_FIGHTING, TAR_CHAR_ROOM, false, MAG_AFFECTS,
            "You drift slowly to the ground.");
 
-    spello(SPELL_GROUP_HEAL, "group heal", 80, 60, 5, POS_STANDING, TAR_IGNORE, FALSE, MAG_GROUPS, NULL);
+    spello(SPELL_GROUP_HEAL, "group heal", 80, 60, 5, POS_STANDING, TAR_IGNORE, false, MAG_GROUPS, NULL);
 
-    spello(SPELL_HARM, "harm", 75, 45, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+    spello(SPELL_HARM, "harm", 75, 45, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true, MAG_DAMAGE, NULL);
 
-    spello(SPELL_HEAL, "heal", 60, 40, 3, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_POINTS | MAG_UNAFFECTS, NULL);
+    spello(SPELL_HEAL, "heal", 60, 40, 3, POS_FIGHTING, TAR_CHAR_ROOM, false, MAG_POINTS | MAG_UNAFFECTS, NULL);
 
-    spello(SPELL_INFRAVISION, "infravision", 25, 10, 1, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
+    spello(SPELL_INFRAVISION, "infravision", 25, 10, 1, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, false, MAG_AFFECTS,
            "Your night vision seems to fade.");
 
-    spello(SPELL_INVISIBLE, "invisibility", 35, 25, 1, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE,
+    spello(SPELL_INVISIBLE, "invisibility", 35, 25, 1, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, false,
            MAG_AFFECTS | MAG_ALTER_OBJS, "You feel yourself exposed.");
 
-    spello(SPELL_LIGHTNING_BOLT, "lightning bolt", 30, 15, 1, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE,
+    spello(SPELL_LIGHTNING_BOLT, "lightning bolt", 30, 15, 1, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true,
            MAG_DAMAGE, NULL);
 
-    spello(SPELL_LOCATE_OBJECT, "locate object", 25, 20, 1, POS_STANDING, TAR_OBJ_WORLD, FALSE, MAG_MANUAL, NULL);
+    spello(SPELL_LOCATE_OBJECT, "locate object", 25, 20, 1, POS_STANDING, TAR_OBJ_WORLD, false, MAG_MANUAL, NULL);
 
-    spello(SPELL_MAGIC_MISSILE, "magic missile", 25, 10, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE,
+    spello(SPELL_MAGIC_MISSILE, "magic missile", 25, 10, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true,
            MAG_DAMAGE, NULL);
 
-    spello(SPELL_POISON, "poison", 50, 20, 3, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF | TAR_OBJ_INV, TRUE,
+    spello(SPELL_POISON, "poison", 50, 20, 3, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF | TAR_OBJ_INV, true,
            MAG_AFFECTS | MAG_ALTER_OBJS, "You feel less sick.");
 
-    spello(SPELL_PROT_FROM_EVIL, "protection from evil", 40, 10, 3, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE,
+    spello(SPELL_PROT_FROM_EVIL, "protection from evil", 40, 10, 3, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, false,
            MAG_AFFECTS, "You feel less protected.");
 
     spello(SPELL_REMOVE_CURSE, "remove curse", 45, 25, 5, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_EQUIP,
-           FALSE, MAG_UNAFFECTS | MAG_ALTER_OBJS, NULL);
+           false, MAG_UNAFFECTS | MAG_ALTER_OBJS, NULL);
 
     spello(SPELL_REMOVE_POISON, "remove poison", 40, 8, 4, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM,
-           FALSE, MAG_UNAFFECTS | MAG_ALTER_OBJS, NULL);
+           false, MAG_UNAFFECTS | MAG_ALTER_OBJS, NULL);
 
-    spello(SPELL_SANCTUARY, "sanctuary", 110, 85, 5, POS_STANDING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
+    spello(SPELL_SANCTUARY, "sanctuary", 110, 85, 5, POS_STANDING, TAR_CHAR_ROOM, false, MAG_AFFECTS,
            "The white aura around your body fades.");
 
-    spello(SPELL_SENSE_LIFE, "sense life", 20, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
+    spello(SPELL_SENSE_LIFE, "sense life", 20, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_SELF_ONLY, false, MAG_AFFECTS,
            "You feel less aware of your surroundings.");
 
-    spello(SPELL_SHOCKING_GRASP, "shocking grasp", 30, 15, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE,
+    spello(SPELL_SHOCKING_GRASP, "shocking grasp", 30, 15, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, true,
            MAG_DAMAGE, NULL);
 
-    spello(SPELL_SLEEP, "sleep", 40, 25, 5, POS_STANDING, TAR_CHAR_ROOM, TRUE, MAG_AFFECTS, "You feel less tired.");
+    spello(SPELL_SLEEP, "sleep", 40, 25, 5, POS_STANDING, TAR_CHAR_ROOM, true, MAG_AFFECTS, "You feel less tired.");
 
-    spello(SPELL_STRENGTH, "strength", 35, 30, 1, POS_STANDING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel weaker.");
+    spello(SPELL_STRENGTH, "strength", 35, 30, 1, POS_STANDING, TAR_CHAR_ROOM, false, MAG_AFFECTS, "You feel weaker.");
 
-    spello(SPELL_SUMMON, "summon", 75, 50, 3, POS_STANDING, TAR_CHAR_WORLD | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
+    spello(SPELL_SUMMON, "summon", 75, 50, 3, POS_STANDING, TAR_CHAR_WORLD | TAR_NOT_SELF, false, MAG_MANUAL, NULL);
 
-    spello(SPELL_TELEPORT, "teleport", 75, 50, 3, POS_STANDING, TAR_CHAR_ROOM, FALSE, MAG_MANUAL, NULL);
+    spello(SPELL_TELEPORT, "teleport", 75, 50, 3, POS_STANDING, TAR_CHAR_ROOM, false, MAG_MANUAL, NULL);
 
-    spello(SPELL_WATERWALK, "waterwalk", 40, 20, 2, POS_STANDING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
+    spello(SPELL_WATERWALK, "waterwalk", 40, 20, 2, POS_STANDING, TAR_CHAR_ROOM, false, MAG_AFFECTS,
            "Your feet seem less buoyant.");
 
-    spello(SPELL_WORD_OF_RECALL, "word of recall", 20, 10, 2, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_MANUAL, NULL);
+    spello(SPELL_WORD_OF_RECALL, "word of recall", 20, 10, 2, POS_FIGHTING, TAR_CHAR_ROOM, false, MAG_MANUAL, NULL);
 
-    spello(SPELL_IDENTIFY, "identify", 50, 25, 5, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE,
+    spello(SPELL_IDENTIFY, "identify", 50, 25, 5, POS_STANDING, TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, false,
            MAG_MANUAL, NULL);
 
 
     /* NON-castable spells should appear below here. */
-    spello(SPELL_IDENTIFY, "identify", 0, 0, 0, 0, TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_MANUAL, NULL);
+    spello(SPELL_IDENTIFY, "identify", 0, 0, 0, 0, TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, false, MAG_MANUAL, NULL);
 
     /* you might want to name this one something more fitting to your theme -Welcor*/
-    spello(SPELL_DG_AFFECT, "Script-inflicted", 0, 0, 0, POS_SITTING, TAR_IGNORE, TRUE, 0, NULL);
+    spello(SPELL_DG_AFFECT, "Script-inflicted", 0, 0, 0, POS_SITTING, TAR_IGNORE, true, 0, NULL);
 
     /* Declaration of skills - this actually doesn't do anything except set it up
      * so that immortals can use these skills by default.  The min level to use

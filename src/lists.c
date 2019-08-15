@@ -13,7 +13,7 @@
 #include "dg_event.h"
 
 static struct iterator_data Iterator;
-static bool loop = FALSE;
+static bool loop = false;
 static struct list_data *pLastList = NULL;
 
 /* Global lists */
@@ -23,7 +23,7 @@ struct list_data *group_list = NULL;
 struct list_data *create_list(void)
 {
     struct list_data *pNewList;
-    static bool first_list = TRUE;
+    static bool first_list = true;
 
     CREATE(pNewList, struct list_data, 1);
 
@@ -33,10 +33,10 @@ struct list_data *create_list(void)
     pNewList->iSize = 0;
 
     /* Add to global lists, primarily for debugging purposes */
-    if (first_list == FALSE) {
+    if (first_list == false) {
         add_to_list(pNewList, global_lists);
     } else {
-        first_list = FALSE;
+        first_list = false;
     }
 
     return (pNewList);
@@ -68,7 +68,7 @@ void free_list(struct list_data *pList)
     }
 
     if (pList->iSize > 0) {
-        mudlog(CMP, LVL_GOD, TRUE, "List being freed while not empty.");
+        mudlog(CMP, LVL_GOD, true, "List being freed while not empty.");
     }
 
     /* Global List for debugging */
@@ -114,7 +114,7 @@ void remove_from_list(void *pContent, struct list_data *pList)
     struct item_data *pRemovedItem;
 
     if ((pRemovedItem = find_in_list(pContent, pList)) == NULL) {
-        mudlog(CMP, LVL_GOD, TRUE, "WARNING: Attempting to remove contents that don't exist in list.");
+        mudlog(CMP, LVL_GOD, true, "WARNING: Attempting to remove contents that don't exist in list.");
         return;
     }
 
@@ -151,13 +151,13 @@ void *merge_iterator(struct iterator_data *pIterator, struct list_data *pList)
     void *pContent;
 
     if (pList == NULL) {
-        mudlog(NRM, LVL_GOD, TRUE, "WARNING: Attempting to merge iterator to NULL list.");
+        mudlog(NRM, LVL_GOD, true, "WARNING: Attempting to merge iterator to NULL list.");
         pIterator->pList = NULL;
         pIterator->pItem = NULL;
         return NULL;
     }
     if (pList->pFirstItem == NULL) {
-        mudlog(NRM, LVL_GOD, TRUE, "WARNING: Attempting to merge iterator to empty list.");
+        mudlog(NRM, LVL_GOD, true, "WARNING: Attempting to merge iterator to empty list.");
         pIterator->pList = NULL;
         pIterator->pItem = NULL;
         return NULL;
@@ -175,7 +175,7 @@ void *merge_iterator(struct iterator_data *pIterator, struct list_data *pList)
 void remove_iterator(struct iterator_data *pIterator)
 {
     if (pIterator->pList == NULL) {
-        mudlog(NRM, LVL_GOD, TRUE, "WARNING: Attempting to remove iterator from NULL list.");
+        mudlog(NRM, LVL_GOD, true, "WARNING: Attempting to remove iterator from NULL list.");
         return;
     }
 
@@ -194,7 +194,7 @@ void *next_in_list(struct iterator_data *pIterator)
     struct item_data *pTempItem;
 
     if (pIterator->pList == NULL) {
-        mudlog(NRM, LVL_GOD, TRUE, "WARNING: Attempting to get content from iterator with NULL list.");
+        mudlog(NRM, LVL_GOD, true, "WARNING: Attempting to get content from iterator with NULL list.");
         return NULL;
     }
 
@@ -221,9 +221,9 @@ struct item_data *find_in_list(void *pContent, struct list_data *pList)
 
     pFoundItem = merge_iterator(&Iterator, pList);
 
-    for (found = FALSE; pFoundItem != NULL; pFoundItem = next_in_list(&Iterator)) {
+    for (found = false; pFoundItem != NULL; pFoundItem = next_in_list(&Iterator)) {
         if (pFoundItem == pContent) {
-            found = TRUE;
+            found = true;
             break;
         }
     }
@@ -243,7 +243,7 @@ struct item_data *find_in_list(void *pContent, struct list_data *pList)
 
 void clear_simple_list(void)
 {
-    loop = FALSE;
+    loop = false;
     pLastList = NULL;
 }
 
@@ -259,13 +259,13 @@ void *simple_list(struct list_data *pList)
 
     if (!loop || pLastList != pList) {
         if (loop && pLastList != pList) {
-            mudlog(CMP, LVL_GRGOD, TRUE, "SYSERR: simple_list() forced to reset itself.");
+            mudlog(CMP, LVL_GRGOD, true, "SYSERR: simple_list() forced to reset itself.");
         }
 
         pContent = merge_iterator(&Iterator, pList);
         if (pContent != NULL) {
             pLastList = pList;
-            loop = TRUE;
+            loop = true;
             return (pContent);
         } else {
             return NULL;
@@ -277,7 +277,7 @@ void *simple_list(struct list_data *pList)
     }
 
     remove_iterator(&Iterator);
-    loop = FALSE;
+    loop = false;
     return NULL;
 }
 
@@ -297,9 +297,9 @@ void *random_from_list(struct list_data *pList)
 
     pFoundItem = merge_iterator(&localIterator, pList);
 
-    for (found = FALSE; pFoundItem != NULL; pFoundItem = next_in_list(&localIterator), count++) {
+    for (found = false; pFoundItem != NULL; pFoundItem = next_in_list(&localIterator), count++) {
         if (count == number) {
-            found = TRUE;
+            found = true;
             break;
         }
     }

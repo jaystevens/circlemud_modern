@@ -78,8 +78,8 @@ void act_to_room(char *str, room_data *room)
     /* Since you can't use act(..., TO_ROOM) for an room, send it TO_ROOM and 
      * TO_CHAR for some char in the room. (just dont use $n or you might get 
      * strange results). */
-    act(str, FALSE, room->people, 0, 0, TO_ROOM);
-    act(str, FALSE, room->people, 0, 0, TO_CHAR);
+    act(str, false, room->people, 0, 0, TO_ROOM);
+    act(str, false, room->people, 0, 0, TO_CHAR);
 }
 
 /* World commands */
@@ -147,9 +147,9 @@ WCMD(do_wsend)
 
     if ((ch = get_char_by_room(room, buf))) {
         if (subcmd == SCMD_WSEND) {
-            sub_write(msg, ch, TRUE, TO_CHAR);
+            sub_write(msg, ch, true, TO_CHAR);
         } else if (subcmd == SCMD_WECHOAROUND) {
-            sub_write(msg, ch, TRUE, TO_ROOM);
+            sub_write(msg, ch, true, TO_ROOM);
         }
     } else {
         wld_log(room, "no target found for wsend");
@@ -224,12 +224,12 @@ WCMD(do_wdoor)
         return;
     }
 
-    if ((dir = search_block(direction, dirs, FALSE)) == -1) {
+    if ((dir = search_block(direction, dirs, false)) == -1) {
         wld_log(room, "wdoor: invalid direction");
         return;
     }
 
-    if ((fd = search_block(field, door_field, FALSE)) == -1) {
+    if ((fd = search_block(field, door_field, false)) == -1) {
         wld_log(room, "wdoor: invalid field");
         return;
     }

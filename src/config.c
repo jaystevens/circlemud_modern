@@ -34,7 +34,7 @@
  * I've decided the convenience of having all your options in this one file
  * outweighs the efficency of doing it the other way. */
 
-/* YES / NO; TRUE / FALSE are all defined in utils.h */
+/* YES / NO; true / false are all defined in utils.h */
 
 /* Can Scripts be attached to players? */
 int script_players = NO;
@@ -188,12 +188,12 @@ room_vnum donation_room_3 = 235;
 
 /* If false stock world files will be converted to 128bit. If true the MUD will
  * exit with a warning when encountering stock world files. */
-int bitwarning = FALSE;
+int bitwarning = false;
 
 /* If you want to look at normal world files but DO NOT want to save to 128bit
  * format, turn this to false. However, do not save through olc, or your
  * world files will be 128bit anyway. */
-int bitsavetodisk = TRUE;
+int bitsavetodisk = true;
 
 /* This is the default port on which the game should run if no port is given on
  * the command-line.  NOTE WELL: If you're using the 'autorun' script, the port
@@ -238,7 +238,7 @@ int max_bad_pws = 3;
  * the one or two who I don't want logging on.  Wouldn't it be more convenient
  * to just have to remove the SITEOK flags from those people I want to ban
  * rather than what is currently done? */
-int siteok_everyone = TRUE;
+int siteok_everyone = true;
 
 /* Some nameservers are very slow and cause the game to lag terribly every time
  * someone logs in.  The lag is caused by the gethostbyaddr() function which is

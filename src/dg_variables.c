@@ -143,7 +143,7 @@ int char_has_item(char *item, struct char_data *ch)
 static int handle_oset(struct obj_data *obj, char *argument)
 {
     int i = 0;
-    bool found = FALSE;
+    bool found = false;
     char value[MAX_INPUT_LENGTH];
 
     struct oset_handler {
@@ -163,7 +163,7 @@ static int handle_oset(struct obj_data *obj, char *argument)
 
     while (*handler[i].type != '\n') {
         if (is_abbrev(value, handler[i].type)) {
-            found = TRUE;
+            found = true;
             break;
         }
         i++;
@@ -184,13 +184,13 @@ int text_processed(char *field, char *subfield, struct trig_var_data *vd, char *
 
     if (!str_cmp(field, "strlen")) {                     /* strlen    */
         snprintf(str, slen, "%d", (int) strlen(vd->value));
-        return TRUE;
+        return true;
     } else if (!str_cmp(field, "toupper")) {             /* toupper   */
         char *upper = vd->value;
         if (*upper) {
             snprintf(str, slen, "%c%s", UPPER(*upper), upper + 1);
         }
-        return TRUE;
+        return true;
     } else if (!str_cmp(field, "trim")) {                /* trim      */
         /* trim whitespace from ends */
         snprintf(tmpvar, sizeof(tmpvar) - 1, "%s", vd->value); /* -1 to use later*/
@@ -200,25 +200,25 @@ int text_processed(char *field, char *subfield, struct trig_var_data *vd, char *
         while ((p <= p2) && isspace(*p2)) { p2--; }
         if (p > p2) { /* nothing left */
             *str = '\0';
-            return TRUE;
+            return true;
         }
         *(++p2) = '\0';                                         /* +1 ok (see above) */
         snprintf(str, slen, "%s", p);
-        return TRUE;
+        return true;
     } else if (!str_cmp(field, "contains")) {            /* contains  */
         if (str_str(vd->value, subfield)) {
             strcpy(str, "1");
         } else {
             strcpy(str, "0");
         }
-        return TRUE;
+        return true;
     } else if (!str_cmp(field, "car")) {                 /* car       */
         char *car = vd->value;
         while (*car && !isspace(*car)) {
             *str++ = *car++;
         }
         *str = '\0';
-        return TRUE;
+        return true;
 
     } else if (!str_cmp(field, "cdr")) {                 /* cdr       */
         char *cdr = vd->value;
@@ -226,7 +226,7 @@ int text_processed(char *field, char *subfield, struct trig_var_data *vd, char *
         while (*cdr && isspace(*cdr)) cdr++;  /* skip to next */
 
         snprintf(str, slen, "%s", cdr);
-        return TRUE;
+        return true;
     } else if (!str_cmp(field, "charat")) {              /* CharAt    */
         size_t len = strlen(vd->value), cindex = atoi(subfield);
         if (cindex > len || cindex < 1) {
@@ -234,7 +234,7 @@ int text_processed(char *field, char *subfield, struct trig_var_data *vd, char *
         } else {
             snprintf(str, slen, "%c", vd->value[cindex - 1]);
         }
-        return TRUE;
+        return true;
     } else if (!str_cmp(field, "mudcommand")) {
         /* find the mud command returned from this text */
 /* NOTE: you may need to replace "cmd_info" with "complete_cmd_info", */
@@ -252,10 +252,10 @@ int text_processed(char *field, char *subfield, struct trig_var_data *vd, char *
         } else {
             snprintf(str, slen, "%s", cmd_info[cmd].command);
         }
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 /* sets str to be the value of var.field */
@@ -1222,7 +1222,7 @@ find_replacement(void *go, struct script_data *sc, trig_data *trig, int type, ch
                     if (!str_cmp(field, "affects")) {
                         if (subfield && *subfield) {
                             if (check_flags_by_name_ar(GET_OBJ_AFFECT(o), NUM_AFF_FLAGS, subfield, affected_bits) ==
-                                TRUE) {
+                                true) {
                                 snprintf(str, slen, "1");
                             } else {
                                 snprintf(str, slen, "0");
@@ -1508,7 +1508,7 @@ find_replacement(void *go, struct script_data *sc, trig_data *trig, int type, ch
             } else if (!str_cmp(field, "roomflag")) {
                 if (subfield && *subfield) {
                     room_rnum thisroom = real_room(r->number);
-                    if (check_flags_by_name_ar(ROOM_FLAGS(thisroom), NUM_ROOM_FLAGS, subfield, room_bits) == TRUE) {
+                    if (check_flags_by_name_ar(ROOM_FLAGS(thisroom), NUM_ROOM_FLAGS, subfield, room_bits) == true) {
                         snprintf(str, slen, "1");
                     } else {
                         snprintf(str, slen, "0");

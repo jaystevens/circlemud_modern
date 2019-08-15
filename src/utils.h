@@ -890,16 +890,6 @@ do                                                              \
 #define NULL (void *)0
 #endif
 
-#if !defined(FALSE)
-/** Just in case FALSE is not defined. */
-#define FALSE 0
-#endif
-
-#if !defined(TRUE)
-/** Just in case TRUE is not defined. */
-#define TRUE  (!FALSE)
-#endif
-
 #if !defined(YES)
 /** In case YES is not defined. */
 #define YES 1

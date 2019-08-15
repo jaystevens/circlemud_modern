@@ -65,7 +65,7 @@ ACMD(do_oasis_medit)
             return;
         }
 
-        save = TRUE;
+        save = true;
 
         if (is_number(buf2)) {
             number = atoi(buf2);
@@ -109,7 +109,7 @@ ACMD(do_oasis_medit)
 
     /* Give descriptor an OLC structure. */
     if (d->olc) {
-        mudlog(BRF, LVL_IMMORT, TRUE, "SYSERR: do_oasis_medit: Player already had olc structure.");
+        mudlog(BRF, LVL_IMMORT, true, "SYSERR: do_oasis_medit: Player already had olc structure.");
         free(d->olc);
     }
 
@@ -133,10 +133,10 @@ ACMD(do_oasis_medit)
         return;
     }
 
-    /* If save is TRUE, save the mobiles. */
+    /* If save is true, save the mobiles. */
     if (save) {
         send_to_char(ch, "Saving all mobiles in zone %d.\r\n", zone_table[OLC_ZNUM(d)].number);
-        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE, "OLC: %s saves mobile info for zone %d.", GET_NAME(ch),
+        mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), true, "OLC: %s saves mobile info for zone %d.", GET_NAME(ch),
                zone_table[OLC_ZNUM(d)].number);
 
         /* Save the mobiles. */
@@ -163,10 +163,10 @@ ACMD(do_oasis_medit)
 
     /* Display the OLC messages to the players in the same room as the
        builder and also log it. */
-    act("$n starts using OLC.", TRUE, d->character, 0, 0, TO_ROOM);
+    act("$n starts using OLC.", true, d->character, 0, 0, TO_ROOM);
     SET_BIT_AR(PLR_FLAGS(ch), PLR_WRITING);
 
-    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), TRUE, "OLC: %s starts editing zone %d allowed zone %d",
+    mudlog(CMP, MAX(LVL_IMMORT, GET_INVIS_LEV(ch)), true, "OLC: %s starts editing zone %d allowed zone %d",
            GET_NAME(ch), zone_table[OLC_ZNUM(d)].number, GET_OLC_ZONE(ch));
 }
 
@@ -195,7 +195,7 @@ static void medit_setup_new(struct descriptor_data *d)
 
     OLC_MOB(d) = mob;
     /* Has changed flag. (It hasn't so far, we just made it.) */
-    OLC_VAL(d) = FALSE;
+    OLC_VAL(d) = false;
     OLC_ITEM_TYPE(d) = MOB_TRIGGER;
 }
 
@@ -315,7 +315,7 @@ static void medit_disp_positions(struct descriptor_data *d)
 {
     get_char_colors(d->character);
     clear_screen(d);
-    column_list(d->character, 0, position_types, NUM_POSITIONS, TRUE);
+    column_list(d->character, 0, position_types, NUM_POSITIONS, true);
     write_to_output(d, "Enter position number : ");
 }
 
@@ -324,7 +324,7 @@ static void medit_disp_sex(struct descriptor_data *d)
 {
     get_char_colors(d->character);
     clear_screen(d);
-    column_list(d->character, 0, genders, NUM_GENDERS, TRUE);
+    column_list(d->character, 0, genders, NUM_GENDERS, true);
     write_to_output(d, "Enter gender number : ");
 }
 
@@ -357,11 +357,11 @@ static bool medit_illegal_mob_flag(int fl)
 
     for (i = 0; i < num_illegal_flags; i++) {
         if (fl == illegal_flags[i]) {
-            return (TRUE);
+            return (true);
         }
     }
 
-    return (FALSE);
+    return (false);
 
 }
 
@@ -405,7 +405,7 @@ static void medit_disp_aff_flags(struct descriptor_data *d)
     get_char_colors(d->character);
     clear_screen(d);
     /* +1 since AFF_FLAGS don't start at 0. */
-    column_list(d->character, 0, affected_bits + 1, NUM_AFF_FLAGS, TRUE);
+    column_list(d->character, 0, affected_bits + 1, NUM_AFF_FLAGS, true);
     sprintbitarray(AFF_FLAGS(OLC_MOB(d)), affected_bits, AF_ARRAY_MAX, flags);
     write_to_output(d, "\r\nCurrent flags   : %s%s%s\r\nEnter aff flags (0 to quit) : ", cyn, flags, nrm);
 }
@@ -538,7 +538,7 @@ void medit_parse(struct descriptor_data *d, char *arg)
                 case 'Y':
                     /* Save the mob in memory and to disk. */
                     medit_save_internally(d);
-                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s edits mob %d",
+                    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), true, "OLC: %s edits mob %d",
                            GET_NAME(d->character), OLC_NUM(d));
                     if (CONFIG_OLC_SAVE) {
                         medit_save_to_disk(zone_table[real_zone_by_thing(OLC_NUM(d))].number);
@@ -671,7 +671,7 @@ void medit_parse(struct descriptor_data *d, char *arg)
                 case '2':  /* Autoroll stats */
                     medit_autoroll_stats(d);
                     medit_disp_stats_menu(d);
-                    OLC_VAL(d) = TRUE;
+                    OLC_VAL(d) = true;
                     return;
                 case '3':
                     OLC_MODE(d) = MEDIT_NUM_HP_DICE;
@@ -875,7 +875,7 @@ void medit_parse(struct descriptor_data *d, char *arg)
              * We should never get here.
              */
             cleanup_olc(d, CLEANUP_ALL);
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: medit_parse(): Reached D_DESC case!");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: medit_parse(): Reached D_DESC case!");
             write_to_output(d, "Oops...\r\n");
             break;
 
@@ -913,127 +913,127 @@ void medit_parse(struct descriptor_data *d, char *arg)
 
         case MEDIT_HITROLL:
             GET_HITROLL(OLC_MOB(d)) = LIMIT(i, 0, 50);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_DAMROLL:
             GET_DAMROLL(OLC_MOB(d)) = LIMIT(i, 0, 50);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_NDD:
             GET_NDD(OLC_MOB(d)) = LIMIT(i, 0, 30);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_SDD:
             GET_SDD(OLC_MOB(d)) = LIMIT(i, 0, 127);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_NUM_HP_DICE:
             GET_HIT(OLC_MOB(d)) = LIMIT(i, 0, 30);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_SIZE_HP_DICE:
             GET_MANA(OLC_MOB(d)) = LIMIT(i, 0, 1000);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_ADD_HP:
             GET_MOVE(OLC_MOB(d)) = LIMIT(i, 0, 30000);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_AC:
             GET_AC(OLC_MOB(d)) = LIMIT(i, -200, 200);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_EXP:
             GET_EXP(OLC_MOB(d)) = LIMIT(i, 0, MAX_MOB_EXP);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_GOLD:
             GET_GOLD(OLC_MOB(d)) = LIMIT(i, 0, MAX_MOB_GOLD);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_STR:
             GET_STR(OLC_MOB(d)) = LIMIT(i, 11, 25);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_INT:
             GET_INT(OLC_MOB(d)) = LIMIT(i, 11, 25);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_WIS:
             GET_WIS(OLC_MOB(d)) = LIMIT(i, 11, 25);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_DEX:
             GET_DEX(OLC_MOB(d)) = LIMIT(i, 11, 25);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_CON:
             GET_CON(OLC_MOB(d)) = LIMIT(i, 11, 25);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_CHA:
             GET_CHA(OLC_MOB(d)) = LIMIT(i, 11, 25);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_PARA:
             GET_SAVE(OLC_MOB(d), SAVING_PARA) = LIMIT(i, 0, 100);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_ROD:
             GET_SAVE(OLC_MOB(d), SAVING_ROD) = LIMIT(i, 0, 100);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_PETRI:
             GET_SAVE(OLC_MOB(d), SAVING_PETRI) = LIMIT(i, 0, 100);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_BREATH:
             GET_SAVE(OLC_MOB(d), SAVING_BREATH) = LIMIT(i, 0, 100);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_SPELL:
             GET_SAVE(OLC_MOB(d), SAVING_SPELL) = LIMIT(i, 0, 100);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
@@ -1051,13 +1051,13 @@ void medit_parse(struct descriptor_data *d, char *arg)
 
         case MEDIT_LEVEL:
             GET_LEVEL(OLC_MOB(d)) = LIMIT(i, 1, LVL_IMPL);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
         case MEDIT_ALIGNMENT:
             GET_ALIGNMENT(OLC_MOB(d)) = LIMIT(i, -1000, 1000);
-            OLC_VAL(d) = TRUE;
+            OLC_VAL(d) = true;
             medit_disp_stats_menu(d);
             return;
 
@@ -1091,7 +1091,7 @@ void medit_parse(struct descriptor_data *d, char *arg)
         default:
             /* We should never get here. */
             cleanup_olc(d, CLEANUP_ALL);
-            mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: medit_parse(): Reached default case!");
+            mudlog(BRF, LVL_BUILDER, true, "SYSERR: OLC: medit_parse(): Reached default case!");
             write_to_output(d, "Oops...\r\n");
             break;
     }
@@ -1099,7 +1099,7 @@ void medit_parse(struct descriptor_data *d, char *arg)
 /* END OF CASE If we get here, we have probably changed something, and now want
    to return to main menu.  Use OLC_VAL as a 'has changed' flag */
 
-    OLC_VAL(d) = TRUE;
+    OLC_VAL(d) = true;
     medit_disp_menu(d);
 }
 

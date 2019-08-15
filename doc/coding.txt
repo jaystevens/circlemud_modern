@@ -1212,7 +1212,7 @@ af[1].location = APPLY_SAVING_SPELL;
 af[1].modifier = -1; 
 af[1].duration = 6; 
 
-accum_duration = TRUE; 
+accum_duration = true;
 to_vict = "You feel righteous."; 
 break; 
 
@@ -1221,7 +1221,7 @@ location field. The modifier’s effect will depend on the affection type used. 
 MAX_SPELL_AFFECTS values can be assigned to. Although not listed in the above 
 example, a ‘.bitvector’ value may be assigned to if the spell should tag the player 
 with an AFF_ flag. If multiple castings of the same spell should be cumulative in 
-duration, the ‘accum_duration’ variable is set to TRUE. Likewise, if the modifier 
+duration, the ‘accum_duration’ variable is set to true. Likewise, if the modifier
 is cumulative, the ‘accum_effect’ variable should be set to TRUE. A string 
 assigned to ‘to_room’ will be passed through act() for the occupants of the same 
 room as the caster. A ‘to_vict’ string will be given to act() with the target of 
