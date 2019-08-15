@@ -115,27 +115,27 @@ extern const char *nrm, *grn, *cyn, *yel;
 
 /* Descriptor access macros. */
 #define OLC(d)         ((d)->olc)
-#define OLC_MODE(d)    (OLC(d)->mode)     /**< Parse input mode.	*/
-#define OLC_NUM(d)     (OLC(d)->number)   /**< Room/Obj VNUM.	*/
-#define OLC_VAL(d)     (OLC(d)->value)    /**< Scratch variable.	*/
-#define OLC_ZNUM(d)    (OLC(d)->zone_num) /**< Real zone number.	*/
+#define OLC_MODE(d)    (OLC(d)->mode)     /* Parse input mode.	*/
+#define OLC_NUM(d)     (OLC(d)->number)   /* Room/Obj VNUM.	*/
+#define OLC_VAL(d)     (OLC(d)->value)    /* Scratch variable.	*/
+#define OLC_ZNUM(d)    (OLC(d)->zone_num) /* Real zone number.	*/
 
-#define OLC_STORAGE(d) (OLC(d)->storage)  /**< char pointer.	*/
-#define OLC_ROOM(d)    (OLC(d)->room)     /**< Room structure.	*/
-#define OLC_OBJ(d)     (OLC(d)->obj)      /**< Object structure.	*/
-#define OLC_ZONE(d)    (OLC(d)->zone)     /**< Zone structure.	*/
-#define OLC_MOB(d)     (OLC(d)->mob)      /**< Mob structure.	*/
-#define OLC_SHOP(d)    (OLC(d)->shop)     /**< Shop structure.	*/
-#define OLC_DESC(d)    (OLC(d)->desc)     /**< Extra description.	*/
-#define OLC_CONFIG(d)  (OLC(d)->config)   /**< Config structure.	*/
-#define OLC_TRIG(d)    (OLC(d)->trig)     /**< Trigger structure.   */
-#define OLC_QUEST(d)   (OLC(d)->quest)    /**< Quest structure      */
-#define OLC_MSG_LIST(d) (OLC(d)->msg)      /**< Message structure    */
+#define OLC_STORAGE(d) (OLC(d)->storage)  /* char pointer.	*/
+#define OLC_ROOM(d)    (OLC(d)->room)     /* Room structure.	*/
+#define OLC_OBJ(d)     (OLC(d)->obj)      /* Object structure.	*/
+#define OLC_ZONE(d)    (OLC(d)->zone)     /* Zone structure.	*/
+#define OLC_MOB(d)     (OLC(d)->mob)      /* Mob structure.	*/
+#define OLC_SHOP(d)    (OLC(d)->shop)     /* Shop structure.	*/
+#define OLC_DESC(d)    (OLC(d)->desc)     /* Extra description.	*/
+#define OLC_CONFIG(d)  (OLC(d)->config)   /* Config structure.	*/
+#define OLC_TRIG(d)    (OLC(d)->trig)     /* Trigger structure.   */
+#define OLC_QUEST(d)   (OLC(d)->quest)    /* Quest structure      */
+#define OLC_MSG_LIST(d) (OLC(d)->msg)      /* Message structure    */
 
-#define OLC_ACTION(d)  (OLC(d)->action)   /**< Action structure     */
-#define OLC_HELP(d)    (OLC(d)->help)     /**< Hedit structure      */
-#define OLC_PREFS(d)   (OLC(d)->prefs)    /**< Preferences structure */
-#define OLC_IBT(d)     (OLC(d)->ibt)      /**< IBT (idea/bug/typo) structure */
+#define OLC_ACTION(d)  (OLC(d)->action)   /* Action structure     */
+#define OLC_HELP(d)    (OLC(d)->help)     /* Hedit structure      */
+#define OLC_PREFS(d)   (OLC(d)->prefs)    /* Preferences structure */
+#define OLC_IBT(d)     (OLC(d)->ibt)      /* IBT (idea/bug/typo) structure */
 /* Other macros. */
 #define OLC_EXIT(d)    (OLC_ROOM(d)->dir_option[OLC_VAL(d)])
 #define OLC_MSG(d)     (OLC(d)->m_type)

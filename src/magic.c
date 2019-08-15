@@ -721,9 +721,9 @@ static const char *mag_summon_fail_msgs[] = {
     "There is no corpse!\r\n"};
 
 /* Defines for Mag_Summons */
-#define MOB_CLONE            10   /**< vnum for the clone mob. */
-#define OBJ_CLONE            161  /**< vnum for clone material. */
-#define MOB_ZOMBIE           11   /**< vnum for the zombie mob. */
+#define MOB_CLONE            10   /* vnum for the clone mob. */
+#define OBJ_CLONE            161  /* vnum for clone material. */
+#define MOB_ZOMBIE           11   /* vnum for the zombie mob. */
 
 void mag_summons(int level, struct char_data *ch, struct obj_data *obj, int spellnum, int savetype)
 {

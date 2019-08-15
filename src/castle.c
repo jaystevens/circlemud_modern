@@ -18,7 +18,7 @@
 #include "db.h"
 #include "spells.h"
 #include "act.h"
-#include "spec_procs.h" /**< castle.c is part of the spec_procs module */
+#include "spec_procs.h" /* castle.c is part of the spec_procs module */
 #include "fight.h"
 
 /* IMPORTANT! The below defined number is the zone number of the Kings Castle.

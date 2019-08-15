@@ -46,9 +46,9 @@ const char *shop_bits[] = {
 
 
 /* local (file scope) function prototypes  */
-static void push(struct stack_data *stack, int pushval); /**< @todo Move to utils.c */
-static int top(struct stack_data *stack); /**< @todo Move to utils.c */
-static int pop(struct stack_data *stack); /**< @todo Move to utils.c */
+static void push(struct stack_data *stack, int pushval); /* @todo Move to utils.c */
+static int top(struct stack_data *stack); /* @todo Move to utils.c */
+static int pop(struct stack_data *stack); /* @todo Move to utils.c */
 static char *
 list_object(struct obj_data *obj, int cnt, int oindex, int shop_nr, struct char_data *keeper, struct char_data *seller);
 static void sort_keeper_objs(struct char_data *keeper, int shop_nr);

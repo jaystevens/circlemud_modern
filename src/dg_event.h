@@ -30,10 +30,10 @@
 /** The event structure. Events get attached to the queue and are executed
  * when their turn comes up in the queue. */
 struct event {
-    EVENTFUNC(*func); /**< The function called when this event comes up. */
-    void *event_obj;  /**< event_obj is passed to func when func is called */
-    struct q_element *q_el;  /**< Where this event is located in the queue */
-    bool isMudEvent;  /**< used by the memory routines */
+    EVENTFUNC(*func); /* The function called when this event comes up. */
+    void *event_obj;  /* event_obj is passed to func when func is called */
+    struct q_element *q_el;  /* Where this event is located in the queue */
+    bool isMudEvent;  /* used by the memory routines */
 };
 /**************************************************************************
  * End event structures and defines.
@@ -47,15 +47,15 @@ struct event {
 
 /** The priority queue. */
 struct dg_queue {
-    struct q_element *head[NUM_EVENT_QUEUES]; /**< Front of each queue bucket. */
-    struct q_element *tail[NUM_EVENT_QUEUES]; /**< Rear of each queue bucket. */
+    struct q_element *head[NUM_EVENT_QUEUES]; /* Front of each queue bucket. */
+    struct q_element *tail[NUM_EVENT_QUEUES]; /* Rear of each queue bucket. */
 };
 
 /** Queued elements. */
 struct q_element {
-    void *data;  /**< The event to be handled. */
-    long key;    /**< When the event should be handled. */
-    struct q_element *prev, *next; /**< Points to other q_elements in line. */
+    void *data;  /* The event to be handled. */
+    long key;    /* When the event should be handled. */
+    struct q_element *prev, *next; /* Points to other q_elements in line. */
 };
 /**************************************************************************
  * End priority queue structures and defines.
