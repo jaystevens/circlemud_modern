@@ -51,7 +51,7 @@ extern room_vnum donation_room_1;
 extern room_vnum donation_room_2;
 extern room_vnum donation_room_3;
 /* Game Operation settings */
-extern ush_int DFLT_PORT;
+extern uint16_t DFLT_PORT;
 extern const char *DFLT_IP;
 extern const char *DFLT_DIR;
 extern const char *LOGNAME;

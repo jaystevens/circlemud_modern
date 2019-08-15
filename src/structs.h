@@ -605,7 +605,6 @@
 #define MAX_CMD_LENGTH 16384
 
 /* Type Definitions */
-typedef unsigned short int ush_int; /* 2 bytes; vals = 0 to 65,535 */
 #if !defined(__cplusplus)    /* Anyone know a portable method? */
 typedef char bool; /* Technically 1 signed byte; vals should only = TRUE or FALSE. */
 #endif
@@ -1284,7 +1283,7 @@ struct room_numbers {
 
 /* Operational game variables. */
 struct game_operation {
-    ush_int DFLT_PORT;          /* The default port to run the game. */
+    uint16_t DFLT_PORT;         /* The default port to run the game. */
     char *DFLT_IP;              /* Bind to all interfaces. */
     char *DFLT_DIR;             /* The default directory (lib). */
     char *LOGNAME;              /* The file to log messages to. */

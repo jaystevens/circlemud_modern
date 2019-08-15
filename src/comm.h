@@ -71,7 +71,7 @@ extern int no_specials;
 extern int scheck;
 extern FILE *logfile;
 extern unsigned long pulse;
-extern ush_int port;
+extern uint16_t port;
 extern socket_t mother_desc;
 extern int next_tick;
 

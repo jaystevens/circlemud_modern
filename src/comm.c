@@ -98,7 +98,7 @@ int no_specials = 0;      /* Suppress ass. of special routines */
 int scheck = 0;           /* for syntax checking mode */
 FILE *logfile = NULL;     /* Where to send the log messages. */
 unsigned long pulse = 0;  /* number of pulses since game start */
-ush_int port;
+uint16_t port;
 socket_t mother_desc;
 int next_tick = SECS_PER_MUD_HOUR;  /* Tick countdown */
 /* used with do_tell and handle_webster_file utility */
@@ -131,9 +131,9 @@ static ssize_t perform_socket_read(socket_t desc, char *read_point, size_t space
 static ssize_t perform_socket_write(socket_t desc, const char *txt, size_t length);
 static void circle_sleep(struct timeval *timeout);
 static int get_from_q(struct txt_q *queue, char *dest, int *aliased);
-static void init_game(ush_int port);
+static void init_game(uint16_t port);
 static void signal_setup(void);
-static socket_t init_socket(ush_int port);
+static socket_t init_socket(uint16_t port);
 static int new_descriptor(socket_t s);
 static int get_max_players(void);
 static int process_output(struct descriptor_data *t);
@@ -502,7 +502,7 @@ void copyover_recover()
 }
 
 /* Init sockets, run game, and cleanup sockets */
-static void init_game(ush_int local_port)
+static void init_game(uint16_t local_port)
 {
     /* We don't want to restart if we crash before we get up. */
     touch(KILLSCRIPT_FILE);
@@ -566,7 +566,7 @@ static void init_game(ush_int local_port)
 
 /* init_socket sets up the mother descriptor - creates the socket, sets
  * its options up, binds it, and listens. */
-static socket_t init_socket(ush_int local_port)
+static socket_t init_socket(uint16_t local_port)
 {
     socket_t s;
     struct sockaddr_in sa;
