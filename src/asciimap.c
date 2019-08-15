@@ -556,10 +556,10 @@ static void perform_map(struct char_data *ch, char *argument, bool worldmap)
     strcpy(buf, strfrmt(buf, LEGEND_WIDTH, CANVAS_HEIGHT + 2, FALSE, TRUE, TRUE));
 
     /* Start with an empty column */
-    strcpy(buf1, strfrmt("", 0, CANVAS_HEIGHT + 2, FALSE, FALSE, TRUE));
+    strcpy(buf1, strfrmt((char*)"", 0, CANVAS_HEIGHT + 2, FALSE, FALSE, TRUE));
 
     /* Paste the legend */
-    strcpy(buf2, strpaste(buf1, buf, "\tD | \tn"));
+    strcpy(buf2, strpaste(buf1, buf, (char*)"\tD | \tn"));
 
     /* Set up the map */
     memset(buf, ' ', CANVAS_WIDTH);
@@ -572,9 +572,9 @@ static void perform_map(struct char_data *ch, char *argument, bool worldmap)
     memset(buf + count, ' ', CANVAS_WIDTH);
     strcpy(buf + count + CANVAS_WIDTH, "\r\n");
     /* Paste it on */
-    strcpy(buf2, strpaste(buf2, buf, "\tD | \tn"));
+    strcpy(buf2, strpaste(buf2, buf, (char*)"\tD | \tn"));
     /* Paste on the right border */
-    strcpy(buf2, strpaste(buf2, buf1, "  "));
+    strcpy(buf2, strpaste(buf2, buf1, (char*)"  "));
     /* Print it all out */
     send_to_char(ch, "%s", buf2);
 
@@ -626,10 +626,10 @@ void str_and_map(char *str, struct char_data *ch, room_vnum target_room)
 
     if (worldmap) {
         send_to_char(ch, "%s", strpaste(strfrmt(str, GET_SCREEN_WIDTH(ch) - char_size, size * 2 + 1, FALSE, TRUE, TRUE),
-                                        WorldMap(centre, size, MAP_CIRCLE, MAP_COMPACT), " \tn"));
+                                        WorldMap(centre, size, MAP_CIRCLE, MAP_COMPACT), (char*)" \tn"));
     } else {
         send_to_char(ch, "%s", strpaste(strfrmt(str, GET_SCREEN_WIDTH(ch) - char_size, size * 2 + 1, FALSE, TRUE, TRUE),
-                                        CompactStringMap(centre, size), " \tn"));
+                                        CompactStringMap(centre, size), (char*)" \tn"));
     }
 
 }
