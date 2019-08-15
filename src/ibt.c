@@ -118,7 +118,8 @@ static void free_ibt_list(IBT_DATA *first_ibt, IBT_DATA *last_ibt)
 static IBT_DATA *read_ibt(char *filename, FILE *fp)
 {
     IBT_DATA *ibtData;
-    char *word, *id_num = NULL, *dated = NULL;
+    char *id_num = NULL, *dated = NULL;
+    const char *word;
     char buf[MAX_STRING_LENGTH];
     bool fMatch, flgCheck = false;
     char letter;
