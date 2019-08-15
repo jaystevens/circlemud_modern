@@ -22,7 +22,7 @@
 void load_messages(void);
 void free_messages(void);
 void save_messages_to_disk(void);
-void free_message_list(struct message_list * mlist);
+void free_message_list(struct message_list *mlist);
 
 /* Defines */
 #define MSGEDIT_MAIN_MENU     1

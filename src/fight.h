@@ -16,8 +16,8 @@
 /* Structures and defines */
 /* Attacktypes with grammar */
 struct attack_hit_type {
-   const char *singular;
-   const char *plural;
+    const char *singular;
+    const char *plural;
 };
 
 /* Functions available in fight.c */
@@ -26,14 +26,13 @@ void check_killer(struct char_data *ch, struct char_data *vict);
 int compute_armor_class(struct char_data *ch);
 int damage(struct char_data *ch, struct char_data *victim, int dam, int attacktype);
 void death_cry(struct char_data *ch);
-void die(struct char_data * ch, struct char_data * killer);
+void die(struct char_data *ch, struct char_data *killer);
 void hit(struct char_data *ch, struct char_data *victim, int type);
 void perform_violence(void);
-void raw_kill(struct char_data * ch, struct char_data * killer);
-void  set_fighting(struct char_data *ch, struct char_data *victim);
-int skill_message(int dam, struct char_data *ch, struct char_data *vict,
-          int attacktype);
-void  stop_fighting(struct char_data *ch);
+void raw_kill(struct char_data *ch, struct char_data *killer);
+void set_fighting(struct char_data *ch, struct char_data *victim);
+int skill_message(int dam, struct char_data *ch, struct char_data *vict, int attacktype);
+void stop_fighting(struct char_data *ch);
 
 
 /* Global variables */

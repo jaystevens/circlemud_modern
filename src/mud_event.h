@@ -30,28 +30,28 @@ typedef enum {
 } event_id;
 
 struct mud_event_list {
-  const char * event_name;
-  EVENTFUNC(*func);
-  int iEvent_Type;
+    const char *event_name;
+    EVENTFUNC(*func);
+    int iEvent_Type;
 };
 
 struct mud_event_data {
-  struct  event * pEvent;      /***< Pointer reference to the event */
-  event_id        iId;         /***< General ID reference */  
-  void          * pStruct;     /***< Pointer to NULL, Descriptor, Character .... */
-  char          * sVariables;	 /***< String variable */
-}; 
+    struct event *pEvent;      /***< Pointer reference to the event */
+    event_id iId;         /***< General ID reference */
+    void *pStruct;     /***< Pointer to NULL, Descriptor, Character .... */
+    char *sVariables;     /***< String variable */
+};
 
 /* Externals */
-extern struct list_data * world_events;
+extern struct list_data *world_events;
 extern struct mud_event_list mud_event_index[];
 /* Local Functions */
 void init_events(void);
 struct mud_event_data *new_mud_event(event_id iId, void *pStruct, char *sVariables);
 void attach_mud_event(struct mud_event_data *pMudEvent, long time);
 void free_mud_event(struct mud_event_data *pMudEvent);
-struct mud_event_data * char_has_mud_event(struct char_data * ch, event_id iId);
-void clear_char_event_list(struct char_data * ch);
+struct mud_event_data *char_has_mud_event(struct char_data *ch, event_id iId);
+void clear_char_event_list(struct char_data *ch);
 
 /* Events */
 EVENTFUNC(event_countdown);

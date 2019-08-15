@@ -9,7 +9,7 @@
 *  CircleMUD is based on DikuMUD, Copyright (C) 1990, 1991.               *
 **************************************************************************/
 
-typedef struct  ibt_data               IBT_DATA;
+typedef struct ibt_data IBT_DATA;
 
 #define MAX_IBT_LENGTH       2048
 #define MAX_IBTNOTE_LENGTH   2048
@@ -33,7 +33,7 @@ typedef struct  ibt_data               IBT_DATA;
 #define IBT_TYPE         (ibt_types[(OLC_VAL(d))])
 
 #define IBT_FLAGS(x)     ((x)->flags)
-#define IBT_FLAGGED(x,y) (IS_SET_AR(((x)->flags), (y)))
+#define IBT_FLAGGED(x, y) (IS_SET_AR(((x)->flags), (y)))
 
 /* IBT Editor OLC modes */
 #define IBTEDIT_CONFIRM_SAVESTRING 1
@@ -48,7 +48,7 @@ typedef struct  ibt_data               IBT_DATA;
 #ifdef KEY
 #undef KEY
 #endif
-#define KEY( literal, field, value )                                    \
+#define KEY(literal, field, value)                                    \
                                 if ( !str_cmp( word, literal ) )        \
                                 {                                       \
                                     field  = value;                     \
@@ -60,7 +60,7 @@ typedef struct  ibt_data               IBT_DATA;
 #ifdef TXT_KEY
 #undef TXT_KEY
 #endif
-#define TXT_KEY( literal, field, value )                                \
+#define TXT_KEY(literal, field, value)                                \
                                 if ( !str_cmp( word, literal ) )        \
                                 {                                       \
                                     if (field) STRFREE(field);          \
@@ -69,27 +69,26 @@ typedef struct  ibt_data               IBT_DATA;
                                     break;                              \
                                 }
 
-struct ibt_data
-{
-  IBT_DATA   *next;                 /**< Pointer to next IBT in the list           */
-  IBT_DATA   *prev;                 /**< Pointer to previous IBT in the list       */
-  char       *text;                 /**< Header Text for this IBT                  */
-  char       *body;                 /**< Body Text for this IBT                    */
-  char       *name;                 /**< Name of the person who reported this IBT  */
-  char       *notes;                /**< Resolution Notes added by Administrators  */
-  int        level;                 /**< Level of the person who reported this IBT */
-  room_vnum  room;                  /**< Room in which this IBT was reported       */
-  long       id_num;                /**< The ID number of the player who logged it */
-  int        flags[IBT_ARRAY_MAX];  /**< IBT flags                                 */
-  long       dated;                 /**< When the IBT what reported                */
+struct ibt_data {
+    IBT_DATA *next;                 /**< Pointer to next IBT in the list           */
+    IBT_DATA *prev;                 /**< Pointer to previous IBT in the list       */
+    char *text;                 /**< Header Text for this IBT                  */
+    char *body;                 /**< Body Text for this IBT                    */
+    char *name;                 /**< Name of the person who reported this IBT  */
+    char *notes;                /**< Resolution Notes added by Administrators  */
+    int level;                 /**< Level of the person who reported this IBT */
+    room_vnum room;                  /**< Room in which this IBT was reported       */
+    long id_num;                /**< The ID number of the player who logged it */
+    int flags[IBT_ARRAY_MAX];  /**< IBT flags                                 */
+    long dated;                 /**< When the IBT what reported                */
 };
 
-extern  IBT_DATA       *first_bug;
-extern  IBT_DATA       *last_bug;
-extern  IBT_DATA       *first_idea;
-extern  IBT_DATA       *last_idea;
-extern  IBT_DATA       *first_typo;
-extern  IBT_DATA       *last_typo;
+extern IBT_DATA *first_bug;
+extern IBT_DATA *last_bug;
+extern IBT_DATA *first_idea;
+extern IBT_DATA *last_idea;
+extern IBT_DATA *first_typo;
+extern IBT_DATA *last_typo;
 
 /* Functions in ibt.c that are used externally */
 ACMD(do_ibt);

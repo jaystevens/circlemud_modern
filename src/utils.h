@@ -29,10 +29,10 @@
 /* external declarations and prototypes */
 
 /** direct all log() references to basic_mud_log() function. */
-#define log			basic_mud_log
+#define log            basic_mud_log
 
 /** Standard line size, used for many string limits. */
-#define READ_SIZE	256
+#define READ_SIZE    256
 
 /* Public functions made available from utils.c. Documentation for all functions
  * are made available with the function definition. */
@@ -40,10 +40,10 @@ void basic_mud_log(const char *format, ...) __attribute__ ((format (printf, 1, 2
 void basic_mud_vlog(const char *format, va_list args);
 int touch(const char *path);
 void mudlog(int type, int level, int file, const char *str, ...) __attribute__ ((format (printf, 4, 5)));
-int	rand_number(int from, int to);
-int	dice(int number, int size);
-size_t	sprintbit(bitvector_t vektor, const char *names[], char *result, size_t reslen);
-size_t	sprinttype(int type, const char *names[], char *result, size_t reslen);
+int rand_number(int from, int to);
+int dice(int number, int size);
+size_t sprintbit(bitvector_t vektor, const char *names[], char *result, size_t reslen);
+size_t sprinttype(int type, const char *names[], char *result, size_t reslen);
 void sprintbitarray(int bitvector[], const char *names[], int maxar, char *result);
 int get_line(FILE *fl, char *buf);
 int get_filename(char *filename, size_t fbufsize, int mode, const char *orig_name);
@@ -59,17 +59,17 @@ struct time_info_data *mud_time_passed(time_t t2, time_t t1);
 void prune_crlf(char *txt);
 void column_list(struct char_data *ch, int num_cols, const char **list, int list_length, bool show_nums);
 int get_flag_by_name(const char *flag_list[], char *flag_name);
-int file_head( FILE *file, char *buf, size_t bufsize, int lines_to_read );
-int file_tail( FILE *file, char *buf, size_t bufsize, int lines_to_read );
-size_t file_sizeof( FILE *file );
-int file_numlines( FILE *file );
-IDXTYPE atoidx( const char *str_to_conv );
+int file_head(FILE *file, char *buf, size_t bufsize, int lines_to_read);
+int file_tail(FILE *file, char *buf, size_t bufsize, int lines_to_read);
+size_t file_sizeof(FILE *file);
+int file_numlines(FILE *file);
+IDXTYPE atoidx(const char *str_to_conv);
 char *strfrmt(char *str, int w, int h, int justify, int hpad, int vpad);
 char *strpaste(char *str1, char *str2, char *joiner);
 void new_affect(struct affected_type *af);
 int get_class_by_name(char *classname);
-char * convert_from_tabs(char * string);
-int count_non_protocol_chars(char * str);
+char *convert_from_tabs(char *string);
+int count_non_protocol_chars(char *str);
 
 /* Public functions made available form weather.c */
 void weather_and_time(int mode);
@@ -106,30 +106,30 @@ int MIN(int a, int b);
 char *CAP(char *txt);
 
 /* Followers */
-int	num_followers_charmed(struct char_data *ch);
-void	die_follower(struct char_data *ch);
-void	add_follower(struct char_data *ch, struct char_data *leader);
-void	stop_follower(struct char_data *ch);
-bool	circle_follow(struct char_data *ch, struct char_data *victim);
+int num_followers_charmed(struct char_data *ch);
+void die_follower(struct char_data *ch);
+void add_follower(struct char_data *ch, struct char_data *leader);
+void stop_follower(struct char_data *ch);
+bool circle_follow(struct char_data *ch, struct char_data *victim);
 
 /* in act.informative.c */
-void	look_at_room(struct char_data *ch, int mode);
-void  add_history(struct char_data *ch, char *msg, int type);
+void look_at_room(struct char_data *ch, int mode);
+void add_history(struct char_data *ch, char *msg, int type);
 
 /* in act.movmement.c */
-int	do_simple_move(struct char_data *ch, int dir, int following);
-int	perform_move(struct char_data *ch, int dir, int following);
+int do_simple_move(struct char_data *ch, int dir, int following);
+int perform_move(struct char_data *ch, int dir, int following);
 
 /* in limits.c */
-int	mana_gain(struct char_data *ch);
-int	hit_gain(struct char_data *ch);
-int	move_gain(struct char_data *ch);
-void	set_title(struct char_data *ch, char *title);
-void	gain_exp(struct char_data *ch, int gain);
-void	gain_exp_regardless(struct char_data *ch, int gain);
-void	gain_condition(struct char_data *ch, int condition, int value);
-void	point_update(void);
-void	update_pos(struct char_data *victim);
+int mana_gain(struct char_data *ch);
+int hit_gain(struct char_data *ch);
+int move_gain(struct char_data *ch);
+void set_title(struct char_data *ch, char *title);
+void gain_exp(struct char_data *ch, int gain);
+void gain_exp_regardless(struct char_data *ch, int gain);
+void gain_condition(struct char_data *ch, int condition, int value);
+void point_update(void);
+void update_pos(struct char_data *victim);
 void run_autowiz(void);
 int increase_gold(struct char_data *ch, int amt);
 int decrease_gold(struct char_data *ch, int amt);
@@ -137,7 +137,7 @@ int increase_bank(struct char_data *ch, int amt);
 int decrease_bank(struct char_data *ch, int amt);
 
 /* in class.c */
-void    advance_level(struct char_data *ch);
+void advance_level(struct char_data *ch);
 
 void char_from_furniture(struct char_data *ch);
 /** What ch is currently sitting on. */
@@ -150,10 +150,10 @@ void char_from_furniture(struct char_data *ch);
 /* various constants */
 
 /* defines for mudlog() */
-#define OFF	0  /**< Receive no mudlog messages. */
-#define BRF	1  /**< Receive only the most important mudlog messages. */
-#define NRM	2  /**< Receive the standard mudlog messages. */
-#define CMP	3  /**< Receive every mudlog message. */
+#define OFF    0  /**< Receive no mudlog messages. */
+#define BRF    1  /**< Receive only the most important mudlog messages. */
+#define NRM    2  /**< Receive the standard mudlog messages. */
+#define CMP    3  /**< Receive every mudlog message. */
 
 /* get_filename() types of files to open */
 #define CRASH_FILE       0 /**< Open up a player crash save file */
@@ -164,32 +164,32 @@ void char_from_furniture(struct char_data *ch);
 #define MAX_FILES        4 /**< Max number of files types vailable */
 
 /* breadth-first searching for graph function (tracking, etc) */
-#define BFS_ERROR		(-1)       /**< Error in the search. */
-#define BFS_ALREADY_THERE	(-2) /**< Area traversed already. */
-#define BFS_NO_PATH		(-3)     /**< No path through here. */
+#define BFS_ERROR        (-1)       /**< Error in the search. */
+#define BFS_ALREADY_THERE    (-2) /**< Area traversed already. */
+#define BFS_NO_PATH        (-3)     /**< No path through here. */
 
 /** Number of real life seconds per mud hour.
  * @todo The definitions based on SECS_PER_MUD_HOUR should be configurable.
  * See act.informative.c and utils.c for other places to change. */
-#define SECS_PER_MUD_HOUR	75
+#define SECS_PER_MUD_HOUR    75
 /** Real life seconds in one mud day.
  * Current calculation = 30 real life minutes. */
-#define SECS_PER_MUD_DAY	(24*SECS_PER_MUD_HOUR)
+#define SECS_PER_MUD_DAY    (24*SECS_PER_MUD_HOUR)
 /** Real life seconds per mud month.
  * Current calculation = 17.5 real life hours */
-#define SECS_PER_MUD_MONTH	(35*SECS_PER_MUD_DAY)
+#define SECS_PER_MUD_MONTH    (35*SECS_PER_MUD_DAY)
 /** Real life seconds per mud month.
  * Current calculation ~= 12.4 real life days */
-#define SECS_PER_MUD_YEAR	(17*SECS_PER_MUD_MONTH)
+#define SECS_PER_MUD_YEAR    (17*SECS_PER_MUD_MONTH)
 
 /** The number of seconds in a real minute. */
-#define SECS_PER_REAL_MIN	60
+#define SECS_PER_REAL_MIN    60
 /** The number of seconds in a real hour. */
-#define SECS_PER_REAL_HOUR	(60*SECS_PER_REAL_MIN)
+#define SECS_PER_REAL_HOUR    (60*SECS_PER_REAL_MIN)
 /** The number of seconds in a real day. */
-#define SECS_PER_REAL_DAY	(24*SECS_PER_REAL_HOUR)
+#define SECS_PER_REAL_DAY    (24*SECS_PER_REAL_HOUR)
 /** The number of seconds in a real year. */
-#define SECS_PER_REAL_YEAR	(365*SECS_PER_REAL_DAY)
+#define SECS_PER_REAL_YEAR    (365*SECS_PER_REAL_DAY)
 
 /* integer utils */
 #define URANGE(a, b, c)          ((b) < (a) ? (a) : ((b) > (c) ? (c) : (b)))
@@ -219,10 +219,10 @@ void char_from_furniture(struct char_data *ch);
  * @param type The type of memory (int, struct char_data, etc.).
  * @param number How many of type to make. */
 #define CREATE(result, type, number)  do {\
-	if ((number) * sizeof(type) <= 0)	\
-		log("SYSERR: Zero bytes or less requested at %s:%d.", __FILE__, __LINE__);	\
-	if (!((result) = (type *) calloc ((number), sizeof(type))))	\
-		{ perror("SYSERR: malloc failure"); abort(); } } while(0)
+    if ((number) * sizeof(type) <= 0)    \
+        log("SYSERR: Zero bytes or less requested at %s:%d.", __FILE__, __LINE__);    \
+    if (!((result) = (type *) calloc ((number), sizeof(type))))    \
+        { perror("SYSERR: malloc failure"); abort(); } } while(0)
 
 /** A realloc based memory reallocation macro. Reminder: realloc can reduce
  * the size of an array as well as increase it.
@@ -231,7 +231,7 @@ void char_from_furniture(struct char_data *ch);
  * @param number How many of type to make. */
 #define RECREATE(result, type, number) do {\
   if (!((result) = (type *) realloc ((result), sizeof(type) * (number))))\
-		{ perror("SYSERR: realloc failure"); abort(); } } while(0)
+        { perror("SYSERR: realloc failure"); abort(); } } while(0)
 
 /** Remove an item from a linked list and reset the links.
  * If item is at the list head, change the head, else traverse the
@@ -244,16 +244,16 @@ void char_from_furniture(struct char_data *ch);
  * @param head Pointer to the head of the linked list.
  * @param next The variable name pointing to the next in the list.
  * */
-#define REMOVE_FROM_LIST(item, head, next)	\
-   if ((item) == (head))		\
-      head = (item)->next;		\
-   else {				\
-      temp = head;			\
+#define REMOVE_FROM_LIST(item, head, next)    \
+   if ((item) == (head))        \
+      head = (item)->next;        \
+   else {                \
+      temp = head;            \
       while (temp && (temp->next != (item))) \
-	 temp = temp->next;		\
-      if (temp)				\
-         temp->next = (item)->next;	\
-   }					\
+     temp = temp->next;        \
+      if (temp)                \
+         temp->next = (item)->next;    \
+   }                    \
 
 /* Connect 'link' to the end of a double-linked list
  * The new item becomes the last in the linked list, and the last
@@ -338,13 +338,13 @@ do                                                              \
 
 /* Older, stock tbaMUD bit settings. */
 /** 1 if bit is set in flag, 0 if it is not set. */
-#define IS_SET(flag,bit)  ((flag) & (bit))
+#define IS_SET(flag, bit)  ((flag) & (bit))
 /** Set a specific bit in var to 1. */
-#define SET_BIT(var,bit)  ((var) |= (bit))
+#define SET_BIT(var, bit)  ((var) |= (bit))
 /** Set a specific bit bit in var to 0. */
-#define REMOVE_BIT(var,bit)  ((var) &= ~(bit))
+#define REMOVE_BIT(var, bit)  ((var) &= ~(bit))
 /** If bit in var is off, turn it on; if it is on, turn it off. */
-#define TOGGLE_BIT(var,bit) ((var) ^= (bit))
+#define TOGGLE_BIT(var, bit) ((var) ^= (bit))
 
 /* Accessing player specific data structures on a mobile is a very bad thing
  * to do.  Consider that changing these variables for a single mob will change
@@ -355,22 +355,22 @@ do                                                              \
 /** Warn if accessing player_specials on a mob.
  * @todo Subtle bug in the var reporting, but works well for now. */
 #define CHECK_PLAYER_SPECIAL(ch, var) \
-	(*(((ch)->player_specials == &dummy_mob) ? (log("SYSERR: Mob using '"#var"' at %s:%d.", __FILE__, __LINE__), &(var)) : &(var)))
+    (*(((ch)->player_specials == &dummy_mob) ? (log("SYSERR: Mob using '"#var"' at %s:%d.", __FILE__, __LINE__), &(var)) : &(var)))
 #else
 #define CHECK_PLAYER_SPECIAL(ch, var)	(var)
 #endif
 
 /** The act flags on a mob. Synonomous with PLR_FLAGS. */
-#define MOB_FLAGS(ch)	((ch)->char_specials.saved.act)
+#define MOB_FLAGS(ch)    ((ch)->char_specials.saved.act)
 /** Player flags on a PC. Synonomous with MOB_FLAGS. */
-#define PLR_FLAGS(ch)	((ch)->char_specials.saved.act)
+#define PLR_FLAGS(ch)    ((ch)->char_specials.saved.act)
 /** Preference flags on a player (not to be used on mobs). */
 #define PRF_FLAGS(ch) CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.pref))
 /** Affect flags on the NPC or PC. */
-#define AFF_FLAGS(ch)	((ch)->char_specials.saved.affected_by)
+#define AFF_FLAGS(ch)    ((ch)->char_specials.saved.affected_by)
 /** Room flags.
  * @param loc The real room number. */
-#define ROOM_FLAGS(loc)	(world[(loc)].room_flags)
+#define ROOM_FLAGS(loc)    (world[(loc)].room_flags)
 /** Zone flags.
  * @param rnum The real zone number. */
 #define ZONE_FLAGS(rnum)       (zone_table[(rnum)].zone_flags)
@@ -382,16 +382,16 @@ do                                                              \
 #define ZONE_MAXLVL(rnum)      (zone_table[(rnum)].max_level)
 
 /** References the routine element for a spell. Currently unused. */
-#define SPELL_ROUTINES(spl)	(spell_info[spl].routines)
+#define SPELL_ROUTINES(spl)    (spell_info[spl].routines)
 
 /* IS_MOB() acts as a VALID_MOB_RNUM()-like function.*/
 /** 1 if the character has the NPC bit set, 0 if the character does not.
  * Used to prevents NPCs and mobs from doing things they shouldn't, even
  * when mobs are possessed or charmed by a player. */
-#define IS_NPC(ch)	(IS_SET_AR(MOB_FLAGS(ch), MOB_ISNPC))
+#define IS_NPC(ch)    (IS_SET_AR(MOB_FLAGS(ch), MOB_ISNPC))
 /** 1 if the character is a real NPC, 0 if the character is not. */
-#define IS_MOB(ch)	(IS_NPC(ch) && GET_MOB_RNUM(ch) <= top_of_mobt && \
-				GET_MOB_RNUM(ch) != NOBODY)
+#define IS_MOB(ch)    (IS_NPC(ch) && GET_MOB_RNUM(ch) <= top_of_mobt && \
+                GET_MOB_RNUM(ch) != NOBODY)
 
 /** 1 if ch is flagged an NPC and flag is set in the act bitarray, 0 if not. */
 #define MOB_FLAGGED(ch, flag) (IS_NPC(ch) && IS_SET_AR(MOB_FLAGS(ch), (flag)))
@@ -424,9 +424,9 @@ do                                                              \
 #define IS_AFFECTED(ch, skill) (AFF_FLAGGED((ch), (skill)))
 
 /** Toggle flag in ch PLR_FLAGS' turns on if off, or off if on. */
-#define PLR_TOG_CHK(ch,flag) ((TOGGLE_BIT_AR(PLR_FLAGS(ch), (flag))) & Q_BIT(flag))
+#define PLR_TOG_CHK(ch, flag) ((TOGGLE_BIT_AR(PLR_FLAGS(ch), (flag))) & Q_BIT(flag))
 /** Toggle flag in ch PRF_FLAGS; turns on if off, or off if on. */
-#define PRF_TOG_CHK(ch,flag) ((TOGGLE_BIT_AR(PRF_FLAGS(ch), (flag))) & Q_BIT(flag))
+#define PRF_TOG_CHK(ch, flag) ((TOGGLE_BIT_AR(PRF_FLAGS(ch), (flag))) & Q_BIT(flag))
 
 /** Checks to see if a PC or NPC is dead. */
 #define DEAD(ch) (PLR_FLAGGED((ch), PLR_NOTDEADYET) || MOB_FLAGGED((ch), MOB_NOTDEADYET))
@@ -435,45 +435,45 @@ do                                                              \
 
 /** Return the sector type for the room. If there is no sector type, return
  * SECT_INSIDE. */
-#define SECT(room)	(VALID_ROOM_RNUM(room) ? \
-				world[(room)].sector_type : SECT_INSIDE)
+#define SECT(room)    (VALID_ROOM_RNUM(room) ? \
+                world[(room)].sector_type : SECT_INSIDE)
 
 /** Return the zone number for this room */
-#define GET_ROOM_ZONE(room)	(VALID_ROOM_RNUM(room) ? world[(room)].zone : NOWHERE)
+#define GET_ROOM_ZONE(room)    (VALID_ROOM_RNUM(room) ? world[(room)].zone : NOWHERE)
 
 /** TRUE if the room has no light, FALSE if not. */
-#define IS_DARK(room)	room_is_dark((room))
+#define IS_DARK(room)    room_is_dark((room))
 /** TRUE if the room has light, FALSE if not. */
 #define IS_LIGHT(room)  (!IS_DARK(room))
 
 /** 1 if this is a valid room number, 0 if not. */
-#define VALID_ROOM_RNUM(rnum)	((rnum) != NOWHERE && (rnum) <= top_of_world)
+#define VALID_ROOM_RNUM(rnum)    ((rnum) != NOWHERE && (rnum) <= top_of_world)
 /** The room number if this is a valid room, NOWHERE if it is not */
 #define GET_ROOM_VNUM(rnum) \
-	((room_vnum)(VALID_ROOM_RNUM(rnum) ? world[(rnum)].number : NOWHERE))
+    ((room_vnum)(VALID_ROOM_RNUM(rnum) ? world[(rnum)].number : NOWHERE))
 /** Pointer to the room function, NULL if there is not one. */
 #define GET_ROOM_SPEC(room) \
-	(VALID_ROOM_RNUM(room) ? world[(room)].func : NULL)
+    (VALID_ROOM_RNUM(room) ? world[(room)].func : NULL)
 
 /* char utils */
 /** What room is PC/NPC in? */
-#define IN_ROOM(ch)	((ch)->in_room)
+#define IN_ROOM(ch)    ((ch)->in_room)
 /** What room was PC/NPC previously in? */
-#define GET_WAS_IN(ch)	((ch)->was_in_room)
+#define GET_WAS_IN(ch)    ((ch)->was_in_room)
 /** How old is PC/NPC, at last recorded time? */
 #define GET_AGE(ch)     (age(ch)->year)
 
 /** Name of PC. */
-#define GET_PC_NAME(ch)	((ch)->player.name)
+#define GET_PC_NAME(ch)    ((ch)->player.name)
 /** Name of PC or short_descr of NPC. */
 #define GET_NAME(ch)    (IS_NPC(ch) ? \
-			 (ch)->player.short_descr : GET_PC_NAME(ch))
+             (ch)->player.short_descr : GET_PC_NAME(ch))
 /** Title of PC */
 #define GET_TITLE(ch)   ((ch)->player.title)
 /** Level of PC or NPC. */
 #define GET_LEVEL(ch)   ((ch)->player.level)
 /** Password of PC. */
-#define GET_PASSWD(ch)	((ch)->player.passwd)
+#define GET_PASSWD(ch)    ((ch)->player.passwd)
 /** The player file position of PC. */
 #define GET_PFILEPOS(ch)((ch)->pfilepos)
 
@@ -486,11 +486,11 @@ do                                                              \
 /** Class of ch. */
 #define GET_CLASS(ch)   ((ch)->player.chclass)
 /** Height of ch. */
-#define GET_HEIGHT(ch)	((ch)->player.height)
+#define GET_HEIGHT(ch)    ((ch)->player.height)
 /** Weight of ch. */
-#define GET_WEIGHT(ch)	((ch)->player.weight)
+#define GET_WEIGHT(ch)    ((ch)->player.weight)
 /** Sex of ch. */
-#define GET_SEX(ch)	((ch)->player.sex)
+#define GET_SEX(ch)    ((ch)->player.sex)
 
 /** Current strength of ch. */
 #define GET_STR(ch)     ((ch)->aff_abils.str)
@@ -508,34 +508,34 @@ do                                                              \
 #define GET_CHA(ch)     ((ch)->aff_abils.cha)
 
 /** Experience points of ch. */
-#define GET_EXP(ch)	  ((ch)->points.exp)
+#define GET_EXP(ch)      ((ch)->points.exp)
 /** Armor class of ch. */
 #define GET_AC(ch)        ((ch)->points.armor)
 /** Current hit points (health) of ch. */
-#define GET_HIT(ch)	  ((ch)->points.hit)
+#define GET_HIT(ch)      ((ch)->points.hit)
 /** Maximum hit points of ch. */
-#define GET_MAX_HIT(ch)	  ((ch)->points.max_hit)
+#define GET_MAX_HIT(ch)      ((ch)->points.max_hit)
 /** Current move points (stamina) of ch. */
-#define GET_MOVE(ch)	  ((ch)->points.move)
+#define GET_MOVE(ch)      ((ch)->points.move)
 /** Maximum move points (stamina) of ch. */
 #define GET_MAX_MOVE(ch)  ((ch)->points.max_move)
 /** Current mana points (magic) of ch. */
-#define GET_MANA(ch)	  ((ch)->points.mana)
+#define GET_MANA(ch)      ((ch)->points.mana)
 /** Maximum mana points (magic) of ch. */
 #define GET_MAX_MANA(ch)  ((ch)->points.max_mana)
 /** Gold on ch. */
-#define GET_GOLD(ch)	  ((ch)->points.gold)
+#define GET_GOLD(ch)      ((ch)->points.gold)
 /** Gold in bank of ch. */
 #define GET_BANK_GOLD(ch) ((ch)->points.bank_gold)
 /** Current to-hit roll modifier for ch. */
-#define GET_HITROLL(ch)	  ((ch)->points.hitroll)
+#define GET_HITROLL(ch)      ((ch)->points.hitroll)
 /** Current damage roll modifier for ch. */
 #define GET_DAMROLL(ch)   ((ch)->points.damroll)
 
 /** Current position (standing, sitting) of ch. */
-#define GET_POS(ch)	  ((ch)->char_specials.position)
+#define GET_POS(ch)      ((ch)->char_specials.position)
 /** Unique ID of ch. */
-#define GET_IDNUM(ch)	  ((ch)->char_specials.saved.idnum)
+#define GET_IDNUM(ch)      ((ch)->char_specials.saved.idnum)
 /** Returns contents of id field from x. */
 /** Warning: GET_ID is deprecated and you should use char_script_id, obj_script_id, room_script_id */
 /** #define GET_ID(x)         ((x)->id) */
@@ -544,52 +544,52 @@ do                                                              \
 /** Number of items carried by ch. */
 #define IS_CARRYING_N(ch) ((ch)->char_specials.carry_items)
 /** Who or what ch is fighting. */
-#define FIGHTING(ch)	  ((ch)->char_specials.fighting)
+#define FIGHTING(ch)      ((ch)->char_specials.fighting)
 /** Who or what the ch is hunting. */
-#define HUNTING(ch)	  ((ch)->char_specials.hunting)
+#define HUNTING(ch)      ((ch)->char_specials.hunting)
 /** Saving throw i for character ch. */
-#define GET_SAVE(ch, i)	  ((ch)->char_specials.saved.apply_saving_throw[i])
+#define GET_SAVE(ch, i)      ((ch)->char_specials.saved.apply_saving_throw[i])
 /** Alignment value for ch. */
 #define GET_ALIGNMENT(ch) ((ch)->char_specials.saved.alignment)
 
 /** Return condition i (DRUNK, HUNGER, THIRST) of ch. */
-#define GET_COND(ch, i)		CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.conditions[(i)]))
+#define GET_COND(ch, i)        CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.conditions[(i)]))
 /** The room to load player ch into. */
-#define GET_LOADROOM(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.load_room))
+#define GET_LOADROOM(ch)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.load_room))
 /** Number of skill practice sessions remaining for ch. */
-#define GET_PRACTICES(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.spells_to_learn))
+#define GET_PRACTICES(ch)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.spells_to_learn))
 /** Current invisibility level of ch. */
-#define GET_INVIS_LEV(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.invis_level))
+#define GET_INVIS_LEV(ch)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.invis_level))
 /** Current wimpy level of ch. */
-#define GET_WIMP_LEV(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.wimp_level))
+#define GET_WIMP_LEV(ch)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.wimp_level))
 /** Current freeze level (god command) inflicted upon ch. */
-#define GET_FREEZE_LEV(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.freeze_level))
+#define GET_FREEZE_LEV(ch)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.freeze_level))
 /** Current number of bad password attempts at logon. */
-#define GET_BAD_PWS(ch)		CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.bad_pws))
+#define GET_BAD_PWS(ch)        CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.bad_pws))
 /** Not used?
  * @deprecated Should not be used, as the talks field has been removed. */
-#define GET_TALK(ch, i)		CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.talks[i]))
+#define GET_TALK(ch, i)        CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.talks[i]))
 /** The poofin string for the ch. */
-#define POOFIN(ch)		CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->poofin))
+#define POOFIN(ch)        CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->poofin))
 /** The poofout string for the ch. */
-#define POOFOUT(ch)		CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->poofout))
+#define POOFOUT(ch)        CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->poofout))
 /** The OLC zoon permission for ch.
  * @deprecated Currently unused? */
-#define GET_OLC_ZONE(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.olc_zone))
+#define GET_OLC_ZONE(ch)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.olc_zone))
 /** Currently unused?
  * @deprecated Currently unused? */
-#define GET_LAST_OLC_TARG(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->last_olc_targ))
+#define GET_LAST_OLC_TARG(ch)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->last_olc_targ))
 /** Currently unused?
  * @deprecated Currently unused? */
-#define GET_LAST_OLC_MODE(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->last_olc_mode))
+#define GET_LAST_OLC_MODE(ch)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->last_olc_mode))
 /** Retrieve command aliases for ch. */
-#define GET_ALIASES(ch)		CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->aliases))
+#define GET_ALIASES(ch)        CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->aliases))
 /** Who ch last spoke to with the 'tell' command. */
-#define GET_LAST_TELL(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->last_tell))
+#define GET_LAST_TELL(ch)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->last_tell))
 /** Get unique session id for ch. */
 #define GET_PREF(ch)      ((ch)->pref)
 /** Get host name or ip of ch. */
-#define GET_HOST(ch)		CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->host))
+#define GET_HOST(ch)        CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->host))
 #define GET_LAST_MOTD(ch)       CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.lastmotd))
 #define GET_LAST_NEWS(ch)       CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.lastnews))
 /** Get channel history i for ch. */
@@ -613,28 +613,28 @@ do                                                              \
 #define GET_QUEST_TYPE(ch)      (real_quest(GET_QUEST((ch))) != NOTHING ? aquest_table[real_quest(GET_QUEST((ch)))].type : AQ_UNDEFINED )
 
 /** The current skill level of ch for skill i. */
-#define GET_SKILL(ch, i)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.skills[i]))
+#define GET_SKILL(ch, i)    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.skills[i]))
 /** Copy the current skill level i of ch to pct. */
-#define SET_SKILL(ch, i, pct)	do { CHECK_PLAYER_SPECIAL((ch), (ch)->player_specials->saved.skills[i]) = pct; } while(0)
+#define SET_SKILL(ch, i, pct)    do { CHECK_PLAYER_SPECIAL((ch), (ch)->player_specials->saved.skills[i]) = pct; } while(0)
 
 /** The player's default sector type when buildwalking */
 #define GET_BUILDWALK_SECTOR(ch) CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->buildwalk_sector))
 
 /** Get obj worn in position i on ch. */
-#define GET_EQ(ch, i)		((ch)->equipment[i])
+#define GET_EQ(ch, i)        ((ch)->equipment[i])
 
 /** If ch is a mob, return the special function, else return NULL. */
-#define GET_MOB_SPEC(ch)	(IS_MOB(ch) ? mob_index[(ch)->nr].func : NULL)
+#define GET_MOB_SPEC(ch)    (IS_MOB(ch) ? mob_index[(ch)->nr].func : NULL)
 /** Get the real number of the mob instance. */
-#define GET_MOB_RNUM(mob)	((mob)->nr)
+#define GET_MOB_RNUM(mob)    ((mob)->nr)
 /** If mob is a mob, return the virtual number of it. */
-#define GET_MOB_VNUM(mob)	(IS_MOB(mob) ? \
-				 mob_index[GET_MOB_RNUM(mob)].vnum : NOBODY)
+#define GET_MOB_VNUM(mob)    (IS_MOB(mob) ? \
+                 mob_index[GET_MOB_RNUM(mob)].vnum : NOBODY)
 
 /** Return the default position of ch. */
-#define GET_DEFAULT_POS(ch)	((ch)->mob_specials.default_pos)
+#define GET_DEFAULT_POS(ch)    ((ch)->mob_specials.default_pos)
 /** Return the memory of ch. */
-#define MEMORY(ch)		((ch)->mob_specials.memory)
+#define MEMORY(ch)        ((ch)->mob_specials.memory)
 
 /** Return the equivalent strength of ch if ch has level 18 strength. */
 #define STRENGTH_APPLY_INDEX(ch) \
@@ -676,7 +676,7 @@ do                                                              \
 
 /* Descriptor-based utils. */
 /** Connected state of d. */
-#define STATE(d)	((d)->connected)
+#define STATE(d)    ((d)->connected)
 
 /** Defines whether d is using an OLC or not. */
 #define IS_IN_OLC(d)   ((STATE(d) >= FIRST_OLC_STATE) && (STATE(d) <= LAST_OLC_STATE))
@@ -685,54 +685,54 @@ do                                                              \
 #define IS_PLAYING(d)   (IS_IN_OLC(d) || STATE(d) == CON_PLAYING)
 
 /** Defines if it is ok to send a message to ch. */
-#define SENDOK(ch)	(((ch)->desc || SCRIPT_CHECK((ch), MTRIG_ACT)) && \
-			(to_sleeping || AWAKE(ch)) && \
-			!PLR_FLAGGED((ch), PLR_WRITING))
+#define SENDOK(ch)    (((ch)->desc || SCRIPT_CHECK((ch), MTRIG_ACT)) && \
+            (to_sleeping || AWAKE(ch)) && \
+            !PLR_FLAGGED((ch), PLR_WRITING))
 
 /* object utils */
 /** Check for NOWHERE or the top array index? If using unsigned types, the top
  * array index will catch everything. If using signed types, NOTHING will
  * catch the majority of bad accesses. */
-#define VALID_OBJ_RNUM(obj)	(GET_OBJ_RNUM(obj) <= top_of_objt && \
-				 GET_OBJ_RNUM(obj) != NOTHING)
+#define VALID_OBJ_RNUM(obj)    (GET_OBJ_RNUM(obj) <= top_of_objt && \
+                 GET_OBJ_RNUM(obj) != NOTHING)
 
 /** Level of obj. */
 #define GET_OBJ_LEVEL(obj)      ((obj)->obj_flags.level)
 /** Type of obj. */
-#define GET_OBJ_TYPE(obj)	((obj)->obj_flags.type_flag)
+#define GET_OBJ_TYPE(obj)    ((obj)->obj_flags.type_flag)
 /** Cost of obj. */
-#define GET_OBJ_COST(obj)	((obj)->obj_flags.cost)
+#define GET_OBJ_COST(obj)    ((obj)->obj_flags.cost)
 /** Cost per day to rent obj, if rent is turned on. */
-#define GET_OBJ_RENT(obj)	((obj)->obj_flags.cost_per_day)
+#define GET_OBJ_RENT(obj)    ((obj)->obj_flags.cost_per_day)
 /** Affect flags on obj. */
-#define GET_OBJ_AFFECT(obj)	((obj)->obj_flags.bitvector)
+#define GET_OBJ_AFFECT(obj)    ((obj)->obj_flags.bitvector)
 /** Extra flags bit array on obj. */
-#define GET_OBJ_EXTRA(obj)	((obj)->obj_flags.extra_flags)
+#define GET_OBJ_EXTRA(obj)    ((obj)->obj_flags.extra_flags)
 /** Extra flags field bit array field i on obj. */
 #define GET_OBJ_EXTRA_AR(obj, i)   ((obj)->obj_flags.extra_flags[(i)])
 /** Wear flags on obj. */
-#define GET_OBJ_WEAR(obj)	((obj)->obj_flags.wear_flags)
+#define GET_OBJ_WEAR(obj)    ((obj)->obj_flags.wear_flags)
 /** Return value val for obj. */
-#define GET_OBJ_VAL(obj, val)	((obj)->obj_flags.value[(val)])
+#define GET_OBJ_VAL(obj, val)    ((obj)->obj_flags.value[(val)])
 /** Weight of obj. */
-#define GET_OBJ_WEIGHT(obj)	((obj)->obj_flags.weight)
+#define GET_OBJ_WEIGHT(obj)    ((obj)->obj_flags.weight)
 /** Current timer of obj. */
-#define GET_OBJ_TIMER(obj)	((obj)->obj_flags.timer)
+#define GET_OBJ_TIMER(obj)    ((obj)->obj_flags.timer)
 /** Real number of obj instance. */
-#define GET_OBJ_RNUM(obj)	((obj)->item_number)
+#define GET_OBJ_RNUM(obj)    ((obj)->item_number)
 /** Virtual number of obj, or NOTHING if not a real obj. */
-#define GET_OBJ_VNUM(obj)	(VALID_OBJ_RNUM(obj) ? \
-				obj_index[GET_OBJ_RNUM(obj)].vnum : NOTHING)
+#define GET_OBJ_VNUM(obj)    (VALID_OBJ_RNUM(obj) ? \
+                obj_index[GET_OBJ_RNUM(obj)].vnum : NOTHING)
 /** Special function attached to obj, or NULL if nothing attached. */
-#define GET_OBJ_SPEC(obj)	(VALID_OBJ_RNUM(obj) ? \
-				obj_index[GET_OBJ_RNUM(obj)].func : NULL)
+#define GET_OBJ_SPEC(obj)    (VALID_OBJ_RNUM(obj) ? \
+                obj_index[GET_OBJ_RNUM(obj)].func : NULL)
 
 /** Defines if an obj is a corpse. */
-#define IS_CORPSE(obj)		(GET_OBJ_TYPE(obj) == ITEM_CONTAINER && \
-					GET_OBJ_VAL((obj), 3) == 1)
+#define IS_CORPSE(obj)        (GET_OBJ_TYPE(obj) == ITEM_CONTAINER && \
+                    GET_OBJ_VAL((obj), 3) == 1)
 
 /** Can the obj be worn on body part? */
-#define CAN_WEAR(obj, part)	OBJWEAR_FLAGGED((obj), (part))
+#define CAN_WEAR(obj, part)    OBJWEAR_FLAGGED((obj), (part))
 /** Return short description of obj. */
 #define GET_OBJ_SHORT(obj)      ((obj)->short_description)
 
@@ -759,7 +759,7 @@ do                                                              \
 /* Various macros building up to CAN_SEE */
 
 /** Defines if there is enough light for sub to see in. */
-#define LIGHT_OK(sub)	(!AFF_FLAGGED(sub, AFF_BLIND) && \
+#define LIGHT_OK(sub)    (!AFF_FLAGGED(sub, AFF_BLIND) && \
    (IS_LIGHT(IN_ROOM(sub)) || AFF_FLAGGED((sub), AFF_INFRAVISION) || \
    GET_LEVEL(sub) >= LVL_IMMORT))
 
@@ -792,7 +792,7 @@ do                                                              \
 
 /** Is anyone carrying this object and if so, are they visible? */
 #define CAN_SEE_OBJ_CARRIER(sub, obj) \
-  ((!obj->carried_by || CAN_SEE(sub, obj->carried_by)) &&	\
+  ((!obj->carried_by || CAN_SEE(sub, obj->carried_by)) &&    \
    (!obj->worn_by || CAN_SEE(sub, obj->worn_by)))
 
 /** Can sub character see the obj, using mortal only checks? */
@@ -804,7 +804,7 @@ do                                                              \
    (MORT_CAN_SEE_OBJ(sub, obj) || (!IS_NPC(sub) && PRF_FLAGGED((sub), PRF_HOLYLIGHT)))
 
 /** Can ch carry obj? */
-#define CAN_CARRY_OBJ(ch,obj)  \
+#define CAN_CARRY_OBJ(ch, obj)  \
    (((IS_CARRYING_W(ch) + GET_OBJ_WEIGHT(obj)) <= CAN_CARRY_W(ch)) &&   \
     ((IS_CARRYING_N(ch) + 1) <= CAN_CARRY_N(ch)))
 
@@ -819,11 +819,11 @@ do                                                              \
 /** If vict can see obj, return obj short description, else return
  * "something". */
 #define OBJS(obj, vict) (CAN_SEE_OBJ((vict), (obj)) ? \
-	(obj)->short_description  : "something")
+    (obj)->short_description  : "something")
 
 /** If vict can see obj, return obj name, else return "something". */
 #define OBJN(obj, vict) (CAN_SEE_OBJ((vict), (obj)) ? \
-	fname((obj)->name) : "something")
+    fname((obj)->name) : "something")
 
 /** Does direction door exist in the same room as ch? */
 #define EXIT(ch, door)  (world[IN_ROOM(ch)].dir_option[door])
@@ -837,30 +837,30 @@ do                                                              \
 
 /** Can ch walk through direction door. */
 #define CAN_GO(ch, door) (EXIT(ch,door) && \
-			 (EXIT(ch,door)->to_room != NOWHERE) && \
-			 !IS_SET(EXIT(ch, door)->exit_info, EX_CLOSED))
+             (EXIT(ch,door)->to_room != NOWHERE) && \
+             !IS_SET(EXIT(ch, door)->exit_info, EX_CLOSED))
 
 /** True total number of directions available to move in. */
 #define DIR_COUNT ((CONFIG_DIAGONAL_DIRS) ? 10 : 6)
- 
+
 /* Returns TRUE if the direction is a diagonal one */
 #define IS_DIAGONAL(dir) (((dir) == NORTHWEST) || ((dir) == NORTHEAST) || \
-		((dir) == SOUTHEAST) || ((dir) == SOUTHWEST) )
+        ((dir) == SOUTHEAST) || ((dir) == SOUTHWEST) )
 
 /** Return the class abbreviation for ch. */
 #define CLASS_ABBR(ch) (IS_NPC(ch) ? "--" : class_abbrevs[(int)GET_CLASS(ch)])
 
 /** 1 if ch is magic user class, 0 if not. */
-#define IS_MAGIC_USER(ch)	(!IS_NPC(ch) && \
+#define IS_MAGIC_USER(ch)    (!IS_NPC(ch) && \
         (GET_CLASS(ch) == CLASS_MAGIC_USER))
 /** 1 if ch is cleric class, 0 if not. */
-#define IS_CLERIC(ch)		(!IS_NPC(ch) && \
+#define IS_CLERIC(ch)        (!IS_NPC(ch) && \
         (GET_CLASS(ch) == CLASS_CLERIC))
 /** 1 if ch is thief class, 0 if not. */
-#define IS_THIEF(ch)		(!IS_NPC(ch) && \
+#define IS_THIEF(ch)        (!IS_NPC(ch) && \
         (GET_CLASS(ch) == CLASS_THIEF))
 /** 1 if ch is warrior class, 0 if not. */
-#define IS_WARRIOR(ch)		(!IS_NPC(ch) && \
+#define IS_WARRIOR(ch)        (!IS_NPC(ch) && \
         (GET_CLASS(ch) == CLASS_WARRIOR))
 
 /** Defines if ch is outdoors or not. */
@@ -928,7 +928,7 @@ do                                                              \
 #define CRYPT(a,b) (a)
 #else
 /** When crypt is defined. Player passwords stored encrypted. */
-#define CRYPT(a,b) ((char *) crypt((a),(b)))
+#define CRYPT(a, b) ((char *) crypt((a),(b)))
 #endif
 
 /* Config macros */

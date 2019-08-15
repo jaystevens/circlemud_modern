@@ -12,7 +12,7 @@
 #include "sysdep.h"
 #include "structs.h"
 #include "utils.h"
-#include "interpreter.h"	/* alias_data definition for structs.h */
+#include "interpreter.h"    /* alias_data definition for structs.h */
 #include "config.h"
 #include "asciimap.h"
 
@@ -60,8 +60,8 @@ int holler_move_cost = 20;
 int tunnel_size = 2;
 
 /* Exp change limits. */
-int max_exp_gain = 100000;	/* max gainable per kill */
-int max_exp_loss = 500000;	/* max losable per death */
+int max_exp_gain = 100000;    /* max gainable per kill */
+int max_exp_loss = 500000;    /* max losable per death */
 
 /* Number of tics (usually 75 seconds) before PC/NPC corpses decompose. */
 int max_npc_corpse_time = 5;
@@ -156,13 +156,13 @@ int auto_pwipe = NO;
      of the criteria.  The days entry is not used in this case. */
 struct pclean_criteria_data pclean_criteria[] = {
 /*	LEVEL		DAYS	*/
-  {	0		,0	}, /* level 0 */
-  {	1		,4	},
-  {	4		,7	},
-  {	10		,30	},
-  {	LVL_IMMORT - 1	,60	}, /* highest mortal */
-  {	LVL_IMPL	,90	}, /* all immortals */
-  {	-1		,0	}  /* no more level checks */
+    {0,        0}, /* level 0 */
+    {1,        4},
+    {4,        7},
+    {10,       30},
+    {LVL_IMMORT - 1, 60}, /* highest mortal */
+    {LVL_IMPL, 90}, /* all immortals */
+    {-1,       0}  /* no more level checks */
 };
 
 /* Do you want players who self-delete to be wiped immediately with no backup? */
@@ -260,27 +260,24 @@ int auto_save_olc = YES;
  * stock socials file. */
 int use_new_socials = YES;
 
-const char *MENU =
-"\r\n"
-"Welcome to tbaMUD!\r\n"
-"\t(0\t)) Exit from tbaMUD.\r\n"
-"\t(1\t)) Enter the game.\r\n"
-"\t(2\t)) Enter description.\r\n"
-"\t(3\t)) Read the background story.\r\n"
-"\t(4\t)) Change password.\r\n"
-"\t(5\t)) Delete this character.\r\n"
-"\r\n"
-"   Make your choice: ";
+const char *MENU = "\r\n"
+                   "Welcome to tbaMUD!\r\n"
+                   "\t(0\t)) Exit from tbaMUD.\r\n"
+                   "\t(1\t)) Enter the game.\r\n"
+                   "\t(2\t)) Enter description.\r\n"
+                   "\t(3\t)) Read the background story.\r\n"
+                   "\t(4\t)) Change password.\r\n"
+                   "\t(5\t)) Delete this character.\r\n"
+                   "\r\n"
+                   "   Make your choice: ";
 
-const char *WELC_MESSG =
-"\r\n"
-"Welcome to tbaMUD!  May your visit here be... Enlightening"
-"\r\n\r\n";
+const char *WELC_MESSG = "\r\n"
+                         "Welcome to tbaMUD!  May your visit here be... Enlightening"
+                         "\r\n\r\n";
 
-const char *START_MESSG =
-"Welcome.  This is your new tbaMUD character!  You can now earn gold,\r\n"
-"gain experience, find weapons and equipment, and much more -- while\r\n"
-"meeting people from around the world!\r\n";
+const char *START_MESSG = "Welcome.  This is your new tbaMUD character!  You can now earn gold,\r\n"
+                          "gain experience, find weapons and equipment, and much more -- while\r\n"
+                          "meeting people from around the world!\r\n";
 
 /* AUTOWIZ OPTIONS */
 /* Should the game automatically create a new wizlist/immlist every time someone
