@@ -5,6 +5,8 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
+#include <stdbool.h>
+
 /******************************************************************************
  Set your MUD_NAME, and change descriptor_t if necessary.
  ******************************************************************************/
@@ -70,11 +72,6 @@ typedef struct descriptor_data descriptor_t;
 /******************************************************************************
  Types.
  ******************************************************************************/
-
-typedef enum {
-    false,
-    true
-} bool_t;
 
 typedef enum {
     eUNKNOWN,
@@ -163,23 +160,23 @@ typedef enum {
 } variable_t;
 
 typedef struct {
-    variable_t Variable;      /* The enum type of this variable */
-    const char *pName;         /* The string name of this variable */
-    bool_t bString;       /* Is this variable a string or a number? */
-    bool_t bConfigurable; /* Can it be configured by the client? */
-    bool_t bWriteOnce;    /* Can only set this variable once */
-    bool_t bGUI;          /* It's a special GUI configuration variable */
-    int Min;           /* The minimum valid value or string length */
-    int Max;           /* The maximum valid value or string length */
-    int Default;       /* The default value for a number */
-    const char *pDefault;      /* The default value for a string */
+    variable_t Variable;    /* The enum type of this variable */
+    const char *pName;      /* The string name of this variable */
+    bool bString;           /* Is this variable a string or a number? */
+    bool bConfigurable;     /* Can it be configured by the client? */
+    bool bWriteOnce;        /* Can only set this variable once */
+    bool bGUI;              /* It's a special GUI configuration variable */
+    int Min;                /* The minimum valid value or string length */
+    int Max;                /* The maximum valid value or string length */
+    int Default;            /* The default value for a number */
+    const char *pDefault;   /* The default value for a string */
 } variable_name_t;
 
 typedef struct {
-    bool_t bReport;       /* Is this variable being reported? */
-    bool_t bDirty;        /* Does this variable need to be sent again? */
-    int ValueInt;      /* The numeric value of the variable */
-    char *pValueString;  /* The string value of the variable */
+    bool bReport;           /* Is this variable being reported? */
+    bool bDirty;            /* Does this variable need to be sent again? */
+    int ValueInt;           /* The numeric value of the variable */
+    char *pValueString;     /* The string value of the variable */
 } MSDP_t;
 
 typedef struct {
@@ -189,24 +186,24 @@ typedef struct {
 } MSSP_t;
 
 typedef struct {
-    int WriteOOB;         /* Used internally to indicate OOB data */
-    bool_t bIACMode;         /* Current mode - deals with broken packets */
-    bool_t bNegotiated;      /* Indicates client successfully negotiated */
-    bool_t bBlockMXP;        /* Used internally based on MXP version */
-    bool_t bTTYPE;           /* The client supports TTYPE */
-    bool_t bNAWS;            /* The client supports NAWS */
-    bool_t bCHARSET;         /* The client supports CHARSET */
-    bool_t bMSDP;            /* The client supports MSDP */
-    bool_t bATCP;            /* The client supports ATCP */
-    bool_t bMSP;             /* The client supports MSP */
-    bool_t bMXP;             /* The client supports MXP */
-    bool_t bMCCP;            /* The client supports MCCP */
-    support_t b256Support;      /* The client supports XTerm 256 colors */
-    int ScreenWidth;      /* The client's screen width */
-    int ScreenHeight;     /* The client's screen height */
+    int WriteOOB;           /* Used internally to indicate OOB data */
+    bool bIACMode;        /* Current mode - deals with broken packets */
+    bool bNegotiated;     /* Indicates client successfully negotiated */
+    bool bBlockMXP;       /* Used internally based on MXP version */
+    bool bTTYPE;          /* The client supports TTYPE */
+    bool bNAWS;           /* The client supports NAWS */
+    bool bCHARSET;        /* The client supports CHARSET */
+    bool bMSDP;           /* The client supports MSDP */
+    bool bATCP;           /* The client supports ATCP */
+    bool bMSP;            /* The client supports MSP */
+    bool bMXP;            /* The client supports MXP */
+    bool bMCCP;           /* The client supports MCCP */
+    support_t b256Support;  /* The client supports XTerm 256 colors */
+    int ScreenWidth;        /* The client's screen width */
+    int ScreenHeight;       /* The client's screen height */
     char *pMXPVersion;      /* The version of MXP supported */
     char *pLastTTYPE;       /* Used for the cyclic TTYPE check */
-    MSDP_t **pVariables;       /* The MSDP variables */
+    MSDP_t **pVariables;    /* The MSDP variables */
 } protocol_t;
 
 /******************************************************************************

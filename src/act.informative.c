@@ -236,7 +236,7 @@ static void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mo
 static void diag_char_to_char(struct char_data *i, struct char_data *ch)
 {
     struct {
-        byte percent;
+        int8_t percent;
         const char *text;
     } diagnosis[] = {{100, "is in excellent condition."},
                      {90,  "has a few scratches."},

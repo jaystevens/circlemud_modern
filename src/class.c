@@ -140,7 +140,7 @@ struct guild_info_type guild_info[] = {
 
 /* Saving throws for : MCTW : PARA, ROD, PETRI, BREATH, SPELL. Levels 0-40. Do
  * not forget to change extern declaration in magic.c if you add to this. */
-byte saving_throws(int class_num, int type, int level)
+int8_t saving_throws(int class_num, int type, int level)
 {
     switch (class_num) {
         case CLASS_MAGIC_USER:

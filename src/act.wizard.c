@@ -2560,7 +2560,7 @@ ACMD(do_show)
     size_t len, nlen;
     zone_rnum zrn;
     zone_vnum zvn;
-    byte self = FALSE;
+    bool self = FALSE;
     struct char_data *vict = NULL;
     struct obj_data *obj;
     struct descriptor_data *d;

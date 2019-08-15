@@ -104,7 +104,7 @@ ACMD(do_not_here)
 ACMD(do_sneak)
 {
     struct affected_type af;
-    byte percent;
+    int8_t percent;
 
     if (IS_NPC(ch) || !GET_SKILL(ch, SKILL_SNEAK)) {
         send_to_char(ch, "You have no idea how to do that.\r\n");
@@ -130,7 +130,7 @@ ACMD(do_sneak)
 
 ACMD(do_hide)
 {
-    byte percent;
+    int8_t percent;
 
     if (IS_NPC(ch) || !GET_SKILL(ch, SKILL_HIDE)) {
         send_to_char(ch, "You have no idea how to do that.\r\n");

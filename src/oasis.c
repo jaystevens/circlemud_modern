@@ -56,7 +56,7 @@ void get_char_colors(struct char_data *ch)
 
 /* This procedure frees up the strings and/or the structures attatched to a
  * descriptor, sets all flags back to how they should be. */
-void cleanup_olc(struct descriptor_data *d, byte cleanup_type)
+void cleanup_olc(struct descriptor_data *d, int8_t cleanup_type)
 {
     /* Clean up WHAT? */
     if (d->olc == NULL) {

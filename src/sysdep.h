@@ -94,6 +94,8 @@ extern void abort (), exit ();
 
 #endif  /* Standard headers.  */
 
+#include <stdbool.h>
+
 /* POSIX compliance */
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>

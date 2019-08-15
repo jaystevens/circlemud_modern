@@ -148,8 +148,8 @@ struct trig_var_data {
 /** structure for triggers */
 struct trig_data {
     IDXTYPE nr;                         /* trigger's rnum                  */
-    byte attach_type;                   /* mob/obj/wld intentions          */
-    byte data_type;                     /* type of game_data for trig      */
+    int8_t attach_type;                 /* mob/obj/wld intentions          */
+    int8_t data_type;                   /* type of game_data for trig      */
     char *name;                         /* name of trigger                 */
     long trigger_type;                  /* type of trigger (for bitvector) */
     struct cmdlist_element *cmdlist;    /* top of command list             */
@@ -345,7 +345,7 @@ void update_wait_events(struct room_data *to, struct room_data *from);
 
 /* from dg_comm.c */
 char *any_one_name(char *argument, char *first_arg);
-void sub_write(char *arg, char_data *ch, byte find_invis, int targets);
+void sub_write(char *arg, char_data *ch, int8_t find_invis, int targets);
 void send_to_zone(char *messg, zone_rnum zone);
 
 /* from dg_misc.c */

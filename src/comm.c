@@ -109,7 +109,7 @@ static struct txt_block *bufpool = 0;  /* pool of large output buffers */
 static int max_players = 0;   /* max descriptors available */
 static int tics_passed = 0;     /* for extern checkpointing */
 static struct timeval null_time; /* zero-valued time structure */
-static byte reread_wizlist;   /* signal: SIGUSR1 */
+static int8_t reread_wizlist;   /* signal: SIGUSR1 */
 /* normally signal SIGUSR2, currently orphaned in favor of Webster dictionary
  * lookup
 static byte emergency_unban;
@@ -117,7 +117,7 @@ static byte emergency_unban;
 static int dg_act_check;         /* toggle for act_trigger */
 static bool fCopyOver;          /* Are we booting in copyover mode? */
 static char *last_act_message = NULL;
-static byte webster_file_ready = FALSE;/* signal: SIGUSR2 */
+static int8_t webster_file_ready = FALSE;/* signal: SIGUSR2 */
 
 /* static local function prototypes (current file scope only) */
 static RETSIGTYPE reread_wizlists(int sig);

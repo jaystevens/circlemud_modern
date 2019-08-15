@@ -122,7 +122,7 @@ static void sub_write_to_char(char_data *ch, char *tokens[], void *otokens[], ch
     send_to_char(ch, "%s", sb);
 }
 
-void sub_write(char *arg, char_data *ch, byte find_invis, int targets)
+void sub_write(char *arg, char_data *ch, int8_t find_invis, int targets)
 {
     char str[MAX_INPUT_LENGTH * 2];
     char type[MAX_INPUT_LENGTH], name[MAX_INPUT_LENGTH];

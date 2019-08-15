@@ -604,15 +604,6 @@
  * 16k should be plenty and then some. */
 #define MAX_CMD_LENGTH 16384
 
-/* Type Definitions */
-#if !defined(__cplusplus)    /* Anyone know a portable method? */
-typedef char bool; /* Technically 1 signed byte; vals should only = TRUE or FALSE. */
-#endif
-
-#if !defined(CIRCLE_WINDOWS) || defined(LCC_WIN32)    /* Hm, sysdep.h? */
-typedef signed char byte; /* Technically 1 signed byte; vals should only = TRUE or FALSE. */
-#endif
-
 /* Various virtual (human-reference) number types. */
 typedef IDXTYPE room_vnum;  /* vnum specifically for room */
 typedef IDXTYPE obj_vnum;   /* vnum specifically for object */
@@ -658,7 +649,7 @@ struct extra_descr_data {
  * a real object, values that can change during gameplay. */
 struct obj_flag_data {
     int value[NUM_OBJ_VAL_POSITIONS]; /* Values of the item (see list) */
-    byte type_flag;                   /* Type of item */
+    int8_t type_flag;                 /* Type of item */
     int level;                        /* Minimum level to use object */
     int wear_flags[TW_ARRAY_MAX];     /* Where you can wear it, if wearable */
     int extra_flags[EF_ARRAY_MAX];    /* If it hums, glows, etc. */
@@ -672,8 +663,8 @@ struct obj_flag_data {
 /* Used in obj_file_elem. DO NOT CHANGE if you are using binary object files
  * and already have a player base and don't want to do a player wipe. */
 struct obj_affected_type {
-    byte location;  /* Which ability to change (APPLY_XXX) */
-    int8_t modifier; /* How much it changes by */
+    int8_t location;  /* Which ability to change (APPLY_XXX) */
+    int8_t modifier;  /* How much it changes by */
 };
 
 /* The Object structure. */
@@ -772,7 +763,7 @@ struct room_data {
     char *description;                                      /* Shown when entered, looked at */
     struct extra_descr_data *ex_description;                /* Additional things to look at */
     struct room_direction_data *dir_option[NUM_OF_DIRS];    /* Directions */
-    byte light;                                             /* Number of lightsources in room */
+    int8_t light;                                           /* Number of lightsources in room */
     SPECIAL(*func);                                  /* Points to special function attached to room */
     struct trig_proto_list *proto_script;                   /* list of default triggers */
     struct script_data *script;                             /* script info for the room */
@@ -832,9 +823,9 @@ struct char_player_data {
     char *long_descr;                   /* PC / NPC look description */
     char *description;                  /* NPC Extra descriptions */
     char *title;                        /* PC / NPC title */
-    byte sex;                           /* PC / NPC sex */
-    byte chclass;                       /* PC / NPC class */
-    byte level;                         /* PC / NPC level */
+    int8_t sex;                         /* PC / NPC sex */
+    int8_t chclass;                     /* PC / NPC class */
+    int8_t level;                       /* PC / NPC level */
     struct time_data time;              /* PC AGE in days */
     uint8_t weight;                     /* PC / NPC weight */
     uint8_t height;                     /* PC / NPC height */
@@ -893,10 +884,10 @@ struct char_special_data {
     struct obj_data *furniture;             /* Object being sat on/in; else NULL */
     struct char_data *next_in_furniture;    /* Next person sitting, else NULL */
 
-    byte position;                          /* Standing, fighting, sleeping, etc. */
+    int8_t position;                        /* Standing, fighting, sleeping, etc. */
 
     int carry_weight;                       /* Carried weight */
-    byte carry_items;                       /* Number of items carried */
+    int8_t carry_items;                     /* Number of items carried */
     int timer;                              /* Timer for update */
 
     struct char_special_data_saved saved;   /* Constants saved for PCs. */
@@ -904,9 +895,9 @@ struct char_special_data {
 
 /* Data only needed by PCs, and needs to be saved to disk. */
 struct player_special_data_saved {
-    byte skills[MAX_SKILLS + 1];            /* Character skills. */
+    int8_t skills[MAX_SKILLS + 1];          /* Character skills. */
     int wimp_level;                         /* Below this # of hit points, flee! */
-    byte freeze_level;                      /* Level of god who froze char, if any */
+    int8_t freeze_level;                    /* Level of god who froze char, if any */
     int16_t invis_level;                    /* level of invisibility */
     room_vnum load_room;                    /* Which room to load PC into */
     int pref[PR_ARRAY_MAX];                 /* preference flags */
@@ -946,10 +937,10 @@ struct player_special_data {
 /* Special data used by NPCs, not PCs */
 struct mob_special_data {
     memory_rec *memory;                     /* List of PCs to remember */
-    byte attack_type;                       /* The primary attack type (bite, sting, hit, etc.) */
-    byte default_pos;                       /* Default position (standing, sleeping, etc.) */
-    byte damnodice;                         /* The number of dice to roll for damage */
-    byte damsizedice;                       /* The size of each die rolled for damage. */
+    int8_t attack_type;                     /* The primary attack type (bite, sting, hit, etc.) */
+    int8_t default_pos;                     /* Default position (standing, sleeping, etc.) */
+    int8_t damnodice;                       /* The number of dice to roll for damage */
+    int8_t damsizedice;                     /* The size of each die rolled for damage. */
 };
 
 /* An affect structure. */
@@ -957,7 +948,7 @@ struct affected_type {
     int16_t spell;                          /* The spell that caused this */
     int16_t duration;                       /* For how long its effects will last      */
     int8_t modifier;                        /* Added/subtracted to/from apropriate ability     */
-    byte location;                          /* Tells which ability to change(APPLY_XXX). */
+    int8_t location;                        /* Tells which ability to change(APPLY_XXX). */
     int bitvector[AF_ARRAY_MAX];            /* Tells which bits to set (AFF_XXX). */
 
     struct affected_type *next;             /* The next affect in the list of affects. */
@@ -1030,8 +1021,8 @@ struct txt_q {
 struct descriptor_data {
     socket_t descriptor;                /* file descriptor for socket */
     char host[HOST_LENGTH + 1];         /* hostname */
-    byte bad_pws;                       /* number of bad pw attemps this login */
-    byte idle_tics;                     /* tics idle at password prompt */
+    int8_t bad_pws;                     /* number of bad pw attemps this login */
+    int8_t idle_tics;                   /* tics idle at password prompt */
     int connected;                      /* mode of 'connectedness' */
     int desc_num;                       /* unique num assigned to desc */
     time_t login_time;                  /* when the person connected */
@@ -1156,13 +1147,13 @@ struct str_app_type {
 /* Describes the bonuses applied for a specific value of a character's
  * wisdom attribute. */
 struct wis_app_type {
-    byte bonus; /* how many practices player gains per lev */
+    int8_t bonus; /* how many practices player gains per lev */
 };
 
 /* Describes the bonuses applied for a specific value of a character's
  * intelligence attribute. */
 struct int_app_type {
-    byte learn; /* how many % a player learns a spell/skill */
+    int8_t learn; /* how many % a player learns a spell/skill */
 };
 
 /* Describes the bonuses applied for a specific value of a

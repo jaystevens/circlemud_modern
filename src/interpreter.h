@@ -56,7 +56,7 @@ ACMD(do_alias);
 struct command_info {
     const char *command;
     const char *sort_as;
-    byte minimum_position;
+    int8_t minimum_position;
     void (*command_pointer)(struct char_data *ch, char *argument, int cmd, int subcmd);
     int16_t minimum_level;
     int subcmd;

@@ -50,7 +50,7 @@ void parse_trigger(FILE *trig_f, int nr)
 
     get_line(trig_f, line);
     k = sscanf(line, "%d %s %d", &attach_type, flags, t);
-    trig->attach_type = (byte) attach_type;
+    trig->attach_type = (int8_t) attach_type;
     trig->trigger_type = (long) asciiflag_conv(flags);
     trig->narg = (k == 3) ? t[0] : 0;
 

@@ -207,7 +207,7 @@ ACMD(do_track)
 void hunt_victim(struct char_data *ch)
 {
     int dir;
-    byte found;
+    bool found;
     struct char_data *tmp;
 
     if (!ch || !HUNTING(ch) || FIGHTING(ch)) {

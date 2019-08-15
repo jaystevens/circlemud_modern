@@ -75,7 +75,7 @@
 #define OASIS_CFG    5
 
 /* Utilities exported from oasis.c. */
-void cleanup_olc(struct descriptor_data *d, byte cleanup_type);
+void cleanup_olc(struct descriptor_data *d, int8_t cleanup_type);
 void get_char_colors(struct char_data *ch);
 void split_argument(char *argument, char *tag);
 void send_cannot_edit(struct char_data *ch, zone_vnum zone);

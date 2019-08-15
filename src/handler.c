@@ -31,7 +31,7 @@ static int extractions_pending = 0;
 /* local file scope functions */
 static int apply_ac(struct char_data *ch, int eq_pos);
 static void update_object(struct obj_data *obj, int use);
-static void affect_modify_ar(struct char_data *ch, byte loc, int8_t mod, int bitv[], bool add);
+static void affect_modify_ar(struct char_data *ch, int8_t loc, int8_t mod, int bitv[], bool add);
 
 char *fname(const char *namelist)
 {
@@ -114,7 +114,7 @@ int isname(const char *str, const char *namelist)
     return 0;
 }
 
-static void aff_apply_modify(struct char_data *ch, byte loc, int8_t mod, char *msg)
+static void aff_apply_modify(struct char_data *ch, int8_t loc, int8_t mod, char *msg)
 {
     switch (loc) {
         case APPLY_NONE:
@@ -214,7 +214,7 @@ static void aff_apply_modify(struct char_data *ch, byte loc, int8_t mod, char *m
     } /* switch */
 }
 
-static void affect_modify_ar(struct char_data *ch, byte loc, int8_t mod, int bitv[], bool add)
+static void affect_modify_ar(struct char_data *ch, int8_t loc, int8_t mod, int bitv[], bool add)
 {
     int i, j;
 
