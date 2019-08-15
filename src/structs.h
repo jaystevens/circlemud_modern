@@ -26,13 +26,13 @@
  * signed anymore so use the unsigned types and get 65,535 objects instead of
  * 32,768. NOTE: This will likely be unconditionally unsigned later.
  * 0 = use signed indexes; 1 = use unsigned indexes */
-# define IDXTYPE        ush_int         /* Index types are unsigned short ints */
-# define IDXTYPE_MAX    USHRT_MAX       /* Used for compatibility checks. */
+# define IDXTYPE        uint16_t        /* Index types are unsigned 16 bit int */
+# define IDXTYPE_MAX    UINT16_MAX      /* Used for compatibility checks. */
 # define IDXTYPE_MIN    0               /* Used for compatibility checks. */
-# define NOWHERE        ((IDXTYPE)~0)   /* Sets to ush_int_MAX, or 65,535 */
-# define NOTHING        ((IDXTYPE)~0)   /* Sets to ush_int_MAX, or 65,535 */
-# define NOBODY         ((IDXTYPE)~0)   /* Sets to ush_int_MAX, or 65,535 */
-# define NOFLAG         ((IDXTYPE)~0)   /* Sets to ush_int_MAX, or 65,535 */
+# define NOWHERE        ((IDXTYPE)~0)   /* Sets to UINT16_MAX, or 65,535 */
+# define NOTHING        ((IDXTYPE)~0)   /* Sets to UINT16_MAX, or 65,535 */
+# define NOBODY         ((IDXTYPE)~0)   /* Sets to UINT16_MAX, or 65,535 */
+# define NOFLAG         ((IDXTYPE)~0)   /* Sets to UINT16_MAX, or 65,535 */
 
 /* Function macro for the mob, obj and room special functions */
 #define SPECIAL(name) \
