@@ -26,19 +26,7 @@ tbaMUD compiles under a large number of operating systems; instructions
 for compiling on each platform is can be found in the file doc/README.<system>
 Many of these instructions are outdated, please feel free to update them.
 
-AMIGA   - If you are using an Amiga running AmigaDOS. (If you're running 
-          NetBSD or Linux on an Amiga, use README.UNIX instead.)
-ARC     - If you are using an Acorn running RiscOS.
-BORLAND - For those using Borland under Windows.
-CYGWIN  - If you are using Cygwin shell in Windows.
-MSVC#   - If you are using MSVC.
-OS2     - If you are using OS/2 Warp Connect v3.0 or OS/2 v2.x.
-UNIX    - If you have any type UNIX system, including Linux, MkLinux, Ultrix, 
-          HP/UX, Solaris, SunOS, IRIX, FreeBSD, OpenBSD, NetBSD, BSDi, 
-          Macintosh OS X, etc.
-VMS     - If you happen to be on OpenVMS.
-WATCOM  - If using WATCOM under Windows.
-WIN     - If you are using Windows.
+should compile properly using cmake.
 
 If you are interested in porting tbaMUD to a new platform, see the file 
 doc/porting.txt for some tips.
