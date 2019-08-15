@@ -1650,7 +1650,7 @@ static int eval_lhs_op_rhs(char *expr, char *result, void *go, struct script_dat
 
                 eval_expr(line, lhr, go, sc, trig, type);
                 eval_expr(p, rhr, go, sc, trig, type);
-                eval_op(ops[i], lhr, rhr, result, go, sc, trig);
+                eval_op((char*)ops[i], lhr, rhr, result, go, sc, trig);
 
                 return 1;
             }
@@ -2545,9 +2545,6 @@ int script_driver(void *go_adress, trig_data *trig, int type, int mode)
     unsigned long loops = 0;
     void *go = NULL;
 
-    void obj_command_interpreter(obj_data *obj, char *argument);
-    void wld_command_interpreter(struct room_data *room, char *argument);
-
     switch (type) {
         case MOB_TRIGGER:
             go = *(char_data **) go_adress;
@@ -2648,7 +2645,7 @@ int script_driver(void *go_adress, trig_data *trig, int type, int mode)
                     loops++;
                     GET_TRIG_LOOPS(trig)++;
                     if (loops == 30) {
-                        process_wait(go, trig, type, "wait 1", cl);
+                        process_wait(go, trig, type, (char*)"wait 1", cl);
                         depth--;
                         return ret_val;
                     }
@@ -2820,7 +2817,7 @@ find_case(struct trig_data *trig, struct cmdlist_element *cl, void *go, struct s
             c = find_done(c);
         } else if (!strn_cmp("case ", p, 5)) {
             buf = (char *) malloc(MAX_STRING_LENGTH);
-            eval_op("==", result, p + 5, buf, go, sc, trig);
+            eval_op((char*)"==", result, p + 5, buf, go, sc, trig);
             if (*buf && *buf != '0') {
                 free(buf);
                 return c;
