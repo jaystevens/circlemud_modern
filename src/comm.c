@@ -87,9 +87,6 @@
 #define INVALID_SOCKET (-1)
 #endif
 
-extern time_t motdmod;
-extern time_t newsmod;
-
 /* locally defined globals, used externally */
 struct descriptor_data *descriptor_list = NULL;   /* master desc list */
 int buf_largecount = 0;   /* # of large buffers which exist */
