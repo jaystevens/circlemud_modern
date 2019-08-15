@@ -1,0 +1,9 @@
+// the configured options and settings
+const int MUD_VERSION_MAJOR = @VERSION_MAJOR@;
+const int MUD_VERSION_MINOR = @VERSION_MINOR@;
+const int MUD_VERSION_PATCH = @VERSION_PATCH@;
+const int MUD_VERSION_TWEAK = @VERSION_TWEAK@;
+const char* MUD_VERSION = "@VERSION@";
+const char* MUD_VERSION_FULL = "@VERSION_FULL@";
+const char* MUD_BUILD_HOST = "@BUILD_HOST@";
+const char* MUD_BUILD_TIME = __TIMESTAMP__;
