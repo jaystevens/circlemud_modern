@@ -17,8 +17,6 @@
 #include "improved-edit.h"
 #include "modify.h"
 
-extern time_t motdmod;
-extern time_t newsmod;
 
 void tedit_string_cleanup(struct descriptor_data *d, int terminator)
 {
