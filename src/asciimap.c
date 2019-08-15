@@ -232,7 +232,7 @@ static int vdoor_marks[4] = {
  * Begin Local (File Scope) Function Prototypes
  *****************************************************************************/
 static void
-MapArea(room_rnum room, struct char_data *ch, int x, int y, int min, int max, sh_int xpos, sh_int ypos, bool worldmap);
+MapArea(room_rnum room, struct char_data *ch, int x, int y, int min, int max, int16_t xpos, int16_t ypos, bool worldmap);
 static char *StringMap(int centre, int size);
 static char *WorldMap(int centre, int size, int mapshape, int maptype);
 static char *CompactStringMap(int centre, int size);
@@ -256,12 +256,12 @@ bool can_see_map(struct char_data *ch)
 
 /* MapArea function - create the actual map */
 static void
-MapArea(room_rnum room, struct char_data *ch, int x, int y, int min, int max, sh_int xpos, sh_int ypos, bool worldmap)
+MapArea(room_rnum room, struct char_data *ch, int x, int y, int min, int max, int16_t xpos, int16_t ypos, bool worldmap)
 {
     room_rnum prospect_room;
     struct room_direction_data *pexit;
     int door, ew_size = 0, ns_size = 0, x_exit_pos = 0, y_exit_pos = 0;
-    sh_int prospect_xpos, prospect_ypos;
+    int16_t prospect_xpos, prospect_ypos;
 
     if (map[x][y] < 0) {
         return;

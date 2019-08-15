@@ -605,7 +605,6 @@
 #define MAX_CMD_LENGTH 16384
 
 /* Type Definitions */
-typedef signed short int sh_int;    /* 2 bytes; vals = -32,768 to 32,767 */
 typedef unsigned short int ush_int; /* 2 bytes; vals = 0 to 65,535 */
 #if !defined(__cplusplus)    /* Anyone know a portable method? */
 typedef char bool; /* Technically 1 signed byte; vals should only = TRUE or FALSE. */
@@ -693,7 +692,7 @@ struct obj_data {
     struct extra_descr_data *ex_description;            /* List of extra descriptions */
     struct char_data *carried_by;                       /* Points to PC/NPC carrying, or NULL */
     struct char_data *worn_by;                          /* Points to PC/NPC wearing, or NULL */
-    sh_int worn_on;                                     /* If the object can be worn, where can it be worn? */
+    int16_t worn_on;                                     /* If the object can be worn, where can it be worn? */
 
     struct obj_data *in_obj;                            /* Points to carrying object, or NULL */
     struct obj_data *contains;                          /* List of objects being carried, or NULL */
@@ -716,7 +715,7 @@ struct obj_file_elem {
     obj_vnum item_number;                               /* The prototype, non-unique info for this object. */
 
 #if USE_AUTOEQ
-    sh_int location;                                    /* If re-equipping objects on load, wear object here */
+    int16_t location;                                    /* If re-equipping objects on load, wear object here */
 #endif
     int value[NUM_OBJ_VAL_POSITIONS];                   /* Current object values */
     int extra_flags[EF_ARRAY_MAX];                      /* Object extra flags */
@@ -759,7 +758,7 @@ struct room_direction_data {
 
     char *keyword;                      /* for interacting (open/close) this direction */
 
-    sh_int /*bitvector_t*/ exit_info;   /* Door, and what type? */
+    int16_t /*bitvector_t*/ exit_info;   /* Door, and what type? */
     obj_vnum key;                       /* Key's vnum (-1 for no key) */
     room_rnum to_room;                  /* Where direction leads, or NOWHERE if not defined */
 };
@@ -797,10 +796,10 @@ typedef struct memory_rec_struct memory_rec;
 /* This structure is purely intended to be an easy way to transfer and return
  * information about time (real or mudwise). */
 struct time_info_data {
-    int hours;   /* numeric hour */
-    int day;     /* numeric day */
-    int month;   /* numeric month */
-    sh_int year; /* numeric year */
+    int hours;      /* numeric hour */
+    int day;        /* numeric day */
+    int month;      /* numeric month */
+    int16_t year;   /* numeric year */
 };
 
 /* Player specific time information. */
@@ -857,19 +856,19 @@ struct char_ability_data {
 
 /* Character 'points', or health statistics. */
 struct char_point_data {
-    sh_int mana;     /* Current mana level  */
-    sh_int max_mana; /* Max mana level */
-    sh_int hit;      /* Curent hit point, or health, level */
-    sh_int max_hit;  /* Max hit point, or health, level */
-    sh_int move;     /* Current move point, or stamina, level */
-    sh_int max_move; /* Max move point, or stamina, level */
+    int16_t mana;     /* Current mana level  */
+    int16_t max_mana; /* Max mana level */
+    int16_t hit;      /* Curent hit point, or health, level */
+    int16_t max_hit;  /* Max hit point, or health, level */
+    int16_t move;     /* Current move point, or stamina, level */
+    int16_t max_move; /* Max move point, or stamina, level */
 
     /* Current armor class. Internal use goes from -100 (totally armored) to
      * 100 (totally naked). Externally expressed as -10 (totally armored) to
      * 10 (totally naked). Currently follows the old and decrepit Advanced
      * Dungeons and Dragons method of dealing with character defense, or
      * Armor class. */
-    sh_int armor;
+    int16_t armor;
     int gold;        /* Current gold carried on character */
     int bank_gold;   /* Gold the char has in a bank account	*/
     int exp;         /* The experience points, or value, of the character. */
@@ -885,7 +884,7 @@ struct char_special_data_saved {
     long idnum;                     /* PC's idnum; -1 for mobiles. */
     int act[PM_ARRAY_MAX];          /* act flags for NPC's; player flag for PC's */
     int affected_by[AF_ARRAY_MAX];  /* Bitvector for spells/skills affected by */
-    sh_int apply_saving_throw[5];   /* Saving throw (Bonuses)		*/
+    int16_t apply_saving_throw[5];   /* Saving throw (Bonuses)		*/
 };
 
 /* Special playing constants shared by PCs and NPCs which aren't in pfile */
@@ -909,7 +908,7 @@ struct player_special_data_saved {
     byte skills[MAX_SKILLS + 1];            /* Character skills. */
     int wimp_level;                         /* Below this # of hit points, flee! */
     byte freeze_level;                      /* Level of god who froze char, if any */
-    sh_int invis_level;                     /* level of invisibility */
+    int16_t invis_level;                    /* level of invisibility */
     room_vnum load_room;                    /* Which room to load PC into */
     int pref[PR_ARRAY_MAX];                 /* preference flags */
     uint8_t bad_pws;                        /* number of bad login attempts */
@@ -956,9 +955,9 @@ struct mob_special_data {
 
 /* An affect structure. */
 struct affected_type {
-    sh_int spell;                           /* The spell that caused this */
-    sh_int duration;                        /* For how long its effects will last      */
-    int8_t modifier;                         /* Added/subtracted to/from apropriate ability     */
+    int16_t spell;                          /* The spell that caused this */
+    int16_t duration;                       /* For how long its effects will last      */
+    int8_t modifier;                        /* Added/subtracted to/from apropriate ability     */
     byte location;                          /* Tells which ability to change(APPLY_XXX). */
     int bitvector[AF_ARRAY_MAX];            /* Tells which bits to set (AFF_XXX). */
 
@@ -1131,28 +1130,28 @@ struct social_messg {
 /* Describes bonuses, or negatives, applied to thieves skills. In practice
  * this list is tied to the character's dexterity attribute. */
 struct dex_skill_type {
-    sh_int p_pocket; /* Alters the success rate of pick pockets */
-    sh_int p_locks;  /* Alters the success of pick locks */
-    sh_int traps;    /* Historically alters the success of trap finding. */
-    sh_int sneak;    /* Alters the success of sneaking without being detected */
-    sh_int hide;     /* Alters the success of hiding out of sight */
+    int16_t p_pocket; /* Alters the success rate of pick pockets */
+    int16_t p_locks;  /* Alters the success of pick locks */
+    int16_t traps;    /* Historically alters the success of trap finding. */
+    int16_t sneak;    /* Alters the success of sneaking without being detected */
+    int16_t hide;     /* Alters the success of hiding out of sight */
 };
 
 /* Describes the bonuses applied for a specific value of a character's
  * strength attribute. */
 struct dex_app_type {
-    sh_int reaction;    /* Historically affects reaction savings throws. */
-    sh_int miss_att;    /* Historically affects missile attacks */
-    sh_int defensive;   /* Alters character's inherent armor class */
+    int16_t reaction;    /* Historically affects reaction savings throws. */
+    int16_t miss_att;    /* Historically affects missile attacks */
+    int16_t defensive;   /* Alters character's inherent armor class */
 };
 
 /* Describes the bonuses applied for a specific value of a character's
  * strength attribute. */
 struct str_app_type {
-    sh_int tohit;   /* To Hit (THAC0) Bonus/Penalty        */
-    sh_int todam;   /* Damage Bonus/Penalty                */
-    sh_int carry_w; /* Maximum weight that can be carrried */
-    sh_int wield_w; /* Maximum weight that can be wielded  */
+    int16_t tohit;   /* To Hit (THAC0) Bonus/Penalty        */
+    int16_t todam;   /* Damage Bonus/Penalty                */
+    int16_t carry_w; /* Maximum weight that can be carrried */
+    int16_t wield_w; /* Maximum weight that can be wielded  */
 };
 
 /* Describes the bonuses applied for a specific value of a character's
@@ -1170,7 +1169,7 @@ struct int_app_type {
 /* Describes the bonuses applied for a specific value of a
  * character's constitution attribute. */
 struct con_app_type {
-    sh_int hitp; /* Added to a character's new MAXHP at each new level. */
+    int16_t hitp; /* Added to a character's new MAXHP at each new level. */
 };
 
 /* Stores, and used to deliver, the current weather information

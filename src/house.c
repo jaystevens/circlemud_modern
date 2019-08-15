@@ -366,7 +366,7 @@ static void hcontrol_build_house(struct char_data *ch, char *arg)
     struct house_control_rec temp_house;
     room_vnum virt_house, virt_atrium;
     room_rnum real_house, real_atrium;
-    sh_int exit_num;
+    int16_t exit_num;
     long owner;
 
     if (num_of_houses >= MAX_HOUSES) {
