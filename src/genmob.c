@@ -157,11 +157,7 @@ int delete_mobile(mob_rnum refpt)
     mob_vnum vnum;
     zone_rnum zone;
 
-#if CIRCLE_UNSIGNED_INDEX
     if (refpt == NOBODY || refpt > top_of_mobt) {
-#else
-        if (refpt < 0 || refpt > top_of_mobt) {
-#endif
         log("SYSERR: GenOLC: delete_mobile: Invalid rnum %d.", refpt);
         return NOBODY;
     }
@@ -327,11 +323,7 @@ int save_mobiles(zone_rnum rznum)
     int written;
     char mobfname[64], usedfname[64];
 
-#if CIRCLE_UNSIGNED_INDEX
     if (rznum == NOWHERE || rznum > top_of_zone_table) {
-#else
-        if (rznum < 0 || rznum > top_of_zone_table) {
-#endif
         log("SYSERR: GenOLC: save_mobiles: Invalid real zone number %d. (0-%d)", rznum, top_of_zone_table);
         return FALSE;
     }

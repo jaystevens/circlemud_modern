@@ -88,12 +88,7 @@ obj_rnum adjust_objects(obj_rnum refpt)
     int shop, i, zone, cmd_no;
     struct obj_data *obj;
 
-#if CIRCLE_UNSIGNED_INDEX
-    if (refpt == NOTHING || refpt > top_of_objt)
-#else
-        if (refpt < 0 || refpt > top_of_objt)
-#endif
-    {
+    if (refpt == NOTHING || refpt > top_of_objt) {
         return NOTHING;
     }
 
@@ -163,12 +158,7 @@ obj_rnum insert_object(struct obj_data *obj, obj_vnum ovnum)
 
 obj_rnum index_object(struct obj_data *obj, obj_vnum ovnum, obj_rnum ornum)
 {
-#if CIRCLE_UNSIGNED_INDEX
-    if (obj == NULL || ornum == NOTHING || ornum > top_of_objt)
-#else
-        if (obj == NULL || ovnum < 0 || ornum < 0 || ornum > top_of_objt)
-#endif
-    {
+    if (obj == NULL || ornum == NOTHING || ornum > top_of_objt) {
         return NOWHERE;
     }
 
@@ -195,11 +185,7 @@ int save_objects(zone_rnum zone_num)
     struct extra_descr_data *ex_desc;
     int n;
 
-#if CIRCLE_UNSIGNED_INDEX
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
-#else
-        if (zone_num < 0 || zone_num > top_of_zone_table) {
-#endif
         log("SYSERR: GenOLC: save_objects: Invalid real zone number %d. (0-%d)", zone_num, top_of_zone_table);
         return FALSE;
     }

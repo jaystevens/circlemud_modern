@@ -283,11 +283,7 @@ int save_rooms(zone_rnum rzone)
     char buf1[MAX_STRING_LENGTH];
     char buf2[MAX_STRING_LENGTH];
 
-#if CIRCLE_UNSIGNED_INDEX
     if (rzone == NOWHERE || rzone > top_of_zone_table) {
-#else
-        if (rzone < 0 || rzone > top_of_zone_table) {
-#endif
         log("SYSERR: GenOLC: save_rooms: Invalid zone number %d passed! (0-%d)", rzone, top_of_zone_table);
         return FALSE;
     }
