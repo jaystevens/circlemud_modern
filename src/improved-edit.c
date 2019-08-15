@@ -110,6 +110,7 @@ void parse_edit_action(int command, char *string, struct descriptor_data *d)
     char *s, *t, temp, *c;
     char buf[MAX_STRING_LENGTH];
     char buf2[MAX_STRING_LENGTH - 1];
+    bool has_at;
 
     switch (command) {
         case PARSE_HELP:
@@ -135,7 +136,7 @@ void parse_edit_action(int command, char *string, struct descriptor_data *d)
                 write_to_output(d, "No string.\r\n");
                 break;
             }
-            bool has_at = FALSE;
+            has_at = FALSE;
             for (c = *d->str; *c; ++c) {
                 if (*c == '@') {
                     if (*(++c) != '@') {
@@ -384,12 +385,12 @@ void parse_edit_action(int command, char *string, struct descriptor_data *d)
             t = s;
             while (s && i <= line_high) {
                 if ((s = strchr(s, '\n')) != NULL) {
+                    char buf3[9];
                     i++;
                     total_len++;
                     s++;
                     temp = *s;
                     *s = '\0';
-                    char buf3[9];
                     sprintf(buf3, "%4d: ", (i - 1));
                     strncat(buf, buf3, sizeof(buf) - strlen(buf) - 1);
                     strncat(buf, t, sizeof(buf) - strlen(buf) - 1);
@@ -533,7 +534,7 @@ void parse_edit_action(int command, char *string, struct descriptor_data *d)
  * (mostly olc and mail). */
 int format_text(char **ptr_string, int mode, struct descriptor_data *d, unsigned int maxlen, int low, int high)
 {
-    int line_chars, cap_next = TRUE, cap_next_next = FALSE, color_chars = 0, i, pass_line = 0;
+    int line_chars, cap_next = TRUE, cap_next_next = FALSE, color_chars = 0, i, pass_line = 0, len;
     char *flow, *start = NULL, temp;
     char formatted[MAX_STRING_LENGTH] = "";
     char str[MAX_STRING_LENGTH];
@@ -679,7 +680,7 @@ int format_text(char **ptr_string, int mode, struct descriptor_data *d, unsigned
         strncat(formatted, "\r\n", sizeof(formatted) - strlen(formatted) - 1);
     }
 
-    int len = MIN(maxlen, strlen(formatted) + 1);
+    len = MIN(maxlen, strlen(formatted) + 1);
     RECREATE(*ptr_string, char, len);
     strncpy(*ptr_string, formatted, len - 1);
     (*ptr_string)[len - 1] = '\0';
@@ -690,7 +691,8 @@ int replace_str(char **string, char *pattern, char *replacement, int rep_all, un
 {
     char *replace_buffer = NULL;
     char *flow, *jetsam, temp;
-    int len, i;
+    int i;
+    unsigned int len;
 
     if ((strlen(*string) - strlen(pattern)) + strlen(replacement) > max_size) {
         return -1;

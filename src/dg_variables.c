@@ -69,7 +69,7 @@ char *skill_percent(struct char_data *ch, char *skill)
     int skillnum;
 
     skillnum = find_skill_num(skill);
-    if (skillnum <= 0) { return ("unknown skill"); }
+    if (skillnum <= 0) { return (char*)("unknown skill"); }  // TODO - shouldn't cast to (char*)
 
     snprintf(retval, sizeof(retval), "%d", GET_SKILL(ch, skillnum));
     return retval;
@@ -270,70 +270,70 @@ find_replacement(void *go, struct script_data *sc, trig_data *trig, int type, ch
     char *name;
     int num, count, i, j, doors;
 
-    char *log_cmd[] = {
+    const char *log_cmd[] = {
         "mlog ",
         "olog ",
         "wlog "};
-    char *send_cmd[] = {
+    const char *send_cmd[] = {
         "msend ",
         "osend ",
         "wsend "};
-    char *echo_cmd[] = {
+    const char *echo_cmd[] = {
         "mecho ",
         "oecho ",
         "wecho "};
-    char *echoaround_cmd[] = {
+    const char *echoaround_cmd[] = {
         "mechoaround ",
         "oechoaround ",
         "wechoaround "};
-    char *door[] = {
+    const char *door[] = {
         "mdoor ",
         "odoor ",
         "wdoor "};
-    char *force[] = {
+    const char *force[] = {
         "mforce ",
         "oforce ",
         "wforce "};
-    char *load[] = {
+    const char *load[] = {
         "mload ",
         "oload ",
         "wload "};
-    char *purge[] = {
+    const char *purge[] = {
         "mpurge ",
         "opurge ",
         "wpurge "};
-    char *teleport[] = {
+    const char *teleport[] = {
         "mteleport ",
         "oteleport ",
         "wteleport "};
     /* the x kills a 'shadow' warning in gcc. */
-    char *xdamage[] = {
+    const char *xdamage[] = {
         "mdamage ",
         "odamage ",
         "wdamage "};
-    char *zoneecho[] = {
+    const char *zoneecho[] = {
         "mzoneecho ",
         "ozoneecho ",
         "wzoneecho "};
-    char *asound[] = {
+    const char *asound[] = {
         "masound ",
         "oasound ",
         "wasound "};
-    char *at[] = {
+    const char *at[] = {
         "mat ",
         "oat ",
         "wat "};
     /* there is no such thing as wtransform, thus the wecho below  */
-    char *transform[] = {
+    const char *transform[] = {
         "mtransform ",
         "otransform ",
         "wecho "};
-    char *recho[] = {
+    const char *recho[] = {
         "mrecho ",
         "orecho ",
         "wrecho "};
     /* there is no such thing as mmove, thus the mecho below  */
-    char *omove[] = {
+    const char *omove[] = {
         "mecho ",
         "omove ",
         "wmove "};

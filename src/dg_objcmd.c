@@ -48,7 +48,7 @@ static OCMD(do_omove);
 static OCMD(do_olog);
 
 struct obj_command_info {
-    char *command;
+    const char *command;
     void (*command_pointer)(obj_data *obj, char *argument, int cmd, int subcmd);
     int subcmd;
 };

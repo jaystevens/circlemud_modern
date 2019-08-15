@@ -219,9 +219,10 @@ void run_autowiz(void)
 
         /* Abusing signed -> unsigned conversion to avoid '-1' check. */
         if (res < sizeof(buf)) {
+            int rval;
             mudlog(CMP, LVL_IMMORT, FALSE, "Initiating autowiz.");
             reboot_wizlists();
-            int rval = system(buf);
+            rval = system(buf);
             if (rval != 0) {
                 mudlog(BRF, LVL_IMMORT, TRUE, "Warning: autowiz failed with return value %d", rval);
             }

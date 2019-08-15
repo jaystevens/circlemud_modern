@@ -1607,7 +1607,7 @@ static int eval_lhs_op_rhs(char *expr, char *result, void *go, struct script_dat
      * valid operands, in order of priority
      * each must also be defined in eval_op()
      */
-    static char *ops[] = {
+    static const char *ops[] = {
         "||",
         "&&",
         "==",

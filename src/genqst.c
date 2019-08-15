@@ -189,7 +189,7 @@ int save_quests(zone_rnum zone_num)
     char quest_desc[MAX_STRING_LENGTH], quest_info[MAX_STRING_LENGTH];
     char quest_done[MAX_STRING_LENGTH], quest_quit[MAX_STRING_LENGTH];
     char buf[MAX_STRING_LENGTH];
-    int i, num_quests = 0;
+    int i, num_quests = 0, n;
 
 #if CIRCLE_UNSIGNED_INDEX
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
@@ -222,7 +222,7 @@ int save_quests(zone_rnum zone_num)
             strip_cr(quest_quit);
             /* Save the quest details to the file.  */
             sprintascii(quest_flags, QST_FLAGS(rnum));
-            int n = snprintf(buf, MAX_STRING_LENGTH, "#%d\n"
+            n = snprintf(buf, MAX_STRING_LENGTH, "#%d\n"
                                                      "%s%c\n"
                                                      "%s%c\n"
                                                      "%s%c\n"

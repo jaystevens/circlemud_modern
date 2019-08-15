@@ -207,7 +207,7 @@ static void hedit_disp_menu(struct descriptor_data *d)
 void hedit_parse(struct descriptor_data *d, char *arg)
 {
     char buf[MAX_STRING_LENGTH];
-    char *oldtext = "";
+    const char *oldtext = "";
     int number;
 
     switch (OLC_MODE(d)) {
@@ -312,7 +312,7 @@ void hedit_parse(struct descriptor_data *d, char *arg)
                         write_to_output(d, "%s", OLC_HELP(d)->entry);
                         oldtext = strdup(OLC_HELP(d)->entry);
                     }
-                    string_write(d, &OLC_HELP(d)->entry, MAX_MESSAGE_LENGTH, 0, oldtext);
+                    string_write(d, &OLC_HELP(d)->entry, MAX_MESSAGE_LENGTH, 0, (void*)oldtext);  // TODO - should not cast oldtext
                     OLC_VAL(d) = 1;
                     break;
                 case '2':

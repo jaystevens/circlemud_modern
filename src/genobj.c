@@ -193,6 +193,7 @@ int save_objects(zone_rnum zone_num)
     FILE *fp;
     struct obj_data *obj;
     struct extra_descr_data *ex_desc;
+    int n;
 
 #if CIRCLE_UNSIGNED_INDEX
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
@@ -218,7 +219,7 @@ int save_objects(zone_rnum zone_num)
                 *buf = '\0';
             }
 
-            int n = snprintf(buf2, MAX_STRING_LENGTH, "#%d\n"
+            n = snprintf(buf2, MAX_STRING_LENGTH, "#%d\n"
                                                       "%s~\n"
                                                       "%s~\n"
                                                       "%s~\n"

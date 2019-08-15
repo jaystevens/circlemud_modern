@@ -415,13 +415,14 @@ int write_mobile_record(mob_vnum mvnum, struct char_data *mob, FILE *fd)
     char ldesc[MAX_STRING_LENGTH];
     char ddesc[MAX_STRING_LENGTH];
     char buf[MAX_STRING_LENGTH];
+    int n;
 
     ldesc[MAX_STRING_LENGTH - 1] = '\0';
     ddesc[MAX_STRING_LENGTH - 1] = '\0';
     strip_cr(strncpy(ldesc, GET_LDESC(mob), MAX_STRING_LENGTH - 1));
     strip_cr(strncpy(ddesc, GET_DDESC(mob), MAX_STRING_LENGTH - 1));
 
-    int n = snprintf(buf, MAX_STRING_LENGTH, "#%d\n"
+    n = snprintf(buf, MAX_STRING_LENGTH, "#%d\n"
                                              "%s%c\n"
                                              "%s%c\n"
                                              "%s%c\n"

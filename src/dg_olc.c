@@ -182,7 +182,7 @@ void trigedit_setup_existing(struct descriptor_data *d, int rtrg_num)
 static void trigedit_disp_menu(struct descriptor_data *d)
 {
     struct trig_data *trig = OLC_TRIG(d);
-    char *attach_type;
+    const char *attach_type;
     char trgtypes[256];
 
     get_char_colors(d->character);
@@ -448,6 +448,7 @@ static void script_syntax_highlighting(struct descriptor_data *d, char *string)
 
         // Highlight lines
         if (!comment) {
+            int cmd;
             // Syntax replacement
             for (i = 0; i < SYNTAX_TERMS; i++) {
                 line = str_replace(line, syntax_color_replacement[i][0], syntax_color_replacement[i][1]);
@@ -459,7 +460,6 @@ static void script_syntax_highlighting(struct descriptor_data *d, char *string)
             }
 
             // Socials replacement (experimental)
-            int cmd;
             for (cmd = 0; *complete_cmd_info[cmd].command != '\n'; cmd++) {
                 if (complete_cmd_info[cmd].command_pointer == do_action) {
                     char replace_social[MAX_INPUT_LENGTH];
@@ -860,13 +860,14 @@ void trigedit_save(struct descriptor_data *d)
     rename(fname, buf);
 
     write_to_output(d, "Trigger saved to disk.\r\n");
-    trigedit_create_index(zone, "trg");
+    trigedit_create_index(zone, (char*)"trg");  // TODO - possibly unsafe cast of (const char*) to (char*)
 }
 
 static void trigedit_create_index(int znum, char *type)
 {
     FILE *newfile, *oldfile;
-    char new_name[128], old_name[128], *prefix;
+    char new_name[128], old_name[128];
+    const char *prefix;
     char buf[MAX_STRING_LENGTH], buf1[MAX_STRING_LENGTH];
     int num, found = FALSE;
 

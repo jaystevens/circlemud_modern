@@ -274,7 +274,7 @@ int sprintascii(char *out, bitvector_t bits)
 {
     int i, j = 0;
     /* 32 bits, don't just add letters to try to get more unless your bitvector_t is also as large. */
-    char *flags = "abcdefghijklmnopqrstuvwxyzABCDEF";
+    const char *flags = "abcdefghijklmnopqrstuvwxyzABCDEF";
 
     for (i = 0; flags[i] != '\0'; i++) {
         if (bits & (1 << i)) {
@@ -342,7 +342,7 @@ ACMD(do_export_zone)
 
     /* system command locations are relative to where the binary IS, not where it
      * was run from, thus we act like we are in the bin folder, because we are*/
-    char *path = "../lib/world/export/";
+    const char *path = "../lib/world/export/";
 
     if (IS_NPC(ch) || GET_LEVEL(ch) < LVL_IMPL) {
         return;

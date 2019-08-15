@@ -1201,13 +1201,13 @@ ACMD(do_who)
     int who_room = 0, showgroup = 0, showleader = 0;
 
     struct {
-        char *disp;
+        const char *disp;
         int min_level;
         int max_level;
         int count; /* must always start as 0 */
-    } rank[] = {{"Immortals\r\n---------\r\n", LVL_IMMORT, LVL_IMPL, 0},
-                {"Mortals\r\n-------\r\n", 1,              LVL_IMMORT - 1, 0},
-                {"\n",                     0, 0,                     0}};
+    } rank[] = {{"Immortals\r\n---------\r\n",  LVL_IMMORT, LVL_IMPL,       0},
+                {"Mortals\r\n-------\r\n",      1,          LVL_IMMORT - 1, 0},
+                {"\n",                          0,          0,              0}};
 
     skip_spaces(&argument);
     strcpy(buf, argument);   /* strcpy: OK (sizeof: argument == buf) */
@@ -1982,11 +1982,11 @@ ACMD(do_toggle)
         "\n"};
 
     const struct {
-        char *command;
+        const char *command;
         bitvector_t toggle; /* this needs changing once hashmaps are implemented */
         char min_level;
-        char *disable_msg;
-        char *enable_msg;
+        const char *disable_msg;
+        const char *enable_msg;
     } tog_messages[] = {{"summonable", PRF_SUMMONABLE, 0,           "You are now safe from summoning by other players.\r\n",                                  "You may now be summoned by other players.\r\n"},
                         {"nohassle",   PRF_NOHASSLE,   LVL_IMMORT,  "Nohassle disabled.\r\n",                                                                 "Nohassle enabled.\r\n"},
                         {"brief",      PRF_BRIEF,      0,           "Brief mode off.\r\n",                                                                    "Brief mode on.\r\n"},

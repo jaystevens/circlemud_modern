@@ -3619,7 +3619,7 @@ ACMD(do_links)
 static struct zcheck_armor {
     bitvector_t bitvector;          /* from Structs.h                       */
     int ac_allowed;                 /* Max. AC allowed for this body part  */
-    char *message;                  /* phrase for error message            */
+    const char *message;                  /* phrase for error message            */
 } zarmor[] = {{ITEM_WEAR_FINGER, 10, "Ring"},
               {ITEM_WEAR_NECK,   10, "Necklace"},
               {ITEM_WEAR_BODY,   10, "Body armor"},
@@ -3640,7 +3640,7 @@ static struct zcheck_affs {
     int aff_type;    /*from Structs.h*/
     int min_aff;     /*min. allowed value*/
     int max_aff;     /*max. allowed value*/
-    char *message;   /*phrase for error message*/
+    const char *message;   /*phrase for error message*/
 } zaffs[] = {{APPLY_NONE,          0,   -99, "unused0"},
              {APPLY_STR,           -5,  3,   "strength"},
              {APPLY_DEX,           -5,  3,   "dexterity"},
@@ -4428,9 +4428,9 @@ ACMD(do_file)
 
     /* Defines which files are available to read. */
     struct file_struct {
-        char *cmd;          /* The 'name' of the file to view */
+        const char *cmd;          /* The 'name' of the file to view */
         char level;         /* Minimum level needed to view. */
-        char *file;         /* The file location, relative to the working dir. */
+        const char *file;         /* The file location, relative to the working dir. */
         int read_backwards; /* Should the file be read backwards by default? */
     } fields[] = {{"xnames",    LVL_GOD, XNAME_FILE,         TRUE},
                   {"levels",    LVL_GOD, LEVELS_LOGFILE,     TRUE},

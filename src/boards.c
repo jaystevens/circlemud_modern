@@ -468,7 +468,8 @@ void board_save_board(int board_type)
 void board_load_board(int board_type)
 {
     FILE *fl;
-    int i, len1, len2;
+    int i;
+    uint32_t len1, len2;
     char *tmp1, *tmp2;
 
     if (!(fl = fopen(FILENAME(board_type), "rb"))) {

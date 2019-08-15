@@ -120,8 +120,10 @@ static IBT_DATA *read_ibt(char *filename, FILE *fp)
     IBT_DATA *ibtData;
     char *word, *id_num = NULL, *dated = NULL;
     char buf[MAX_STRING_LENGTH];
-    bool fMatch, flgCheck;
+    bool fMatch, flgCheck = false;
     char letter;
+
+    if (flgCheck) {}  // TODO - fix compiler unused warning
 
     do {
         letter = getc(fp);

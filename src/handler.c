@@ -235,7 +235,7 @@ static void affect_modify_ar(struct char_data *ch, byte loc, sbyte mod, int bitv
         mod = -mod;
     }
 
-    aff_apply_modify(ch, loc, mod, "affect_modify_ar");
+    aff_apply_modify(ch, loc, mod, (char*)"affect_modify_ar");  // TODO - should not cast to (char*)
 }
 
 /* This updates a character by subtracting everything he is affected by
