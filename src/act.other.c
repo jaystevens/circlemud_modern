@@ -674,174 +674,162 @@ ACMD(do_display)
     send_to_char(ch, "%s", CONFIG_OK);
 }
 
-#define TOG_OFF 0
-#define TOG_ON  1
 ACMD(do_gen_tog)
 {
-    long result;
+    int result = 0;
     int i;
+    const char *on_msg = NULL, *off_msg = NULL;
     char arg[MAX_INPUT_LENGTH];
-
-    const char *tog_messages[][2] = {{
-                                         "You are now safe from summoning by other players.\r\n",                    "You may now be summoned by other players.\r\n"},
-                                     {   "Nohassle disabled.\r\n",                                                   "Nohassle enabled.\r\n"},
-                                     {   "Brief mode off.\r\n",                                                      "Brief mode on.\r\n"},
-                                     {   "Compact mode off.\r\n",                                                    "Compact mode on.\r\n"},
-                                     {   "You can now hear tells.\r\n",                                              "You are now deaf to tells.\r\n"},
-                                     {   "You can now hear auctions.\r\n",                                           "You are now deaf to auctions.\r\n"},
-                                     {   "You can now hear shouts.\r\n",                                             "You are now deaf to shouts.\r\n"},
-                                     {   "You can now hear gossip.\r\n",                                             "You are now deaf to gossip.\r\n"},
-                                     {   "You can now hear the congratulation messages.\r\n",                        "You are now deaf to the congratulation messages.\r\n"},
-                                     {   "You can now hear the Wiz-channel.\r\n",                                    "You are now deaf to the Wiz-channel.\r\n"},
-                                     {   "You are no longer part of the Quest.\r\n",                                 "Okay, you are part of the Quest!\r\n"},
-                                     {   "You will no longer see the room flags.\r\n",                               "You will now see the room flags.\r\n"},
-                                     {   "You will now have your communication repeated.\r\n",                       "You will no longer have your communication repeated.\r\n"},
-                                     {   "HolyLight mode off.\r\n",                                                  "HolyLight mode on.\r\n"},
-                                     {   "Nameserver_is_slow changed to NO; IP addresses will now be resolved.\r\n", "Nameserver_is_slow changed to YES; sitenames will no longer be resolved.\r\n"},
-                                     {
-                                         "Autoexits disabled.\r\n",                                                  "Autoexits enabled.\r\n"},
-                                     {
-                                         "Will no longer track through doors.\r\n",                                  "Will now track through doors.\r\n"},
-                                     {
-                                         "Will no longer clear screen in OLC.\r\n",                                  "Will now clear screen in OLC.\r\n"},
-                                     {
-                                         "Buildwalk Off.\r\n",                                                       "Buildwalk On.\r\n"},
-                                     {
-                                         "AFK flag is now off.\r\n",                                                 "AFK flag is now on.\r\n"},
-                                     {
-                                         "Autoloot disabled.\r\n",                                                   "Autoloot enabled.\r\n"},
-                                     {
-                                         "Autogold disabled.\r\n",                                                   "Autogold enabled.\r\n"},
-                                     {
-                                         "Autosplit disabled.\r\n",                                                  "Autosplit enabled.\r\n"},
-                                     {
-                                         "Autosacrifice disabled.\r\n",                                              "Autosacrifice enabled.\r\n"},
-                                     {
-                                         "Autoassist disabled.\r\n",                                                 "Autoassist enabled.\r\n"},
-                                     {
-                                         "Automap disabled.\r\n",                                                    "Automap enabled.\r\n"},
-                                     {
-                                         "Autokey disabled.\r\n",                                                    "Autokey enabled.\r\n"},
-                                     {
-                                         "Autodoor disabled.\r\n",                                                   "Autodoor enabled.\r\n"},
-                                     {
-                                         "ZoneResets disabled.\r\n",                                                 "ZoneResets enabled.\r\n"}};
 
     if (IS_NPC(ch)) {
         return;
     }
 
     switch (subcmd) {
-        case SCMD_NOSUMMON:
-            result = PRF_TOG_CHK(ch, PRF_SUMMONABLE);
-            break;
-        case SCMD_NOHASSLE:
-            result = PRF_TOG_CHK(ch, PRF_NOHASSLE);
-            break;
-        case SCMD_BRIEF:
-            result = PRF_TOG_CHK(ch, PRF_BRIEF);
-            break;
-        case SCMD_COMPACT:
-            result = PRF_TOG_CHK(ch, PRF_COMPACT);
-            break;
-        case SCMD_NOTELL:
-            result = PRF_TOG_CHK(ch, PRF_NOTELL);
-            break;
-        case SCMD_NOAUCTION:
-            result = PRF_TOG_CHK(ch, PRF_NOAUCT);
-            break;
-        case SCMD_NOSHOUT:
-            result = PRF_TOG_CHK(ch, PRF_NOSHOUT);
-            break;
-        case SCMD_NOGOSSIP:
-            result = PRF_TOG_CHK(ch, PRF_NOGOSS);
-            break;
-        case SCMD_NOGRATZ:
-            result = PRF_TOG_CHK(ch, PRF_NOGRATZ);
-            break;
-        case SCMD_NOWIZ:
-            result = PRF_TOG_CHK(ch, PRF_NOWIZ);
-            break;
-        case SCMD_QUEST:
-            result = PRF_TOG_CHK(ch, PRF_QUEST);
-            break;
-        case SCMD_SHOWVNUMS:
-            result = PRF_TOG_CHK(ch, PRF_SHOWVNUMS);
-            break;
-        case SCMD_NOREPEAT:
-            result = PRF_TOG_CHK(ch, PRF_NOREPEAT);
-            break;
-        case SCMD_HOLYLIGHT:
-            result = PRF_TOG_CHK(ch, PRF_HOLYLIGHT);
+        case SCMD_AFK:
+            on_msg =  "AFK flag is now on.\r\n";
+            off_msg = "AFK flag is now off.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_AFK);
+            if (PRF_FLAGGED(ch, PRF_AFK))
+                act("$n has gone AFK.", true, ch, 0, 0, TO_ROOM);
+            else {
+                act("$n has come back from AFK.", true, ch, 0, 0, TO_ROOM);
+                if (has_mail(GET_IDNUM(ch)))
+                    send_to_char(ch, "You have mail waiting.\r\n");
+            }
             break;
         case SCMD_AUTOEXIT:
+            on_msg = "Autoexits enabled.\r\n";
+            off_msg = "Autoexits disabled.\r\n";
             result = PRF_TOG_CHK(ch, PRF_AUTOEXIT);
             break;
-        case SCMD_CLS:
-            result = PRF_TOG_CHK(ch, PRF_CLS);
+        case SCMD_AUTOASSIST:
+            on_msg = "Autoassist enabled.\r\n";
+            off_msg = "Autoassist disabled.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_AUTOASSIST);
+            break;
+        case SCMD_AUTODOOR:
+            on_msg = "Autodoor enabled.\r\n";
+            off_msg = "Autodoor disabled.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_AUTODOOR);
+            break;
+        case SCMD_AUTOGOLD:
+            on_msg = "Autogold enabled.\r\n";
+            off_msg = "Autogold disabled.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_AUTOGOLD);
+            break;
+        case SCMD_AUTOKEY:
+            on_msg = "Autokey enabled.\r\n";
+            off_msg = "Autokey disabled.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_AUTOKEY);
+            break;
+        case SCMD_AUTOLOOT:
+            on_msg = "Autoloot enabled.\r\n";
+            off_msg = "Autoloot disabled.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_AUTOLOOT);
+            break;
+        case SCMD_AUTOMAP:
+            on_msg =  "Automap enabled.\r\n";
+            off_msg = "Automap disabled.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_AUTOMAP);
+            break;
+        case SCMD_AUTOSAC:
+            on_msg = "Autosacrifice enabled.\r\n";
+            off_msg = "Autosacrifice disabled.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_AUTOSAC);
+            break;
+        case SCMD_AUTOSPLIT:
+            on_msg = "Autosplit enabled.\r\n";
+            off_msg = "Autosplit disabled.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_AUTOSPLIT);
+            break;
+        case SCMD_BRIEF:
+            on_msg = "Brief mode on.\r\n";
+            off_msg = "Brief mode off.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_BRIEF);
             break;
         case SCMD_BUILDWALK:
             if (GET_LEVEL(ch) < LVL_BUILDER) {
                 send_to_char(ch, "Builders only, sorry.\r\n");
                 return;
             }
+            on_msg = "Buildwalk On.\r\n";
+            off_msg = "Buildwalk Off.\r\n";
             result = PRF_TOG_CHK(ch, PRF_BUILDWALK);
             if (PRF_FLAGGED(ch, PRF_BUILDWALK)) {
                 one_argument(argument, arg);
-                for (i = 0; *arg && *(sector_types[i]) != '\n'; i++) {
-                    if (is_abbrev(arg, sector_types[i])) {
+                for (i = 0; *arg && *(sector_types[i]) != '\n'; i++)
+                    if (is_abbrev(arg, sector_types[i]))
                         break;
-                    }
-                }
-                if (*(sector_types[i]) == '\n') {
+                if (*(sector_types[i]) == '\n')
                     i = 0;
-                }
                 GET_BUILDWALK_SECTOR(ch) = i;
                 send_to_char(ch, "Default sector type is %s\r\n", sector_types[i]);
 
-                mudlog(CMP, GET_LEVEL(ch), true, "OLC: %s turned buildwalk on. Allowed zone %d", GET_NAME(ch),
-                       GET_OLC_ZONE(ch));
-            } else {
-                mudlog(CMP, GET_LEVEL(ch), true, "OLC: %s turned buildwalk off. Allowed zone %d", GET_NAME(ch),
-                       GET_OLC_ZONE(ch));
-            }
+                mudlog(CMP, GET_LEVEL(ch), true,
+                       "OLC: %s turned buildwalk on. Allowed zone %d", GET_NAME(ch), GET_OLC_ZONE(ch));
+            } else
+                mudlog(CMP, GET_LEVEL(ch), true,
+                       "OLC: %s turned buildwalk off. Allowed zone %d", GET_NAME(ch), GET_OLC_ZONE(ch));
             break;
-        case SCMD_AFK:
-            result = PRF_TOG_CHK(ch, PRF_AFK);
-            if (PRF_FLAGGED(ch, PRF_AFK)) {
-                act("$n has gone AFK.", true, ch, 0, 0, TO_ROOM);
-            } else {
-                act("$n has come back from AFK.", true, ch, 0, 0, TO_ROOM);
-                if (has_mail(GET_IDNUM(ch))) {
-                    send_to_char(ch, "You have mail waiting.\r\n");
-                }
-            }
+        case SCMD_COMPACT:
+            on_msg = "Compact mode on.\r\n";
+            off_msg = "Compact mode off.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_COMPACT);
             break;
-        case SCMD_AUTOLOOT:
-            result = PRF_TOG_CHK(ch, PRF_AUTOLOOT);
+        case SCMD_HOLYLIGHT:
+            on_msg = "HolyLight mode on.\r\n";
+            off_msg = "HolyLight mode off.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_HOLYLIGHT);
             break;
-        case SCMD_AUTOGOLD:
-            result = PRF_TOG_CHK(ch, PRF_AUTOGOLD);
+        case SCMD_NOAUCTION:
+            on_msg = "You are now deaf to auctions.\r\n";
+            off_msg = "You can now hear auctions.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_NOAUCT);
             break;
-        case SCMD_AUTOSPLIT:
-            result = PRF_TOG_CHK(ch, PRF_AUTOSPLIT);
+        case SCMD_NOGOSSIP:
+            on_msg = "You are now deaf to gossip.\r\n";
+            off_msg = "You can now hear gossip.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_NOGOSS);
             break;
-        case SCMD_AUTOSAC:
-            result = PRF_TOG_CHK(ch, PRF_AUTOSAC);
+        case SCMD_NOGRATZ:
+            on_msg = "You are now deaf to the congratulation messages.\r\n";
+            off_msg = "You can now hear the congratulation messages.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_NOGRATZ);
             break;
-        case SCMD_AUTOASSIST:
-            result = PRF_TOG_CHK(ch, PRF_AUTOASSIST);
+        case SCMD_NOHASSLE:
+            on_msg = "Nohassle enabled.\r\n";
+            off_msg = "Nohassle disabled.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_NOHASSLE);
             break;
-        case SCMD_AUTOMAP:
-            result = PRF_TOG_CHK(ch, PRF_AUTOMAP);
+        case SCMD_NOREPEAT:
+            on_msg = "You will no longer have your communication repeated.\r\n";
+            off_msg = "You will now have your communication repeated.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_NOREPEAT);
             break;
-        case SCMD_AUTOKEY:
-            result = PRF_TOG_CHK(ch, PRF_AUTOKEY);
+        case SCMD_NOSHOUT:
+            on_msg = "You are now deaf to shouts.\r\n";
+            off_msg = "You can now hear shouts.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_NOSHOUT);
             break;
-        case SCMD_AUTODOOR:
-            result = PRF_TOG_CHK(ch, PRF_AUTODOOR);
+        case SCMD_NOSUMMON:
+            on_msg = "You may now be summoned by other players.\r\n";
+            off_msg = "You are now safe from summoning by other players.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_SUMMONABLE);
+            break;
+        case SCMD_NOTELL:
+            on_msg = "You are now deaf to tells.\r\n";
+            off_msg = "You can now hear tells.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_NOTELL);
+            break;
+        case SCMD_NOWIZ:
+            on_msg = "You are now deaf to the Wiz-channel.\r\n";
+            off_msg = "You can now hear the Wiz-channel.\r\n";
+            result = PRF_TOG_CHK(ch, PRF_NOWIZ);
             break;
         case SCMD_ZONERESETS:
+            on_msg = "ZoneResets enabled.\r\n";
+            off_msg = "ZoneResets disabled.\r\n";
             result = PRF_TOG_CHK(ch, PRF_ZONERESETS);
             break;
         default:
@@ -850,9 +838,9 @@ ACMD(do_gen_tog)
     }
 
     if (result) {
-        send_to_char(ch, "%s", tog_messages[subcmd][TOG_ON]);
+        send_to_char(ch, "%s", on_msg);
     } else {
-        send_to_char(ch, "%s", tog_messages[subcmd][TOG_OFF]);
+        send_to_char(ch, "%s", off_msg);
     }
 
     return;
