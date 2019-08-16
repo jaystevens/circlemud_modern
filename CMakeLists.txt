@@ -147,8 +147,6 @@ else()
     add_c_flag_if_supported("-Wshadow")
 
     #### disable warnings ####
-    # GCC 9x - disable implicit fallthrough warning on switch
-    add_c_flag_if_supported("-Wno-implicit-fallthrough")
     # Suppress warnings from casts from a pointer to an integer type of a different size.
     add_c_flag_if_supported("-Wno-pointer-to-int-cast")
     # DISABLE: Warn if parentheses are omitted in certain contexts
@@ -162,6 +160,13 @@ else()
     # AMCD commands are very heavy with unsed params
     # disable warning: unused parameter in fuction
     add_c_flag_if_supported("-Wno-unused-parameter")
+
+    if(${CMAKE_C_COMPILER_ID} STREQUAL GNU)
+        if(${CMAKE_C_COMPILER_VERSION} GREATER_EQUAL "9.0")
+            # GCC 9x - disable implicit fallthrough warning on switch
+            add_c_flag_if_supported("-Wno-implicit-fallthrough")
+        endif()
+    endif()
 
     #### make some warnings an error  ####
     # ERROR: printf / sscanf - sanity
