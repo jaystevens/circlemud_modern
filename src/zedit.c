@@ -19,8 +19,8 @@
 #include "dg_scripts.h"
 
 /* Nasty internal macros to clean up the code. */
-#define MYCMD        (OLC_ZONE(d)->cmd[subcmd])
-#define OLC_CMD(d)    (OLC_ZONE(d)->cmd[OLC_VAL(d)])
+#define MYCMD           (OLC_ZONE(d)->cmd[subcmd])
+#define OLC_CMD(d)      (OLC_ZONE(d)->cmd[OLC_VAL(d)])
 #define MAX_DUPLICATES 100
 
 /* local functions */
