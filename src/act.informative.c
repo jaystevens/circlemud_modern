@@ -2768,26 +2768,35 @@ ACMD(do_scan)
 
 ACMD(do_date)
 {
-    char timestr[25];
+    char time_str[25];
     time_t current_time = time(0);
 
-    strftime(timestr, sizeof(timestr), "%c", localtime(&current_time));
-    send_to_char(ch, "Current machine time: %s\r\n", timestr);
+    strftime(time_str, sizeof(time_str), "%c", localtime(&current_time));
+    send_to_char(ch, "Current machine time: %s\r\n", time_str);
 }
 
 ACMD(do_uptime) {
-    char timestr[25];
+    char time_str[25];
     uint64_t seconds_since_boot = (uint64_t) (time(0) - boot_time);
     uint32_t d = 0;
     uint8_t h = 0, m = 0;
+    char d_str[32];
+    char h_str[32];
+    char m_str[32];
 
-    strftime(timestr, sizeof(timestr), "%c", localtime(&boot_time));
+    strftime(time_str, sizeof(time_str), "%c", localtime(&boot_time));
 
     d = (uint32_t) (seconds_since_boot / 86400);
     h = (uint8_t) ((seconds_since_boot / 3600) % 24);
     m = (uint8_t) ((seconds_since_boot / 60) % 60);
 
-    //               "Up since Wed Jul 17 13:58:41 2019: 29 days, 16 hours, 07 minutes"
-    send_to_char(ch, "Up since %s: %d day%s, %d hour%s, %d minute%s\r\n", timestr, d, d == 1 ? "" : "s", h, d == 1 ? "" : "s", m, m == 1 ? "" : "s");
+    // Version 1 - no color
+    //send_to_char(ch, "Up since %s: %d day%s, %d hour%s, %d minute%s\r\n", timestr, d, d == 1 ? "" : "s", h, d == 1 ? "" : "s", m, m == 1 ? "" : "s");
+
+    // Version 2 - with color
+    snprintf(d_str, sizeof(d_str), "%s%d %sday%s,", QBCYN, d, QBBLU, d == 1 ? "" : "s");
+    snprintf(h_str, sizeof(h_str), "%s%d %shour%s,", QBCYN, h, QBBLU, h == 1 ? "" : "s");
+    snprintf(m_str, sizeof(m_str), "%s%d %sminute%s", QBCYN, m, QBBLU, m == 1 ? "" : "s");
+    send_to_char(ch, "%sUp since %s%s%s: %s %s %s%s", QBBLU, QBYEL, time_str, QBBLU, d_str, h_str, m_str, QNRM);
 }
 
