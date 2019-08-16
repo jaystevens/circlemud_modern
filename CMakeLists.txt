@@ -69,7 +69,7 @@ configure_file (
 )
 
 # options
-option(MARCH_NATIVE "use march=native for GCC" ON)
+option(MARCH_NATIVE  "use march=native for GCC" ON)
 
 # compiler flags
 include(compiler_flags)
@@ -331,6 +331,9 @@ set_target_properties(circle PROPERTIES C_STANDARD 11)
 set_target_properties(circle PROPERTIES C_EXTENSIONS ON)
 
 target_link_libraries(circle ${LINK_LIBS})
+
+# update version.c timestamp
+add_custom_command(TARGET circle PRE_BUILD COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_SOURCE_DIR}/src/version.c")
 
 # utils - TOOD fix - broken path include
 #add_executable(asciipasswd "src/util/asciipasswd.c")
