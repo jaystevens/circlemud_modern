@@ -28,6 +28,7 @@
 #include "modify.h"
 #include "asciimap.h"
 #include "quest.h"
+#include "version.h"
 
 /* prototypes of local functions */
 /* do_diagnose utility functions */
@@ -196,9 +197,9 @@ static void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mo
         for (j = list; j != i; j = j->next_content) {
             if ((j->short_description == i->short_description && j->name == i->name) ||
                 (!strcmp(j->short_description, i->short_description) && !strcmp(j->name, i->name))) {
-                break;
+                break;  /* found a matching object */
             }
-        } /* found a matching object */
+        }
         if (j != i)
             continue; /* we counted object i earlier in the list */
 
@@ -250,8 +251,8 @@ static void diag_char_to_char(struct char_data *i, struct char_data *ch)
     if (GET_MAX_HIT(i) > 0) {
         percent = (100 * GET_HIT(i)) / GET_MAX_HIT(i);
     } else {
-        percent = -1;
-    }        /* How could MAX_HIT be < 1?? */
+        percent = -1; /* How could MAX_HIT be < 1?? */
+    }
 
     for (ar_index = 0; diagnosis[ar_index].percent >= 0; ar_index++)
         if (percent >= diagnosis[ar_index].percent)
@@ -1668,7 +1669,7 @@ ACMD(do_gen_ps)
             send_to_char(ch, "\033[H\033[J");
             break;
         case SCMD_VERSION:
-            send_to_char(ch, "%s\r\n", tbamud_version);
+            send_to_char(ch, "%s v%s. Compiled on %s\r\n", MUD_NAME, MUD_VERSION, MUD_BUILD_TIME);
             break;
         case SCMD_WHOAMI:
             send_to_char(ch, "%s\r\n", GET_NAME(ch));
