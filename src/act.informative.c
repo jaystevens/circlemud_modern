@@ -1014,12 +1014,11 @@ ACMD(do_inventory)
 
 ACMD(do_equipment)
 {
-    int i, found = 0;
+    int i;
 
     send_to_char(ch, "You are using:\r\n");
     for (i = 0; i < NUM_WEARS; i++) {
         if (GET_EQ(ch, i)) {
-            found = true;
             if (CAN_SEE_OBJ(ch, GET_EQ(ch, i))) {
                 send_to_char(ch, "%s", wear_where[i]);
                 show_obj_to_char(GET_EQ(ch, i), ch, SHOW_OBJ_SHORT);
@@ -1027,10 +1026,9 @@ ACMD(do_equipment)
                 send_to_char(ch, "%s", wear_where[i]);
                 send_to_char(ch, "Something.\r\n");
             }
+        } else {
+            send_to_char(ch, "%s     ---\r\n", wear_where[i]);
         }
-    }
-    if (!found) {
-        send_to_char(ch, " Nothing.\r\n");
     }
 }
 
@@ -1669,7 +1667,7 @@ ACMD(do_gen_ps)
             send_to_char(ch, "\033[H\033[J");
             break;
         case SCMD_VERSION:
-            send_to_char(ch, "%s v%s. Compiled on %s\r\n", MUD_NAME, MUD_VERSION, MUD_BUILD_TIME);
+            send_to_char(ch, "%s v%s.  Compiled on %s\r\n", MUD_NAME, MUD_VERSION, MUD_BUILD_TIME);
             break;
         case SCMD_WHOAMI:
             send_to_char(ch, "%s\r\n", GET_NAME(ch));
@@ -2767,3 +2765,29 @@ ACMD(do_scan)
         send_to_char(ch, "You don't see anything nearby!\r\n");
     }
 } // end of do_scan
+
+ACMD(do_date)
+{
+    char timestr[25];
+    time_t current_time = time(0);
+
+    strftime(timestr, sizeof(timestr), "%c", localtime(&current_time));
+    send_to_char(ch, "Current machine time: %s\r\n", timestr);
+}
+
+ACMD(do_uptime) {
+    char timestr[25];
+    uint64_t seconds_since_boot = (uint64_t) (time(0) - boot_time);
+    uint32_t d = 0;
+    uint8_t h = 0, m = 0;
+
+    strftime(timestr, sizeof(timestr), "%c", localtime(&boot_time));
+
+    d = (uint32_t) (seconds_since_boot / 86400);
+    h = (uint8_t) ((seconds_since_boot / 3600) % 24);
+    m = (uint8_t) ((seconds_since_boot / 60) % 60);
+
+    //               "Up since Wed Jul 17 13:58:41 2019: 29 days, 16 hours, 07 minutes"
+    send_to_char(ch, "Up since %s: %d day%s, %d hour%s, %d minute%s\r\n", timestr, d, d == 1 ? "" : "s", h, d == 1 ? "" : "s", m, m == 1 ? "" : "s");
+}
+

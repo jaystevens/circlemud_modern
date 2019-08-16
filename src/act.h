@@ -85,6 +85,7 @@ ACMD(do_look);
 /* functions without subcommands */
 ACMD(do_areas);
 ACMD(do_consider);
+ACMD(do_date);
 ACMD(do_diagnose);
 ACMD(do_equipment);
 ACMD(do_examine);
@@ -99,6 +100,7 @@ ACMD(do_score);
 ACMD(do_time);
 ACMD(do_toggle);
 ACMD(do_users);
+ACMD(do_uptime);
 ACMD(do_weather);
 ACMD(do_where);
 ACMD(do_who);
@@ -283,10 +285,6 @@ void snoop_check(struct char_data *ch);
 bool change_player_name(struct char_data *ch, struct char_data *vict, char *new_name);
 bool AddRecentPlayer(char *chname, char *chhost, bool newplr, bool cpyplr);
 /* Functions with subcommands */
-/* do_date */
-ACMD(do_date);
-#define SCMD_DATE   0
-#define SCMD_UPTIME 1
 /* do_echo */
 ACMD(do_echo);
 #define SCMD_ECHO   0

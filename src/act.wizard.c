@@ -1834,32 +1834,6 @@ ACMD(do_wizlock)
     }
 }
 
-ACMD(do_date)
-{
-    char timestr[25];
-    time_t mytime;
-    int d, h, m;
-
-    if (subcmd == SCMD_DATE) {
-        mytime = time(0);
-    } else {
-        mytime = boot_time;
-    }
-
-    strftime(timestr, sizeof(timestr), "%c", localtime(&mytime));
-
-    if (subcmd == SCMD_DATE) {
-        send_to_char(ch, "Current machine time: %s\r\n", timestr);
-    } else {
-        mytime = time(0) - boot_time;
-        d = mytime / 86400;
-        h = (mytime / 3600) % 24;
-        m = (mytime / 60) % 60;
-
-        send_to_char(ch, "Up since %s: %d day%s, %d:%02d\r\n", timestr, d, d == 1 ? "" : "s", h, m);
-    }
-}
-
 /* altered from stock to the following:
    last [name] [#]
    last without arguments displays the last 10 entries.
