@@ -804,11 +804,7 @@ void trigedit_save(struct descriptor_data *d)
     zone = zone_table[OLC_ZNUM(d)].number;
     top = zone_table[OLC_ZNUM(d)].top;
 
-#ifdef CIRCLE_MAC
-    snprintf(fname, sizeof(fname), "%s:%i.new", TRG_PREFIX, zone);
-#else
     snprintf(fname, sizeof(fname), "%s/%i.new", TRG_PREFIX, zone);
-#endif
 
     if (!(trig_file = fopen(fname, "w"))) {
         mudlog(BRF, MAX(LVL_GOD, GET_INVIS_LEV(d->character)), true, "SYSERR: OLC: Can't open trig file \"%s\"", fname);
@@ -850,11 +846,7 @@ void trigedit_save(struct descriptor_data *d)
     fprintf(trig_file, "$%c\n", STRING_TERMINATOR);
     fclose(trig_file);
 
-#ifdef CIRCLE_MAC
-    snprintf(buf, sizeof(buf), "%s:%d.trg", TRG_PREFIX, zone);
-#else
     snprintf(buf, sizeof(buf), "%s/%d.trg", TRG_PREFIX, zone);
-#endif
 
     remove(buf);
     rename(fname, buf);
