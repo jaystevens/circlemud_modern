@@ -23,10 +23,10 @@
 #include "dg_scripts.h" /* To enable saving of player variables to disk */
 #include "quest.h"
 
-#define LOAD_HIT    0
-#define LOAD_MANA    1
-#define LOAD_MOVE    2
-#define LOAD_STRENGTH    3
+#define LOAD_HIT        0
+#define LOAD_MANA       1
+#define LOAD_MOVE       2
+#define LOAD_STRENGTH   3
 
 #define PT_PNAME(i) (player_table[(i)].name)
 #define PT_IDNUM(i) (player_table[(i)].id)
