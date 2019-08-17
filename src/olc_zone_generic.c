@@ -10,8 +10,8 @@
 #include "structs.h"
 #include "utils.h"
 #include "db.h"
-#include "genolc.h"
-#include "genzon.h"
+#include "olc_generic.h"
+#include "olc_zone_generic.h"
 #include "dg_scripts.h"
 
 /* local functions */

@@ -14,8 +14,8 @@
 #include "interpreter.h"
 #include "handler.h"
 #include "db.h"
-#include "genolc.h"
-#include "oasis.h"
+#include "olc_generic.h"
+#include "olc_oasis.h"
 #include "improved-edit.h"
 
 /* Free's strings from any object, room, mobiles, or player. true if successful,

@@ -20,7 +20,7 @@
 #include "mail.h"
 #include "boards.h"
 #include "improved-edit.h"
-#include "oasis.h"
+#include "olc_oasis.h"
 #include "class.h"
 #include "dg_scripts.h" /* for trigedit_string_cleanup */
 #include "modify.h"

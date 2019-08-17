@@ -18,7 +18,7 @@
 #include "handler.h"
 #include "db.h"
 #include "constants.h"
-#include "genzon.h" /* for access to real_zone_by_thing */
+#include "olc_zone_generic.h" /* for access to real_zone_by_thing */
 #include "fight.h" /* for die() */
 
 

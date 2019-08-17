@@ -14,8 +14,8 @@
 #include "utils.h"
 #include "db.h"
 #include "quest.h"
-#include "genolc.h"
-#include "genzon.h" /* for create_world_index */
+#include "olc_generic.h"
+#include "olc_zone_generic.h" /* for create_world_index */
 
 
 /*-------------------------------------------------------------------*/

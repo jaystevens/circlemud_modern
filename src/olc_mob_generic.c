@@ -12,9 +12,9 @@
 #include "db.h"
 #include "shop.h"
 #include "handler.h"
-#include "genolc.h"
-#include "genmob.h"
-#include "genzon.h"
+#include "olc_generic.h"
+#include "olc_mob_generic.h"
+#include "olc_zone_generic.h"
 #include "dg_olc.h"
 #include "spells.h"
 

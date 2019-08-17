@@ -14,8 +14,8 @@
 #include "spells.h"
 #include "db.h"
 #include "msgedit.h"
-#include "oasis.h"
-#include "genolc.h"
+#include "olc_oasis.h"
+#include "olc_generic.h"
 #include "interpreter.h"
 #include "modify.h"
 

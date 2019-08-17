@@ -13,8 +13,8 @@
 #include "interpreter.h"
 #include "db.h"
 #include "constants.h"
-#include "genolc.h"
-#include "oasis.h"
+#include "olc_generic.h"
+#include "olc_oasis.h"
 #include "improved-edit.h"
 #include "modify.h"
 

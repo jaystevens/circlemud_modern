@@ -18,7 +18,7 @@
 #include "dg_scripts.h"
 #include "comm.h"
 #include "interpreter.h"
-#include "genolc.h" /* for strip_cr */
+#include "olc_generic.h" /* for strip_cr */
 #include "config.h" /* for pclean_criteria[] */
 #include "dg_scripts.h" /* To enable saving of player variables to disk */
 #include "quest.h"

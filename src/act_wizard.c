@@ -20,14 +20,14 @@
 #include "house.h"
 #include "screen.h"
 #include "constants.h"
-#include "oasis.h"
+#include "olc_oasis.h"
 #include "dg_scripts.h"
 #include "shop.h"
 #include "act.h"
-#include "genzon.h" /* for real_zone_by_thing */
+#include "olc_zone_generic.h" /* for real_zone_by_thing */
 #include "class.h"
-#include "genolc.h"
-#include "genobj.h"
+#include "olc_generic.h"
+#include "olc_object_generic.h"
 #include "fight.h"
 #include "house.h"
 #include "modify.h"

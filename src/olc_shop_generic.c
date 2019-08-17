@@ -11,9 +11,9 @@
 #include "utils.h"
 #include "db.h"
 #include "shop.h"
-#include "genolc.h"
-#include "genshp.h"
-#include "genzon.h"
+#include "olc_generic.h"
+#include "olc_shop_generic.h"
+#include "olc_zone_generic.h"
 
 /* NOTE (gg): Didn't modify sedit much. Don't consider it as 'recent' as the
  * other editors with regard to updates or style. */

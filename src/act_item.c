@@ -19,7 +19,7 @@
 #include "spells.h"
 #include "constants.h"
 #include "dg_scripts.h"
-#include "oasis.h"
+#include "olc_oasis.h"
 #include "act.h"
 #include "quest.h"
 

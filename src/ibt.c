@@ -32,7 +32,7 @@
 #include "act.h"
 #include "utils.h"
 #include "ibt.h"
-#include "oasis.h"
+#include "olc_oasis.h"
 #include "improved-edit.h"
 #include "modify.h"
 

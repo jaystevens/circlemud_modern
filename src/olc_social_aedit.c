@@ -13,10 +13,10 @@
 #include "comm.h"
 #include "utils.h"
 #include "db.h"
-#include "oasis.h"
+#include "olc_oasis.h"
 #include "screen.h"
 #include "constants.h"
-#include "genolc.h"
+#include "olc_generic.h"
 #include "act.h"
 
 

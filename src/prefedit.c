@@ -17,7 +17,7 @@
 #include "handler.h"
 #include "interpreter.h"
 #include "db.h"
-#include "oasis.h"
+#include "olc_oasis.h"
 #include "prefedit.h"
 #include "screen.h"
 

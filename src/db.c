@@ -20,15 +20,15 @@
 #include "interpreter.h"
 #include "house.h"
 #include "constants.h"
-#include "oasis.h"
+#include "olc_oasis.h"
 #include "dg_scripts.h"
 #include "dg_event.h"
 #include "act.h"
 #include "ban.h"
 #include "spec_procs.h"
-#include "genzon.h"
-#include "genolc.h"
-#include "genobj.h" /* for free_object_strings */
+#include "olc_zone_generic.h"
+#include "olc_generic.h"
+#include "olc_object_generic.h" /* for free_object_strings */
 #include "config.h" /* for the default config values. */
 #include "fight.h"
 #include "modify.h"

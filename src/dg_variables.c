@@ -21,11 +21,11 @@
 #include "screen.h"
 #include "constants.h"
 #include "spells.h"
-#include "oasis.h"
+#include "olc_oasis.h"
 #include "class.h"
 #include "quest.h"
 #include "act.h"
-#include "genobj.h"
+#include "olc_object_generic.h"
 
 /* Utility functions */
 

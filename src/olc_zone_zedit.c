@@ -13,9 +13,9 @@
 #include "interpreter.h"
 #include "db.h"
 #include "constants.h"
-#include "genolc.h"
-#include "genzon.h"
-#include "oasis.h"
+#include "olc_generic.h"
+#include "olc_zone_generic.h"
+#include "olc_oasis.h"
 #include "dg_scripts.h"
 
 /* Nasty internal macros to clean up the code. */

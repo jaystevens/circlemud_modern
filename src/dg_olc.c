@@ -13,12 +13,12 @@
 #include "utils.h"
 #include "comm.h"
 #include "db.h"
-#include "genolc.h"
+#include "olc_generic.h"
 #include "interpreter.h"
-#include "oasis.h"
+#include "olc_oasis.h"
 #include "dg_olc.h"
 #include "dg_event.h"
-#include "genzon.h"      /* for real_zone_by_thing */
+#include "olc_zone_generic.h"      /* for real_zone_by_thing */
 #include "constants.h"   /* for the *trig_types */
 #include "modify.h"      /* for smash_tilde */
 

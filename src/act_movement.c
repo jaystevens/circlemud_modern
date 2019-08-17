@@ -22,7 +22,7 @@
 #include "dg_scripts.h"
 #include "act.h"
 #include "fight.h"
-#include "oasis.h" /* for buildwalk */
+#include "olc_oasis.h" /* for buildwalk */
 
 
 /* local only functions */

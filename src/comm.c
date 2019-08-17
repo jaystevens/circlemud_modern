@@ -45,8 +45,8 @@
 #include "handler.h"
 #include "db.h"
 #include "house.h"
-#include "oasis.h"
-#include "genolc.h"
+#include "olc_oasis.h"
+#include "olc_generic.h"
 #include "dg_scripts.h"
 #include "dg_event.h"
 #include "screen.h" /* to support the gemote act type command */

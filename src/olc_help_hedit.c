@@ -16,13 +16,13 @@
 #include "interpreter.h"
 #include "db.h"
 #include "boards.h"
-#include "oasis.h"
-#include "genolc.h"
-#include "genzon.h"
+#include "olc_oasis.h"
+#include "olc_generic.h"
+#include "olc_zone_generic.h"
 #include "handler.h"
 #include "improved-edit.h"
 #include "act.h"
-#include "hedit.h"
+#include "olc_help_hedit.h"
 #include "modify.h"
 
 /* local functions */
