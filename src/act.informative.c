@@ -1466,10 +1466,6 @@ ACMD(do_who)
     } else {
         send_to_char(ch, "%d characters displayed.\r\n", num_can_see);
     }
-
-    if (IS_HAPPYHOUR > 0) {
-        send_to_char(ch, "It's a Happy Hour! Type \tRhappyhour\tW to see the current bonuses.\r\n");
-    }
 }
 
 ACMD(do_users)
