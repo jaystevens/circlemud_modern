@@ -34,7 +34,7 @@ int rand_number(int from, int to)
         int tmp = from;
         from = to;
         to = tmp;
-        log("SYSERR: rand_number() should be called with lowest, then highest. (%d, %d), not (%d, %d).", from, to, to,
+        basic_mud_log("SYSERR: rand_number() should be called with lowest, then highest. (%d, %d), not (%d, %d).", from, to, to,
             from);
     }
 
@@ -243,7 +243,7 @@ int touch(const char *path)
     FILE *fl;
 
     if (!(fl = fopen(path, "a"))) {
-        log("SYSERR: %s: %s", path, strerror(errno));
+        basic_mud_log("SYSERR: %s: %s", path, strerror(errno));
         return (-1);
     } else {
         fclose(fl);
@@ -686,7 +686,7 @@ int get_filename(char *filename, size_t fbufsize, int mode, const char *orig_nam
     char name[PATH_MAX], *ptr;
 
     if (orig_name == NULL || *orig_name == '\0' || filename == NULL) {
-        log("SYSERR: NULL pointer or empty string passed to get_filename(), %p or %p.", (const void *) orig_name,
+        basic_mud_log("SYSERR: NULL pointer or empty string passed to get_filename(), %p or %p.", (const void *) orig_name,
             (void *) filename);
         return (0);
     }
@@ -792,7 +792,7 @@ int num_pc_in_room(struct room_data *room)
  * @param line The line at which this call was made. */
 void core_dump_real(const char *who, int line)
 {
-    log("SYSERR: Assertion failed at %s:%d!", who, line);
+    basic_mud_log("SYSERR: Assertion failed at %s:%d!", who, line);
 
 #if 1    /* By default, let's not litter. */
 #if defined(CIRCLE_UNIX)
@@ -880,7 +880,7 @@ int count_non_protocol_chars(char *str)
 int room_is_dark(room_rnum room)
 {
     if (!VALID_ROOM_RNUM(room)) {
-        log("room_is_dark: Invalid room rnum %d. (0-%d)", room, top_of_world);
+        basic_mud_log("room_is_dark: Invalid room rnum %d. (0-%d)", room, top_of_world);
         return (false);
     }
 
@@ -957,14 +957,14 @@ void char_from_furniture(struct char_data *ch)
     }
 
     if (!(furniture = SITTING(ch))) {
-        log("SYSERR: No furniture for char in char_from_furniture.");
+        basic_mud_log("SYSERR: No furniture for char in char_from_furniture.");
         SITTING(ch) = NULL;
         NEXT_SITTING(ch) = NULL;
         return;
     }
 
     if (!(tempch = OBJ_SAT_IN_BY(furniture))) {
-        log("SYSERR: Char from furniture, but no furniture!");
+        basic_mud_log("SYSERR: Char from furniture, but no furniture!");
         SITTING(ch) = NULL;
         NEXT_SITTING(ch) = NULL;
         GET_OBJ_VAL(furniture, 1) = 0;
@@ -1044,7 +1044,7 @@ void column_list(struct char_data *ch, int num_cols, const char **list, int list
     if (show_nums) { col_width -= 4; }
 
     if (col_width < 0 || (size_t) col_width < max_len)
-        log("Warning: columns too narrow for correct output to %s in simple_column_list (utils.c)", GET_NAME(ch));
+        basic_mud_log("Warning: columns too narrow for correct output to %s in simple_column_list (utils.c)", GET_NAME(ch));
 
     /* Calculate how many list items there should be per column */
     num_per_col = (list_length / num_cols) + ((list_length % num_cols) ? 1 : 0);

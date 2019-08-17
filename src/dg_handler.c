@@ -275,7 +275,7 @@ void delete_variables(const char *charname)
     }
 
     if (remove(filename) < 0 && errno != ENOENT)
-        log("SYSERR: deleting variable file %s: %s", filename, strerror(errno));
+        basic_mud_log("SYSERR: deleting variable file %s: %s", filename, strerror(errno));
 }
 
 void update_wait_events(struct room_data *to, struct room_data *from)

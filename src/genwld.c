@@ -43,7 +43,7 @@ room_rnum add_room(struct room_data *room)
         world[i].people = tch;
         world[i].contents = tobj;
         add_to_save_list(zone_table[room->zone].number, SL_WLD);
-        log("GenOLC: add_room: Updated existing room #%d.", room->number);
+        basic_mud_log("GenOLC: add_room: Updated existing room #%d.", room->number);
         return i;
     }
 
@@ -75,7 +75,7 @@ room_rnum add_room(struct room_data *room)
         copy_room_strings(&world[0], room);
     }
 
-    log("GenOLC: add_room: Added room %d at index #%d.", room->number, found);
+    basic_mud_log("GenOLC: add_room: Added room %d at index #%d.", room->number, found);
     /* found is equal to the array index where we added the room. */
 
     /* Find what zone that room was in so we can update the loading table. */
@@ -141,18 +141,18 @@ int delete_room(room_rnum rnum)
     add_to_save_list(zone_table[room->zone].number, SL_WLD);
 
     /* This is something you might want to read about in the logs. */
-    log("GenOLC: delete_room: Deleting room #%d (%s).", room->number, room->name);
+    basic_mud_log("GenOLC: delete_room: Deleting room #%d (%s).", room->number, room->name);
 
     if (r_mortal_start_room == rnum) {
-        log("WARNING: GenOLC: delete_room: Deleting mortal start room!");
+        basic_mud_log("WARNING: GenOLC: delete_room: Deleting mortal start room!");
         r_mortal_start_room = 0;    /* The Void */
     }
     if (r_immort_start_room == rnum) {
-        log("WARNING: GenOLC: delete_room: Deleting immortal start room!");
+        basic_mud_log("WARNING: GenOLC: delete_room: Deleting immortal start room!");
         r_immort_start_room = 0;    /* The Void */
     }
     if (r_frozen_start_room == rnum) {
-        log("WARNING: GenOLC: delete_room: Deleting frozen start room!");
+        basic_mud_log("WARNING: GenOLC: delete_room: Deleting frozen start room!");
         r_frozen_start_room = 0;    /* The Void */
     }
 
@@ -284,11 +284,11 @@ int save_rooms(zone_rnum rzone)
     char buf2[MAX_STRING_LENGTH];
 
     if (rzone == NOWHERE || rzone > top_of_zone_table) {
-        log("SYSERR: GenOLC: save_rooms: Invalid zone number %d passed! (0-%d)", rzone, top_of_zone_table);
+        basic_mud_log("SYSERR: GenOLC: save_rooms: Invalid zone number %d passed! (0-%d)", rzone, top_of_zone_table);
         return false;
     }
 
-    log("GenOLC: save_rooms: Saving rooms in zone #%d (%d-%d).", zone_table[rzone].number, genolc_zone_bottom(rzone),
+    basic_mud_log("GenOLC: save_rooms: Saving rooms in zone #%d (%d-%d).", zone_table[rzone].number, genolc_zone_bottom(rzone),
         zone_table[rzone].top);
 
     snprintf(filename, sizeof(filename), "%s/%d.new", WLD_PREFIX, zone_table[rzone].number);
@@ -427,7 +427,7 @@ int copy_room_strings(struct room_data *dest, struct room_data *source)
     int i;
 
     if (dest == NULL || source == NULL) {
-        log("SYSERR: GenOLC: copy_room_strings: NULL values passed.");
+        basic_mud_log("SYSERR: GenOLC: copy_room_strings: NULL values passed.");
         return false;
     }
 

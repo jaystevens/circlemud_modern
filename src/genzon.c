@@ -333,7 +333,7 @@ int save_zone(zone_rnum zone_num)
     char zbuf3[MAX_STRING_LENGTH], zbuf4[MAX_STRING_LENGTH];
 
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
-        log("SYSERR: GenOLC: save_zone: Invalid real zone number %d. (0-%d)", zone_num, top_of_zone_table);
+        basic_mud_log("SYSERR: GenOLC: save_zone: Invalid real zone number %d. (0-%d)", zone_num, top_of_zone_table);
         return false;
     }
 

@@ -159,7 +159,7 @@ void create_command_list(void)
         }
     }
     complete_cmd_info[k] = cmd_info[i];
-    log("Command info rebuilt, %d total commands.", k);
+    basic_mud_log("Command info rebuilt, %d total commands.", k);
 }
 
 void free_command_list(void)

@@ -541,7 +541,7 @@ int format_text(char **ptr_string, int mode, struct descriptor_data *d, unsigned
 
     /* Fix memory overrun. */
     if (d->max_str > MAX_STRING_LENGTH) {
-        log("SYSERR: format_text: max_str is greater than buffer size.");
+        basic_mud_log("SYSERR: format_text: max_str is greater than buffer size.");
         return 0;
     }
 

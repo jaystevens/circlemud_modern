@@ -294,7 +294,7 @@ static void zedit_save_internally(struct descriptor_data *d)
     room_rnum room_num = real_room(OLC_NUM(d));
 
     if (room_num == NOWHERE) {
-        log("SYSERR: zedit_save_internally: OLC_NUM(d) room %d not found.", OLC_NUM(d));
+        basic_mud_log("SYSERR: zedit_save_internally: OLC_NUM(d) room %d not found.", OLC_NUM(d));
         return;
     }
 
@@ -1136,7 +1136,7 @@ void zedit_parse(struct descriptor_data *d, char *arg)
                 if (OLC_ZONE(d)->name) {
                     free(OLC_ZONE(d)->name);
                 } else
-                    log("SYSERR: OLC: ZEDIT_ZONE_NAME: no name to free!");
+                    basic_mud_log("SYSERR: OLC: ZEDIT_ZONE_NAME: no name to free!");
                 OLC_ZONE(d)->name = strdup(arg);
                 OLC_ZONE(d)->number = 1;
             }
@@ -1150,7 +1150,7 @@ void zedit_parse(struct descriptor_data *d, char *arg)
                 if (OLC_ZONE(d)->builders) {
                     free(OLC_ZONE(d)->builders);
                 } else
-                    log("SYSERR: OLC: ZEDIT_ZONE_BUILDERS: no builders list to free!");
+                    basic_mud_log("SYSERR: OLC: ZEDIT_ZONE_BUILDERS: no builders list to free!");
                 OLC_ZONE(d)->builders = strdup(arg);
                 OLC_ZONE(d)->number = 1;
             }

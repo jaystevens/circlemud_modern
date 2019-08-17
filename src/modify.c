@@ -195,7 +195,7 @@ void string_add(struct descriptor_data *d, char *str)
                     d->str = NULL;
                     break;
                 default:
-                    log("SYSERR: string_add: Aborting write from unknown origin.");
+                    basic_mud_log("SYSERR: string_add: Aborting write from unknown origin.");
                     break;
             }
             break;

@@ -810,9 +810,9 @@ static EVENTFUNC(trig_wait_event)
             }
         }
         if (!found) {
-            log("Trigger restarted on unknown entity. Vnum: %d", GET_TRIG_VNUM(trig));
-            log("Type: %s trigger", type == MOB_TRIGGER ? "Mob" : type == OBJ_TRIGGER ? "Obj" : "Room");
-            log("attached %d places", trig_index[trig->nr]->number);
+            basic_mud_log("Trigger restarted on unknown entity. Vnum: %d", GET_TRIG_VNUM(trig));
+            basic_mud_log("Type: %s trigger", type == MOB_TRIGGER ? "Mob" : type == OBJ_TRIGGER ? "Obj" : "Room");
+            basic_mud_log("attached %d places", trig_index[trig->nr]->number);
             script_log("Trigger restart attempt on unknown entity.");
             return 0;
         }
@@ -832,7 +832,7 @@ static void do_stat_trigger(struct char_data *ch, trig_data *trig)
     int len = 0;
 
     if (!trig) {
-        log("SYSERR: NULL trigger passed to do_stat_trigger.");
+        basic_mud_log("SYSERR: NULL trigger passed to do_stat_trigger.");
         return;
     }
 
@@ -2885,7 +2885,7 @@ void read_saved_vars(struct char_data *ch)
 
     /* if we failed to open the file, return */
     if (!file) {
-        log("%s had no variable file", GET_NAME(ch));
+        basic_mud_log("%s had no variable file", GET_NAME(ch));
         return;
     }
     /* walk through each line in the file parsing variables */
@@ -3048,7 +3048,7 @@ static struct char_data *find_char_by_uid_in_lookup_table(long uid)
         return (struct char_data *) (lt->c);
     }
 
-    log("find_char_by_uid_in_lookup_table : No entity with number %ld in lookup table", uid);
+    basic_mud_log("find_char_by_uid_in_lookup_table : No entity with number %ld in lookup table", uid);
     return NULL;
 }
 
@@ -3063,7 +3063,7 @@ static struct obj_data *find_obj_by_uid_in_lookup_table(long uid)
         return (struct obj_data *) (lt->c);
     }
 
-    log("find_obj_by_uid_in_lookup_table : No entity with number %ld in lookup table", uid);
+    basic_mud_log("find_obj_by_uid_in_lookup_table : No entity with number %ld in lookup table", uid);
     return NULL;
 }
 
@@ -3073,14 +3073,14 @@ void add_to_lookup_table(long uid, void *c)
     struct lookup_table_t *lt = &lookup_table[bucket];
 
     if (lt && lt->uid == uid) {
-        log("add_to_lookup updating existing value for uid=%ld (%p -> %p)", uid, lt->c, c);
+        basic_mud_log("add_to_lookup updating existing value for uid=%ld (%p -> %p)", uid, lt->c, c);
         lt->c = c;
         return;
     }
 
     for (; lt && lt->next; lt = lt->next) {
         if (lt->next->uid == uid) {
-            log("add_to_lookup updating existing value for uid=%ld (%p -> %p)", uid, lt->next->c, c);
+            basic_mud_log("add_to_lookup updating existing value for uid=%ld (%p -> %p)", uid, lt->next->c, c);
             return;
         }
     }
@@ -3114,7 +3114,7 @@ void remove_from_lookup_table(long uid)
         return;
     }
 
-    log("remove_from_lookup. UID %ld not found.", uid);
+    basic_mud_log("remove_from_lookup. UID %ld not found.", uid);
 }
 
 bool check_flags_by_name_ar(int *array, int numflags, char *search, const char *namelist[])

@@ -160,12 +160,12 @@ static void House_delete_file(room_vnum vnum)
     }
     if (!(fl = fopen(filename, "rb"))) {
         if (errno != ENOENT)
-            log("SYSERR: Error deleting house file #%d. (1): %s", vnum, strerror(errno));
+            basic_mud_log("SYSERR: Error deleting house file #%d. (1): %s", vnum, strerror(errno));
         return;
     }
     fclose(fl);
     if (remove(filename) < 0)
-        log("SYSERR: Error deleting house file #%d. (2): %s", vnum, strerror(errno));
+        basic_mud_log("SYSERR: Error deleting house file #%d. (2): %s", vnum, strerror(errno));
 }
 
 /* List all objects in a house file */
@@ -252,7 +252,7 @@ void House_boot(void)
 
     if (!(fl = fopen(HCONTROL_FILE, "rb"))) {
         if (errno == ENOENT)
-            log("   No houses to load. File '%s' does not exist.", HCONTROL_FILE);
+            basic_mud_log("   No houses to load. File '%s' does not exist.", HCONTROL_FILE);
         else {
             perror("SYSERR: " HCONTROL_FILE);
         }
@@ -458,12 +458,12 @@ static void hcontrol_destroy_house(struct char_data *ch, char *arg)
         return;
     }
     if ((real_atrium = real_room(house_control[i].atrium)) == NOWHERE)
-        log("SYSERR: House %d had invalid atrium %d!", atoi(arg), house_control[i].atrium);
+        basic_mud_log("SYSERR: House %d had invalid atrium %d!", atoi(arg), house_control[i].atrium);
     else
         REMOVE_BIT_AR(ROOM_FLAGS(real_atrium), ROOM_ATRIUM);
 
     if ((real_house = real_room(house_control[i].vnum)) == NOWHERE)
-        log("SYSERR: House %d had invalid vnum %d!", atoi(arg), house_control[i].vnum);
+        basic_mud_log("SYSERR: House %d had invalid vnum %d!", atoi(arg), house_control[i].vnum);
     else {
         REMOVE_BIT_AR(ROOM_FLAGS(real_house), ROOM_HOUSE);
         REMOVE_BIT_AR(ROOM_FLAGS(real_house), ROOM_PRIVATE);

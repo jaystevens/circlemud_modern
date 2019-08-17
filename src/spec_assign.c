@@ -35,7 +35,7 @@ static void ASSIGNMOB(mob_vnum mob, SPECIAL(fname))
     if ((rnum = real_mobile(mob)) != NOBODY) {
         mob_index[rnum].func = fname;
     } else if (!mini_mud)
-        log("SYSERR: Attempt to assign spec to non-existant mob #%d", mob);
+        basic_mud_log("SYSERR: Attempt to assign spec to non-existant mob #%d", mob);
 }
 
 static void ASSIGNOBJ(obj_vnum obj, SPECIAL(fname))
@@ -45,7 +45,7 @@ static void ASSIGNOBJ(obj_vnum obj, SPECIAL(fname))
     if ((rnum = real_object(obj)) != NOTHING) {
         obj_index[rnum].func = fname;
     } else if (!mini_mud)
-        log("SYSERR: Attempt to assign spec to non-existant obj #%d", obj);
+        basic_mud_log("SYSERR: Attempt to assign spec to non-existant obj #%d", obj);
 }
 
 static void ASSIGNROOM(room_vnum room, SPECIAL(fname))
@@ -55,7 +55,7 @@ static void ASSIGNROOM(room_vnum room, SPECIAL(fname))
     if ((rnum = real_room(room)) != NOWHERE) {
         world[rnum].func = fname;
     } else if (!mini_mud)
-        log("SYSERR: Attempt to assign spec to non-existant room #%d", room);
+        basic_mud_log("SYSERR: Attempt to assign spec to non-existant room #%d", room);
 }
 
 /* Assignments */

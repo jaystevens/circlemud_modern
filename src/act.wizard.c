@@ -1127,27 +1127,27 @@ ACMD(do_shutdown)
     one_argument(argument, arg);
 
     if (!*arg) {
-        log("(GC) Shutdown by %s.", GET_NAME(ch));
+        basic_mud_log("(GC) Shutdown by %s.", GET_NAME(ch));
         send_to_all("Shutting down.\r\n");
         circle_shutdown = 1;
     } else if (!str_cmp(arg, "reboot")) {
-        log("(GC) Reboot by %s.", GET_NAME(ch));
+        basic_mud_log("(GC) Reboot by %s.", GET_NAME(ch));
         send_to_all("Rebooting.. come back in a few minutes.\r\n");
         touch(FASTBOOT_FILE);
         circle_shutdown = 1;
         circle_reboot = 2; /* do not autosave olc */
     } else if (!str_cmp(arg, "die")) {
-        log("(GC) Shutdown by %s.", GET_NAME(ch));
+        basic_mud_log("(GC) Shutdown by %s.", GET_NAME(ch));
         send_to_all("Shutting down for maintenance.\r\n");
         touch(KILLSCRIPT_FILE);
         circle_shutdown = 1;
     } else if (!str_cmp(arg, "now")) {
-        log("(GC) Shutdown NOW by %s.", GET_NAME(ch));
+        basic_mud_log("(GC) Shutdown NOW by %s.", GET_NAME(ch));
         send_to_all("Rebooting.. come back in a minute or two.\r\n");
         circle_shutdown = 1;
         circle_reboot = 2; /* do not autosave olc */
     } else if (!str_cmp(arg, "pause")) {
-        log("(GC) Shutdown by %s.", GET_NAME(ch));
+        basic_mud_log("(GC) Shutdown by %s.", GET_NAME(ch));
         send_to_all("Shutting down for maintenance.\r\n");
         touch(PAUSE_FILE);
         circle_shutdown = 1;
@@ -1573,9 +1573,9 @@ ACMD(do_advance)
     send_to_char(ch, "%s", CONFIG_OK);
 
     if (newlevel < oldlevel)
-        log("(GC) %s demoted %s from level %d to %d.", GET_NAME(ch), GET_NAME(victim), oldlevel, newlevel);
+        basic_mud_log("(GC) %s demoted %s from level %d to %d.", GET_NAME(ch), GET_NAME(victim), oldlevel, newlevel);
     else
-        log("(GC) %s has advanced %s to level %d (from %d)", GET_NAME(ch), GET_NAME(victim), newlevel, oldlevel);
+        basic_mud_log("(GC) %s has advanced %s to level %d (from %d)", GET_NAME(ch), GET_NAME(victim), newlevel, oldlevel);
 
     if (oldlevel >= LVL_IMMORT && newlevel < LVL_IMMORT) {
         /* If they are no longer an immortal, remove the immortal only flags. */
@@ -1798,7 +1798,7 @@ ACMD(do_dc)
             STATE(d) = CON_CLOSE;
 
         send_to_char(ch, "Connection #%d closed.\r\n", num_to_dc);
-        log("(GC) Connection closed by %s.", GET_NAME(ch));
+        basic_mud_log("(GC) Connection closed by %s.", GET_NAME(ch));
     }
 }
 
@@ -1860,7 +1860,7 @@ struct last_entry *find_llog_entry(int punique, long idnum)
     int size, recs, tmp;
 
     if (!(fp = fopen(LAST_FILE, "r"))) {
-        log("Error opening last_file for reading, will create.");
+        basic_mud_log("Error opening last_file for reading, will create.");
         return NULL;
     }
     fseek(fp, 0L, SEEK_END);
@@ -1900,7 +1900,7 @@ static void mod_llog_entry(struct last_entry *llast, int type)
     int size, recs, tmp;
 
     if (!(fp = fopen(LAST_FILE, "r+"))) {
-        log("Error opening last_file for reading and writing.");
+        basic_mud_log("Error opening last_file for reading and writing.");
         return;
     }
     fseek(fp, 0L, SEEK_END);
@@ -1914,7 +1914,7 @@ static void mod_llog_entry(struct last_entry *llast, int type)
     for (tmp = recs; tmp > 0; tmp--) {
         fseek(fp, -1 * ((long) sizeof(struct last_entry)), SEEK_CUR);
         if (fread(&mlast, sizeof(struct last_entry), 1, fp) != 1) {
-            log("mod_llog_entry: read error or unexpected end of file.");
+            basic_mud_log("mod_llog_entry: read error or unexpected end of file.");
             return;
         }
         /* Another one to keep that stepback. */
@@ -1969,7 +1969,7 @@ void add_llog_entry(struct char_data *ch, int type)
         llast->close_type = type;
 
         if (!(fp = fopen(LAST_FILE, "a"))) {
-            log("error opening last_file for appending");
+            basic_mud_log("error opening last_file for appending");
             free(llast);
             return;
         }
@@ -2002,7 +2002,7 @@ void clean_llog_entries(void)
     }
 
     if (!(nfp = fopen("etc/nlast", "w"))) {
-        log("Error trying to open new last file.");
+        basic_mud_log("Error trying to open new last file.");
         fclose(ofp);
         return;
     }
@@ -2013,7 +2013,7 @@ void clean_llog_entries(void)
     /* copy the rest */
     while (!feof(ofp)) {
         if (fread(&mlast, sizeof(struct last_entry), 1, ofp) != 1) {
-            log("clean_llog_entries: read error or unexpected end of file.");
+            basic_mud_log("clean_llog_entries: read error or unexpected end of file.");
             return;
         }
         fwrite(&mlast, sizeof(struct last_entry), 1, nfp);
@@ -2033,7 +2033,7 @@ static void list_llog_entries(struct char_data *ch)
     char timestr[25];
 
     if (!(fp = fopen(LAST_FILE, "r"))) {
-        log("llist_log_entries: could not open last log file %s.", LAST_FILE);
+        basic_mud_log("llist_log_entries: could not open last log file %s.", LAST_FILE);
         send_to_char(ch, "Error! - no last log");
     }
     send_to_char(ch, "Last log\r\n");
@@ -2046,7 +2046,7 @@ static void list_llog_entries(struct char_data *ch)
     }
 
     if (ferror(fp)) {
-        log("llist_log_entries: error reading %s.", LAST_FILE);
+        basic_mud_log("llist_log_entries: error reading %s.", LAST_FILE);
         send_to_char(ch, "Error reading last_log file.");
     }
 }
@@ -2367,7 +2367,7 @@ ACMD(do_wizutil)
             case SCMD_REROLL:
                 send_to_char(ch, "Rerolled...\r\n");
                 roll_real_abils(vict);
-                log("(GC) %s has rerolled %s.", GET_NAME(ch), GET_NAME(vict));
+                basic_mud_log("(GC) %s has rerolled %s.", GET_NAME(ch), GET_NAME(vict));
                 send_to_char(ch, "New stats: Str %d/%d, Int %d, Wis %d, Dex %d, Con %d, Cha %d\r\n", GET_STR(vict),
                              GET_ADD(vict), GET_INT(vict), GET_WIS(vict), GET_DEX(vict), GET_CON(vict), GET_CHA(vict));
                 break;
@@ -2446,7 +2446,7 @@ ACMD(do_wizutil)
                 }
                 break;
             default:
-                log("SYSERR: Unknown subcmd %d passed to do_wizutil (%s)", subcmd, __FILE__);
+                basic_mud_log("SYSERR: Unknown subcmd %d passed to do_wizutil (%s)", subcmd, __FILE__);
                 /*  SYSERR_DESC: This is the same as the unhandled case in do_gen_ps(),
        *  but this function handles 'reroll', 'pardon', 'freeze', etc. */
                 break;
@@ -4302,7 +4302,7 @@ ACMD(do_copyover)
 
     /* Ugh, seems it is expected we are 1 step above lib - this may be dangerous! */
     if (chdir("..") != 0) {
-        log("Error changing working directory: %s", strerror(errno));
+        basic_mud_log("Error changing working directory: %s", strerror(errno));
         send_to_char(ch, "Error changing working directory: %s.", strerror(errno));
         exit(1);
     }
@@ -4695,12 +4695,12 @@ bool change_player_name(struct char_data *ch, struct char_data *vict, char *new_
     char old_name[MAX_NAME_LENGTH], old_pfile[50], new_pfile[50], buf[MAX_STRING_LENGTH];
 
     if (!ch) {
-        log("SYSERR: No char passed to change_player_name.");
+        basic_mud_log("SYSERR: No char passed to change_player_name.");
         return false;
     }
 
     if (!vict) {
-        log("SYSERR: No victim passed to change_player_name.");
+        basic_mud_log("SYSERR: No victim passed to change_player_name.");
         send_to_char(ch, "Invalid victim.\r\n");
         return false;
     }
@@ -4737,7 +4737,7 @@ bool change_player_name(struct char_data *ch, struct char_data *vict, char *new_
 
     if (player_table[i].id != GET_IDNUM(vict)) {
         send_to_char(ch, "Your target was not found in the player index.\r\n");
-        log("SYSERR: Player %s, with ID %ld, could not be found in the player index.", GET_NAME(vict), GET_IDNUM(vict));
+        basic_mud_log("SYSERR: Player %s, with ID %ld, could not be found in the player index.", GET_NAME(vict), GET_IDNUM(vict));
         return false;
     }
 
@@ -4806,7 +4806,7 @@ ACMD(do_zlock)
                     counter++;
                     SET_BIT_AR(ZONE_FLAGS(zn), ZONE_NOBUILD);
                     if (save_zone(zn)) {
-                        log("(GC) %s has locked zone %d", GET_NAME(ch), zone_table[zn].number);
+                        basic_mud_log("(GC) %s has locked zone %d", GET_NAME(ch), zone_table[zn].number);
                     } else {
                         fail = true;
                     }
@@ -4818,7 +4818,7 @@ ACMD(do_zlock)
                     counter++;
                     SET_BIT_AR(ZONE_FLAGS(zn), ZONE_NOBUILD);
                     if (save_zone(zn)) {
-                        log("(GC) %s has locked zone %d", GET_NAME(ch), zone_table[zn].number);
+                        basic_mud_log("(GC) %s has locked zone %d", GET_NAME(ch), zone_table[zn].number);
                     } else {
                         fail = true;
                     }
@@ -4910,7 +4910,7 @@ ACMD(do_zunlock)
                 counter++;
                 REMOVE_BIT_AR(ZONE_FLAGS(zn), ZONE_NOBUILD);
                 if (save_zone(zn)) {
-                    log("(GC) %s has unlocked zone %d", GET_NAME(ch), zone_table[zn].number);
+                    basic_mud_log("(GC) %s has unlocked zone %d", GET_NAME(ch), zone_table[zn].number);
                 } else {
                     fail = true;
                 }

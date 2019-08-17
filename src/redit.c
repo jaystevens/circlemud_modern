@@ -254,7 +254,7 @@ void redit_save_internally(struct descriptor_data *d)
 
     if ((room_num = add_room(OLC_ROOM(d))) == NOWHERE) {
         write_to_output(d, "Something went wrong...\r\n");
-        log("SYSERR: redit_save_internally: Something failed! (%d)", room_num);
+        basic_mud_log("SYSERR: redit_save_internally: Something failed! (%d)", room_num);
         return;
     }
 

@@ -226,7 +226,7 @@ void oedit_save_internally(struct descriptor_data *d)
     i = (real_object(OLC_NUM(d)) == NOTHING);
 
     if ((robj_num = add_object(OLC_OBJ(d), OLC_NUM(d))) == NOTHING) {
-        log("oedit_save_internally: add_object failed.");
+        basic_mud_log("oedit_save_internally: add_object failed.");
         return;
     }
 

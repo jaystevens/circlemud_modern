@@ -79,7 +79,7 @@ void cleanup_olc(struct descriptor_data *d, int8_t cleanup_type)
                 free_config(OLC_CONFIG(d));
                 break;
             default: /* The caller has screwed up. */
-                log("SYSERR: cleanup_olc: Unknown type!");
+                basic_mud_log("SYSERR: cleanup_olc: Unknown type!");
                 break;
         }
     }

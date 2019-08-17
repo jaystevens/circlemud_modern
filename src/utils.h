@@ -28,9 +28,6 @@
 
 /* external declarations and prototypes */
 
-/** direct all log() references to basic_mud_log() function. */
-#define log            basic_mud_log
-
 /** Standard line size, used for many string limits. */
 #define READ_SIZE    256
 
@@ -220,7 +217,7 @@ void char_from_furniture(struct char_data *ch);
  * @param number How many of type to make. */
 #define CREATE(result, type, number)  do {\
     if ((number) * sizeof(type) <= 0)    \
-        log("SYSERR: Zero bytes or less requested at %s:%d.", __FILE__, __LINE__);    \
+        basic_mud_log("SYSERR: Zero bytes or less requested at %s:%d.", __FILE__, __LINE__);    \
     if (!((result) = (type *) calloc ((number), sizeof(type))))    \
         { perror("SYSERR: malloc failure"); abort(); } } while(0)
 
@@ -306,7 +303,7 @@ do                                                              \
 {                                                               \
   if (!(point))                                                 \
   {                                                             \
-        log( "SYSERR: Freeing null pointer %s:%d", __FILE__, __LINE__ ); \
+        basic_mud_log( "SYSERR: Freeing null pointer %s:%d", __FILE__, __LINE__ ); \
   }                                                             \
   else free(point);                                             \
   point = NULL;                                                 \
@@ -355,7 +352,7 @@ do                                                              \
 /** Warn if accessing player_specials on a mob.
  * @todo Subtle bug in the var reporting, but works well for now. */
 #define CHECK_PLAYER_SPECIAL(ch, var) \
-    (*(((ch)->player_specials == &dummy_mob) ? (log("SYSERR: Mob using '"#var"' at %s:%d.", __FILE__, __LINE__), &(var)) : &(var)))
+    (*(((ch)->player_specials == &dummy_mob) ? (basic_mud_log("SYSERR: Mob using '"#var"' at %s:%d.", __FILE__, __LINE__), &(var)) : &(var)))
 #else
 #define CHECK_PLAYER_SPECIAL(ch, var)	(var)
 #endif

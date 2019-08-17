@@ -174,7 +174,7 @@ void parse_quest(FILE *quest_f, int nr)
     aquest_table[i].quit = fread_string(quest_f, buf2);
     if (!get_line(quest_f, line) ||
         (retval = sscanf(line, " %d %d %s %d %d %d %d", t, t + 1, f1, t + 2, t + 3, t + 4, t + 5)) != 7) {
-        log("Format error in numeric line (expected 7, got %d), %s\n", retval, line);
+        basic_mud_log("Format error in numeric line (expected 7, got %d), %s\n", retval, line);
         exit(1);
     }
     aquest_table[i].type = t[0];
@@ -186,7 +186,7 @@ void parse_quest(FILE *quest_f, int nr)
     aquest_table[i].prereq = (t[5] == -1) ? NOTHING : t[5];
     if (!get_line(quest_f, line) ||
         (retval = sscanf(line, " %d %d %d %d %d %d %d", t, t + 1, t + 2, t + 3, t + 4, t + 5, t + 6)) != 7) {
-        log("Format error in numeric line (expected 7, got %d), %s\n", retval, line);
+        basic_mud_log("Format error in numeric line (expected 7, got %d), %s\n", retval, line);
         exit(1);
     }
     for (j = 0; j < 7; j++) {
@@ -194,7 +194,7 @@ void parse_quest(FILE *quest_f, int nr)
     }
 
     if (!get_line(quest_f, line) || (retval = sscanf(line, " %d %d %d", t, t + 1, t + 2)) != 3) {
-        log("Format error in numeric (rewards) line (expected 3, got %d), %s\n", retval, line);
+        basic_mud_log("Format error in numeric (rewards) line (expected 3, got %d), %s\n", retval, line);
         exit(1);
     }
 
@@ -204,7 +204,7 @@ void parse_quest(FILE *quest_f, int nr)
 
     for (;;) {
         if (!get_line(quest_f, line)) {
-            log("Format error in %s\n", line);
+            basic_mud_log("Format error in %s\n", line);
             exit(1);
         }
         switch (*line) {
@@ -224,11 +224,11 @@ void assign_the_quests(void)
 
     for (rnum = 0; rnum < total_quests; rnum++) {
         if (QST_MASTER(rnum) == NOBODY) {
-            log("SYSERR: Quest #%d has no questmaster specified.", QST_NUM(rnum));
+            basic_mud_log("SYSERR: Quest #%d has no questmaster specified.", QST_NUM(rnum));
             continue;
         }
         if ((mrnum = real_mobile(QST_MASTER(rnum))) == NOBODY) {
-            log("SYSERR: Quest #%d has an invalid questmaster.", QST_NUM(rnum));
+            basic_mud_log("SYSERR: Quest #%d has an invalid questmaster.", QST_NUM(rnum));
             continue;
         }
         if (mob_index[(mrnum)].func && mob_index[(mrnum)].func != questmaster)
@@ -440,7 +440,7 @@ void autoquest_trigger_check(struct char_data *ch, struct char_data *vict, struc
             }
             break;
         default:
-            log("SYSERR: Invalid quest type passed to autoquest_trigger_check");
+            basic_mud_log("SYSERR: Invalid quest type passed to autoquest_trigger_check");
             break;
     }
 }

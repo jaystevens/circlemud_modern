@@ -227,7 +227,7 @@ void run_autowiz(void)
                 mudlog(BRF, LVL_IMMORT, true, "Warning: autowiz failed with return value %d", rval);
             }
         } else
-            log("Cannot run autowiz: command-line doesn't fit in buffer.");
+            basic_mud_log("Cannot run autowiz: command-line doesn't fit in buffer.");
     }
 #endif /* CIRCLE_UNIX || CIRCLE_WINDOWS */
 }

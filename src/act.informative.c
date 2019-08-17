@@ -63,7 +63,7 @@ static void show_obj_to_char(struct obj_data *obj, struct char_data *ch, int mod
     struct char_data *temp;
 
     if (!obj || !ch) {
-        log("SYSERR: NULL pointer in show_obj_to_char(): obj=%p ch=%p", (void *) obj, (void *) ch);
+        basic_mud_log("SYSERR: NULL pointer in show_obj_to_char(): obj=%p ch=%p", (void *) obj, (void *) ch);
         /*  SYSERR_DESC: Somehow a NULL pointer was sent to show_obj_to_char() in
          *  either the 'obj' or the 'ch' variable.  The error will indicate which
          *  was NULL by listing both of the pointers passed to it.  This is often a
@@ -146,7 +146,7 @@ static void show_obj_to_char(struct obj_data *obj, struct char_data *ch, int mod
             break;
 
         default:
-            log("SYSERR: Bad display mode (%d) in show_obj_to_char().", mode);
+            basic_mud_log("SYSERR: Bad display mode (%d) in show_obj_to_char().", mode);
             /*  SYSERR_DESC:  show_obj_to_char() has some predefined 'mode's (argument
              *  #3) to tell it what to display to the character when it is called.  If
              *  the mode is not one of these, it will output this error, and indicate
@@ -1673,7 +1673,7 @@ ACMD(do_gen_ps)
             send_to_char(ch, "%s\r\n", GET_NAME(ch));
             break;
         default:
-            log("SYSERR: Unhandled case in do_gen_ps. (%d)", subcmd);
+            basic_mud_log("SYSERR: Unhandled case in do_gen_ps. (%d)", subcmd);
             /* SYSERR_DESC: General page string function for such things as 'credits',
              * 'news', 'wizlist', 'clear', 'version'.  This occurs when a call is made
              * to this routine that is not one of the predefined calls.  To correct it,

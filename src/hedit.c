@@ -165,7 +165,7 @@ static void hedit_save_to_disk(struct descriptor_data *d)
 
     snprintf(index_name, sizeof(index_name), "%s%s", HLP_PREFIX, HELP_FILE);
     if (!(fp = fopen(index_name, "w"))) {
-        log("SYSERR: Could not write help index file");
+        basic_mud_log("SYSERR: Could not write help index file");
         return;
     }
 

@@ -97,15 +97,15 @@ int save_all(void)
         if (save_list->type < 0 || save_list->type > SL_MAX) {
             switch (save_list->type) {
                 case SL_ACT:
-                    log("Actions not saved - can not autosave. Use 'aedit save'.");
+                    basic_mud_log("Actions not saved - can not autosave. Use 'aedit save'.");
                     save_list = save_list->next;    /* Fatal error, skip this one. */
                     break;
                 case SL_HLP:
-                    log("Help not saved - can not autosave. Use 'hedit save'.");
+                    basic_mud_log("Help not saved - can not autosave. Use 'hedit save'.");
                     save_list = save_list->next;    /* Fatal error, skip this one. */
                     break;
                 default:
-                    log("SYSERR: GenOLC: Invalid save type %d in save list.\n", save_list->type);
+                    basic_mud_log("SYSERR: GenOLC: Invalid save type %d in save list.\n", save_list->type);
                     break;
             }
         } else if ((*save_types[save_list->type].func)(real_zone(save_list->zone)) < 0) {
@@ -151,7 +151,7 @@ void free_ex_descriptions(struct extra_descr_data *head)
     struct extra_descr_data *thised, *next_one;
 
     if (!head) {
-        log("free_ex_descriptions: NULL pointer or NULL data.");
+        basic_mud_log("free_ex_descriptions: NULL pointer or NULL data.");
         return;
     }
 
@@ -178,7 +178,7 @@ int remove_from_save_list(zone_vnum zone, int type)
     }
 
     if (ritem == NULL) {
-        log("SYSERR: remove_from_save_list: Saved item not found. (%d/%d)", zone, type);
+        basic_mud_log("SYSERR: remove_from_save_list: Saved item not found. (%d/%d)", zone, type);
         return false;
     }
     REMOVE_FROM_LIST(ritem, save_list, next);
@@ -198,7 +198,7 @@ int add_to_save_list(zone_vnum zone, int type)
     rznum = real_zone(zone);
     if (rznum == NOWHERE || rznum > top_of_zone_table) {
         if (zone != AEDIT_PERMISSION && zone != HEDIT_PERMISSION) {
-            log("SYSERR: add_to_save_list: Invalid zone number passed. (%d => %d, 0-%d)", zone, rznum,
+            basic_mud_log("SYSERR: add_to_save_list: Invalid zone number passed. (%d => %d, 0-%d)", zone, rznum,
                 top_of_zone_table);
             return false;
         }
@@ -584,7 +584,7 @@ static int export_save_mobiles(zone_rnum rznum)
         }
         check_mobile_strings(&mob_proto[rmob]);
         if (export_mobile_record(i, &mob_proto[rmob], mob_file) < 0)
-            log("SYSERR: export_save_mobiles: Error writing mobile #%d.", i);
+            basic_mud_log("SYSERR: export_save_mobiles: Error writing mobile #%d.", i);
     }
     fputs("$\n", mob_file);
     fclose(mob_file);
@@ -620,7 +620,7 @@ static int export_mobile_record(mob_vnum mvnum, struct char_data *mob, FILE *fd)
                 "%d %d %d\n", GET_GOLD(mob), GET_EXP(mob), GET_POS(mob), GET_DEFAULT_POS(mob), GET_SEX(mob));
 
     if (write_mobile_espec(mvnum, mob, fd) < 0)
-        log("SYSERR: GenOLC: Error writing E-specs for mobile #%d.", mvnum);
+        basic_mud_log("SYSERR: GenOLC: Error writing E-specs for mobile #%d.", mvnum);
 
     export_script_save_to_disk(fd, mob, MOB_TRIGGER);
 
@@ -948,7 +948,7 @@ static void export_script_save_to_disk(FILE *fp, void *item, int type)
     } else if (type == WLD_TRIGGER) {
         t = ((struct room_data *) item)->proto_script;
     } else {
-        log("SYSERR: Invalid type passed to export_script_save_to_disk()");
+        basic_mud_log("SYSERR: Invalid type passed to export_script_save_to_disk()");
         return;
     }
 

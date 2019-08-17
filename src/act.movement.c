@@ -819,7 +819,7 @@ ACMD(do_sit)
                 } else if (GET_OBJ_VAL(furniture, 1) > GET_OBJ_VAL(furniture, 0)) {
                     /* Val 1 is current number sitting, 0 is max in sitting. */
                     act("$p looks like it's all full.", true, ch, furniture, 0, TO_CHAR);
-                    log("SYSERR: Furniture %d holding too many people.", GET_OBJ_VNUM(furniture));
+                    basic_mud_log("SYSERR: Furniture %d holding too many people.", GET_OBJ_VNUM(furniture));
                     return;
                 } else if (GET_OBJ_VAL(furniture, 1) == GET_OBJ_VAL(furniture, 0)) {
                     act("There is no where left to sit upon $p.", true, ch, furniture, 0, TO_CHAR);

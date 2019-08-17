@@ -49,9 +49,9 @@ void load_banned(void)
 
     if (!(fl = fopen(BAN_FILE, "r"))) {
         if (errno != ENOENT) {
-            log("SYSERR: Unable to open banfile '%s': %s", BAN_FILE, strerror(errno));
+            basic_mud_log("SYSERR: Unable to open banfile '%s': %s", BAN_FILE, strerror(errno));
         } else
-            log("   Ban file '%s' doesn't exist.", BAN_FILE);
+            basic_mud_log("   Ban file '%s' doesn't exist.", BAN_FILE);
         return;
     }
     while (fscanf(fl, " %s %s %d %s ", ban_type, site_name, &date, name) == 4) {
@@ -313,7 +313,7 @@ void read_invalid_list(void)
     }
 
     if (num_invalid >= MAX_INVALID_NAMES) {
-        log("SYSERR: Too many invalid names; change MAX_INVALID_NAMES in ban.c");
+        basic_mud_log("SYSERR: Too many invalid names; change MAX_INVALID_NAMES in ban.c");
         exit(1);
     }
 

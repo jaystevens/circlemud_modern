@@ -117,7 +117,7 @@ static void init_boards(void)
 
     for (i = 0; i < NUM_OF_BOARDS; i++) {
         if ((BOARD_RNUM(i) = real_object(BOARD_VNUM(i))) == NOTHING) {
-            log("SYSERR: Fatal board error: board vnum %d does not exist!", BOARD_VNUM(i));
+            basic_mud_log("SYSERR: Fatal board error: board vnum %d does not exist!", BOARD_VNUM(i));
             fatal_error = 1;
         }
         num_of_msgs[i] = 0;
@@ -161,7 +161,7 @@ SPECIAL(gen_board)
     }
 
     if ((board_type = find_board(ch)) == -1) {
-        log("SYSERR:  degenerate board!  (what the hell...)");
+        basic_mud_log("SYSERR:  degenerate board!  (what the hell...)");
         return (0);
     }
     if (cmd == ACMD_WRITE) {
@@ -192,7 +192,7 @@ int board_write_message(int board_type, struct char_data *ch, char *arg, struct 
     }
     if ((NEW_MSG_INDEX(board_type).slot_num = find_slot()) == -1) {
         send_to_char(ch, "The board is malfunctioning - sorry.\r\n");
-        log("SYSERR: Board: failed to find empty slot on write.");
+        basic_mud_log("SYSERR: Board: failed to find empty slot on write.");
         return (1);
     }
     /* skip blanks */
@@ -284,7 +284,7 @@ int board_show_board(int board_type, struct char_data *ch, char *arg, struct obj
     return (1);
 
     fubar:
-    log("SYSERR: Board %d is fubar'd.", board_type);
+    basic_mud_log("SYSERR: Board %d is fubar'd.", board_type);
     send_to_char(ch, "Sorry, the board isn't working.\r\n");
     return (1);
 }
@@ -327,7 +327,7 @@ int board_display_msg(int board_type, struct char_data *ch, char *arg, struct ob
 #endif
     if (MSG_SLOTNUM(board_type, ind) < 0 || MSG_SLOTNUM(board_type, ind) >= INDEX_SIZE) {
         send_to_char(ch, "Sorry, the board is not working.\r\n");
-        log("SYSERR: Board is screwed up. (Room #%d)", GET_ROOM_VNUM(IN_ROOM(ch)));
+        basic_mud_log("SYSERR: Board is screwed up. (Room #%d)", GET_ROOM_VNUM(IN_ROOM(ch)));
         return (1);
     }
     if (!(MSG_HEADING(board_type, ind))) {
@@ -390,7 +390,7 @@ int board_remove_msg(int board_type, struct char_data *ch, char *arg, struct obj
     slot_num = MSG_SLOTNUM(board_type, ind);
     if (slot_num < 0 || slot_num >= INDEX_SIZE) {
         send_to_char(ch, "That message is majorly screwed up.\r\n");
-        log("SYSERR: The board is seriously screwed up. (Room #%d)", GET_ROOM_VNUM(IN_ROOM(ch)));
+        basic_mud_log("SYSERR: The board is seriously screwed up. (Room #%d)", GET_ROOM_VNUM(IN_ROOM(ch)));
         return (1);
     }
     for (d = descriptor_list; d; d = d->next) {
@@ -482,22 +482,22 @@ void board_load_board(int board_type)
         return;
     }
     if (num_of_msgs[board_type] < 1 || num_of_msgs[board_type] > MAX_BOARD_MESSAGES) {
-        log("SYSERR: Board file %d corrupt.  Resetting.", board_type);
+        basic_mud_log("SYSERR: Board file %d corrupt.  Resetting.", board_type);
         board_reset_board(board_type);
         return;
     }
     for (i = 0; i < num_of_msgs[board_type]; i++) {
         if (fread(&(msg_index[board_type][i]), sizeof(struct board_msginfo), 1, fl) != 1) {
             if (feof(fl))
-                log("SYSERR: Unexpected EOF encountered in board file %d! Resetting.", board_type);
+                basic_mud_log("SYSERR: Unexpected EOF encountered in board file %d! Resetting.", board_type);
             else if (ferror(fl))
-                log("SYSERR: Error reading board file %d: %s. Resetting.", board_type, strerror(errno));
+                basic_mud_log("SYSERR: Error reading board file %d: %s. Resetting.", board_type, strerror(errno));
             else
-                log("SYSERR: Error reading board file %d. Resetting.", board_type);
+                basic_mud_log("SYSERR: Error reading board file %d. Resetting.", board_type);
             board_reset_board(board_type);
         }
         if ((len1 = msg_index[board_type][i].heading_len) <= 0) {
-            log("SYSERR: Board file %d corrupt!  Resetting.", board_type);
+            basic_mud_log("SYSERR: Board file %d corrupt!  Resetting.", board_type);
             board_reset_board(board_type);
             return;
         }
@@ -506,18 +506,18 @@ void board_load_board(int board_type)
 
         if (fread(tmp1, sizeof(char), len1, fl) != len1) {
             if (feof(fl))
-                log("SYSERR: Unexpected EOF encountered in board file %d! Resetting.", board_type);
+                basic_mud_log("SYSERR: Unexpected EOF encountered in board file %d! Resetting.", board_type);
             else if (ferror(fl))
-                log("SYSERR: Error reading board file %d: %s. Resetting.", board_type, strerror(errno));
+                basic_mud_log("SYSERR: Error reading board file %d: %s. Resetting.", board_type, strerror(errno));
             else
-                log("SYSERR: Error reading board file %d. Resetting.", board_type);
+                basic_mud_log("SYSERR: Error reading board file %d. Resetting.", board_type);
             board_reset_board(board_type);
         }
 
         MSG_HEADING(board_type, i) = tmp1;
 
         if ((MSG_SLOTNUM(board_type, i) = find_slot()) == -1) {
-            log("SYSERR: Out of slots booting board %d!  Resetting...", board_type);
+            basic_mud_log("SYSERR: Out of slots booting board %d!  Resetting...", board_type);
             board_reset_board(board_type);
             return;
         }
@@ -525,11 +525,11 @@ void board_load_board(int board_type)
             CREATE(tmp2, char, len2);
             if (fread(tmp2, sizeof(char), len2, fl) != sizeof(char) * len2) {
                 if (feof(fl))
-                    log("SYSERR: Unexpected EOF encountered in board file %d! Resetting.", board_type);
+                    basic_mud_log("SYSERR: Unexpected EOF encountered in board file %d! Resetting.", board_type);
                 else if (ferror(fl))
-                    log("SYSERR: Error reading board file %d: %s. Resetting.", board_type, strerror(errno));
+                    basic_mud_log("SYSERR: Error reading board file %d: %s. Resetting.", board_type, strerror(errno));
                 else
-                    log("SYSERR: Error reading board file %d. Resetting.", board_type);
+                    basic_mud_log("SYSERR: Error reading board file %d. Resetting.", board_type);
                 board_reset_board(board_type);
             }
 

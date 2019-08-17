@@ -363,7 +363,7 @@ int save_shops(zone_rnum zone_num)
     struct shop_data *shop;
 
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
-        log("SYSERR: GenOLC: save_shops: Invalid real zone number %d. (0-%d)", zone_num, top_of_zone_table);
+        basic_mud_log("SYSERR: GenOLC: save_shops: Invalid real zone number %d. (0-%d)", zone_num, top_of_zone_table);
         return false;
     }
 

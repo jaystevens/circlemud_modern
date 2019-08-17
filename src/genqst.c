@@ -47,7 +47,7 @@ int copy_quest(struct aq_data *to, struct aq_data *from, int free_old_strings)
 int copy_quest_strings(struct aq_data *to, struct aq_data *from)
 {
     if (from == NULL || to == NULL) {
-        log("SYSERR: GenQST: copy_quest_strings: Null values passed.");
+        basic_mud_log("SYSERR: GenQST: copy_quest_strings: Null values passed.");
         return false;
     }
     to->name = str_udup(from->name);
@@ -145,7 +145,7 @@ int delete_quest(qst_rnum rnum)
         return false;
     }
     rznum = real_zone_by_thing(QST_NUM(rnum));
-    log("GenOLC: delete_quest: Deleting quest #%d (%s).", QST_NUM(rnum), QST_NAME(rnum));
+    basic_mud_log("GenOLC: delete_quest: Deleting quest #%d (%s).", QST_NUM(rnum), QST_NAME(rnum));
     /* make a note of the quest master's secondary spec proc */
     tempfunc = QST_FUNC(rnum);
 
@@ -192,11 +192,11 @@ int save_quests(zone_rnum zone_num)
     int i, num_quests = 0, n;
 
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
-        log("SYSERR: GenOLC: save_quests: Invalid zone number %d passed! (0-%d)", zone_num, top_of_zone_table);
+        basic_mud_log("SYSERR: GenOLC: save_quests: Invalid zone number %d passed! (0-%d)", zone_num, top_of_zone_table);
         return false;
     }
 
-    log("GenOLC: save_quests: Saving quests in zone #%d (%d-%d).", zone_table[zone_num].number,
+    basic_mud_log("GenOLC: save_quests: Saving quests in zone #%d (%d-%d).", zone_table[zone_num].number,
         genolc_zone_bottom(zone_num), zone_table[zone_num].top);
 
     snprintf(filename, sizeof(filename), "%s/%d.new", QST_PREFIX, zone_table[zone_num].number);

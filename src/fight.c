@@ -605,7 +605,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
             return (-1);
         }
 
-        log("SYSERR: Attempt to damage corpse '%s' in room #%d by '%s'.", GET_NAME(victim),
+        basic_mud_log("SYSERR: Attempt to damage corpse '%s' in room #%d by '%s'.", GET_NAME(victim),
             GET_ROOM_VNUM(IN_ROOM(victim)), GET_NAME(ch));
         die(victim, ch);
         return (-1);            /* -je, 7/7/92 */

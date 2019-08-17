@@ -294,14 +294,14 @@ int Crash_delete_file(char *name)
 
     if (!(fl = fopen(filename, "r"))) {
         if (errno != ENOENT)  /* if it fails but NOT because of no file */
-            log("SYSERR: deleting crash file %s (1): %s", filename, strerror(errno));
+            basic_mud_log("SYSERR: deleting crash file %s (1): %s", filename, strerror(errno));
         return false;
     }
     fclose(fl);
 
     /* if it fails, NOT because of no file */
     if (remove(filename) < 0 && errno != ENOENT)
-        log("SYSERR: deleting crash file %s (2): %s", filename, strerror(errno));
+        basic_mud_log("SYSERR: deleting crash file %s (2): %s", filename, strerror(errno));
 
     return true;
 }
@@ -320,7 +320,7 @@ int Crash_delete_crashfile(struct char_data *ch)
 
     if (!(fl = fopen(filename, "r"))) {
         if (errno != ENOENT)  /* if it fails, NOT because of no file */
-            log("SYSERR: checking for crash file %s (3): %s", filename, strerror(errno));
+            basic_mud_log("SYSERR: checking for crash file %s (3): %s", filename, strerror(errno));
         return false;
     }
     numread = get_line(fl, line);
@@ -353,7 +353,7 @@ int Crash_clean_file(char *name)
     /* Open so that permission problems will be flagged now, at boot time. */
     if (!(fl = fopen(filename, "r"))) {
         if (errno != ENOENT)  /* if it fails, NOT because of no file */
-            log("SYSERR: OPENING OBJECT FILE %s (4): %s", filename, strerror(errno));
+            basic_mud_log("SYSERR: OPENING OBJECT FILE %s (4): %s", filename, strerror(errno));
         return false;
     }
 
@@ -382,14 +382,14 @@ int Crash_clean_file(char *name)
                     strcpy(filetype, "UNKNOWN!");
                     break;
             }
-            log("    Deleting %s's %s file.", name, filetype);
+            basic_mud_log("    Deleting %s's %s file.", name, filetype);
             return true;
         }
         /* Must retrieve rented items w/in 30 days */
     } else if (rentcode == RENT_RENTED) {
         if (timed < time(0) - (CONFIG_RENT_TIMEOUT * SECS_PER_REAL_DAY)) {
             Crash_delete_file(name);
-            log("    Deleting %s's rent file.", name);
+            basic_mud_log("    Deleting %s's rent file.", name);
             return true;
         }
     }
@@ -549,7 +549,7 @@ static int Crash_is_unrentable(struct obj_data *obj)
 
     if (OBJ_FLAGGED(obj, ITEM_NORENT) || GET_OBJ_RENT(obj) < 0 || GET_OBJ_RNUM(obj) == NOTHING ||
         GET_OBJ_TYPE(obj) == ITEM_KEY) {
-        log("Crash_is_unrentable: removing object %s", obj->short_description);
+        basic_mud_log("Crash_is_unrentable: removing object %s", obj->short_description);
         return true;
     }
 
@@ -1074,7 +1074,7 @@ obj_save_data *objsave_parse_objects(FILE *fl)
                 /* Do nothing. */
             } else if (temp != NULL && current->obj != NULL) {
                 if (temp != current->obj)
-                    log("inconsistent object pointers in objsave_parse_objects: %p/%p", (void *) temp,
+                    basic_mud_log("inconsistent object pointers in objsave_parse_objects: %p/%p", (void *) temp,
                         (void *) current->obj);
             }
 
@@ -1090,7 +1090,7 @@ obj_save_data *objsave_parse_objects(FILE *fl)
                  * 65535, then we assume it doesn't exist on purpose. (Custom Item,
                  * Coins, Corpse, etc...) */
                 if (real_object(nr) == NOTHING && nr != NOTHING) {
-                    log("SYSERR: Prevented loading of non-existant item #%d.", nr);
+                    basic_mud_log("SYSERR: Prevented loading of non-existant item #%d.", nr);
                     continue;
                 }
 
@@ -1117,7 +1117,7 @@ obj_save_data *objsave_parse_objects(FILE *fl)
                     temp = read_object(nr, VIRTUAL);
                     /* Go read next line - nothing more to see here. */
                 } else {
-                    log("Nonexistent object %d found in rent file.", nr);
+                    basic_mud_log("Nonexistent object %d found in rent file.", nr);
                 }
             }
             /* go read next line - nothing more to see here. */
@@ -1233,7 +1233,7 @@ obj_save_data *objsave_parse_objects(FILE *fl)
                 }
                 break;
             default:
-                log("Unknown tag in rentfile: %s", tag);
+                basic_mud_log("Unknown tag in rentfile: %s", tag);
         }
     }
 

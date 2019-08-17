@@ -54,7 +54,7 @@ void build_player_index(void)
     sprintf(index_name, "%s%s", LIB_PLRFILES, INDEX_FILE);
     if (!(plr_index = fopen(index_name, "r"))) {
         top_of_p_table = -1;
-        log("No player index file!  First new char will be IMP!");
+        basic_mud_log("No player index file!  First new char will be IMP!");
         return;
     }
 
@@ -160,7 +160,7 @@ void save_player_index(void)
 
     sprintf(index_name, "%s%s", LIB_PLRFILES, INDEX_FILE);
     if (!(index_file = fopen(index_name, "w"))) {
-        log("SYSERR: Could not write player index file");
+        basic_mud_log("SYSERR: Could not write player index file");
         return;
     }
 
@@ -575,7 +575,7 @@ void save_char(struct char_data *ch)
     }
 
     if ((i >= MAX_AFFECT) && aff && aff->next)
-        log("SYSERR: WARNING: OUT OF STORE ROOM FOR AFFECTED TYPES!!!");
+        basic_mud_log("SYSERR: WARNING: OUT OF STORE ROOM FOR AFFECTED TYPES!!!");
 
     ch->aff_abils = ch->real_abils;
     /* end char_to_store code */
@@ -827,7 +827,7 @@ void remove_player(int pfilepos)
     }
 
     strftime(timestr, sizeof(timestr), "%c", localtime(&(player_table[pfilepos].last)));
-    log("PCLEAN: %s Lev: %d Last: %s", player_table[pfilepos].name, player_table[pfilepos].level, timestr);
+    basic_mud_log("PCLEAN: %s Lev: %d Last: %s", player_table[pfilepos].name, player_table[pfilepos].level, timestr);
     player_table[pfilepos].name[0] = '\0';
 
     /* Update index table. */
@@ -893,7 +893,7 @@ static void load_affects(FILE *fl, struct char_data *ch)
                 if (num5 > 0 && num5 <= NUM_AFF_FLAGS)  /* Ignore invalid values */
                     SET_BIT_AR(af.bitvector, num5);
             } else {
-                log("SYSERR: Invalid affects in pfile (%s), expecting 5 or 8 values", GET_NAME(ch));
+                basic_mud_log("SYSERR: Invalid affects in pfile (%s), expecting 5 or 8 values", GET_NAME(ch));
             }
             affect_to_char(ch, &af);
             i++;

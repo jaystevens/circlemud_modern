@@ -212,15 +212,15 @@ static IBT_DATA *read_ibt(char *filename, FILE *fp)
                 break;
 
             default:
-                log("SYSERR: Invalid keyword (%s) in IBT file", word);
+                basic_mud_log("SYSERR: Invalid keyword (%s) in IBT file", word);
                 break;
         }
         if (!fMatch) {
             fread_to_eol(fp);
-            log("read_ibt (%s): no match: %s - aborting line!", filename, word);
+            basic_mud_log("read_ibt (%s): no match: %s - aborting line!", filename, word);
         }
     }
-    log("read_ibt: Aborted! Returning NULL");
+    basic_mud_log("read_ibt: Aborted! Returning NULL");
     if (ibtData->name)
         STRFREE(ibtData->name);
     if (ibtData->text)
@@ -259,7 +259,7 @@ void load_ibt_file(int mode)
             last_ibt = last_typo;
             break;
         default       :
-            log("SYSERR: Invalid mode (%d) in load_ibt_file", mode);
+            basic_mud_log("SYSERR: Invalid mode (%d) in load_ibt_file", mode);
             return;
     }
 
@@ -271,7 +271,7 @@ void load_ibt_file(int mode)
     }
 
     if ((fp = fopen(filename, "r")) == NULL) {
-        log("No File: %s", filename);
+        basic_mud_log("No File: %s", filename);
         return;
     }
 
@@ -312,13 +312,13 @@ void save_ibt_file(int mode)
             first_ibt = first_typo;
             break;
         default       :
-            log("SYSERR: Invalid mode (%d) in save_ibt_file", mode);
+            basic_mud_log("SYSERR: Invalid mode (%d) in save_ibt_file", mode);
             return;
     }
 
     if ((fp = fopen(filename, "w")) == NULL) {
-        log("SYSERR: Unable to open IBT file for writing in save_ibt_file");
-        log("        IBT File: %s", filename);
+        basic_mud_log("SYSERR: Unable to open IBT file for writing in save_ibt_file");
+        basic_mud_log("        IBT File: %s", filename);
         return;
     } else {
         for (ibtData = first_ibt; ibtData; ibtData = ibtData->next) {
@@ -366,7 +366,7 @@ static IBT_DATA *get_first_ibt(int mode)
             first_ibt = first_typo;
             break;
         default       :
-            log("SYSERR: Invalid mode (%d) in get_first_ibt", mode);
+            basic_mud_log("SYSERR: Invalid mode (%d) in get_first_ibt", mode);
             break;
     }
     return (first_ibt);
@@ -387,7 +387,7 @@ static IBT_DATA *get_last_ibt(int mode)
             last_ibt = last_typo;
             break;
         default       :
-            log("SYSERR: Invalid mode (%d) in get_last_ibt", mode);
+            basic_mud_log("SYSERR: Invalid mode (%d) in get_last_ibt", mode);
             break;
     }
     return (last_ibt);
@@ -658,7 +658,7 @@ ACMD(do_ibt)
                 SET_BIT_AR(PLR_FLAGS(ch), PLR_TYPO);
                 break;
             default       :
-                log("Invalid subcmd (%d) in do_ibt", subcmd);
+                basic_mud_log("Invalid subcmd (%d) in do_ibt", subcmd);
                 return;
         }
         SET_BIT_AR(PLR_FLAGS(ch), PLR_WRITING);
@@ -918,8 +918,8 @@ static void ibtedit_save(struct descriptor_data *d)
             ibtData->flags[i] = OLC_IBT(d)->flags[i];
         }
     } else {
-        log("SYSERR: ibtedit_save: Invalid IBT vnum (%d) in OLC struct", OLC_NUM(d));
-        log("        IBT possibly removed while being edited");
+        basic_mud_log("SYSERR: ibtedit_save: Invalid IBT vnum (%d) in OLC struct", OLC_NUM(d));
+        basic_mud_log("        IBT possibly removed while being edited");
         return;
     }
 

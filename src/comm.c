@@ -303,27 +303,27 @@ int main(int argc, char **argv)
 
     /* Moved here to distinguish command line options and to show up
      * in the log if stderr is redirected to a file. */
-    log("Loading configuration.");
-    log("%s", tbamud_version);
+    basic_mud_log("Loading configuration.");
+    basic_mud_log("%s", tbamud_version);
 
     if (chdir(dir) < 0) {
         perror("SYSERR: Fatal error changing to data directory");
         exit(1);
     }
-    log("Using %s as data directory.", dir);
+    basic_mud_log("Using %s as data directory.", dir);
 
     if (scheck) {
         boot_world();
     } else {
-        log("Running game on port %d.", port);
+        basic_mud_log("Running game on port %d.", port);
         init_game(port);
     }
 
-    log("Clearing game world.");
+    basic_mud_log("Clearing game world.");
     destroy_db();
 
     if (!scheck) {
-        log("Clearing other memory.");
+        basic_mud_log("Clearing other memory.");
         free_bufpool();         /* comm.c */
         free_player_index();    /* players.c */
         free_messages();        /* fight.c */
@@ -349,7 +349,7 @@ int main(int argc, char **argv)
     /* probably should free the entire config here.. */
     free(CONFIG_CONFFILE);
 
-    log("Done.");
+    basic_mud_log("Done.");
 
 #ifdef MEMORY_DEBUG
     zmalloc_check();
@@ -369,13 +369,13 @@ void copyover_recover()
     char name[MAX_INPUT_LENGTH];
     long pref;
 
-    log("Copyover recovery initiated");
+    basic_mud_log("Copyover recovery initiated");
 
     fp = fopen(COPYOVER_FILE, "r");
     /* there are some descriptors open which will hang forever then ? */
     if (!fp) {
         perror("copyover_recover:fopen");
-        log("Copyover file not found. Exitting.\n\r");
+        basic_mud_log("Copyover file not found. Exitting.\n\r");
         exit(1);
     }
 
@@ -386,16 +386,16 @@ void copyover_recover()
     i = fscanf(fp, "%ld\n", (long *) &boot_time);
 
     if (i != 1)
-        log("SYSERR: Error reading boot time.");
+        basic_mud_log("SYSERR: Error reading boot time.");
 
     for (;;) {
         fOld = true;
         if (fscanf(fp, "%d %ld %s %s %s\n", &desc, &pref, name, host, guiopt) != 5) {
             if (!feof(fp)) {
                 if (ferror(fp))
-                    log("SYSERR: error reading copyover file %s: %s", COPYOVER_FILE, strerror(errno));
+                    basic_mud_log("SYSERR: error reading copyover file %s: %s", COPYOVER_FILE, strerror(errno));
                 else if (!feof(fp))
-                    log("SYSERR: could not scan line in copyover file %s.", COPYOVER_FILE);
+                    basic_mud_log("SYSERR: could not scan line in copyover file %s.", COPYOVER_FILE);
                 exit(1);
             }
         }
@@ -480,12 +480,12 @@ static void init_game(uint16_t local_port)
 
     circle_srandom(time(0));
 
-    log("Finding player limit.");
+    basic_mud_log("Finding player limit.");
     max_players = get_max_players();
 
     /* If copyover mother_desc is already set up */
     if (!fCopyOver) {
-        log("Opening mother connection.");
+        basic_mud_log("Opening mother connection.");
         mother_desc = init_socket(local_port);
     }
 
@@ -497,7 +497,7 @@ static void init_game(uint16_t local_port)
     boot_db();
 
 #if defined(CIRCLE_UNIX) || defined(CIRCLE_MACINTOSH)
-    log("Signal trapping.");
+    basic_mud_log("Signal trapping.");
     signal_setup();
 #endif
 
@@ -508,13 +508,13 @@ static void init_game(uint16_t local_port)
         copyover_recover();
     }
 
-    log("Entering game loop.");
+    basic_mud_log("Entering game loop.");
 
     game_loop(mother_desc);
 
     Crash_save_all();
 
-    log("Closing all sockets.");
+    basic_mud_log("Closing all sockets.");
     while (descriptor_list) {
         close_socket(descriptor_list);
     }
@@ -525,14 +525,14 @@ static void init_game(uint16_t local_port)
         save_all();
     }
 
-    log("Saving current MUD time.");
+    basic_mud_log("Saving current MUD time.");
     save_mud_time(&time_info);
 
     if (circle_reboot) {
-        log("Rebooting.");
+        basic_mud_log("Rebooting.");
         exit(52);            /* what's so great about HHGTTG, anyhow? */
     }
-    log("Normal termination of game.");
+    basic_mud_log("Normal termination of game.");
 }
 
 /* init_socket sets up the mother descriptor - creates the socket, sets
@@ -703,10 +703,10 @@ static int get_max_players(void)
     max_descs = MIN(CONFIG_MAX_PLAYING, max_descs - NUM_RESERVED_DESCS);
 
     if (max_descs <= 0) {
-        log("SYSERR: Non-positive max player limit!  (Set at %d using %s).", max_descs, method);
+        basic_mud_log("SYSERR: Non-positive max player limit!  (Set at %d using %s).", max_descs, method);
         exit(1);
     }
-    log("   Setting player limit to %d using %s.", max_descs, method);
+    basic_mud_log("   Setting player limit to %d using %s.", max_descs, method);
     return (max_descs);
 #endif /* CIRCLE_UNIX */
 }
@@ -739,17 +739,17 @@ void game_loop(socket_t local_mother_desc)
 
         /* Sleep if we don't have any connections */
         if (descriptor_list == NULL) {
-            log("No connections.  Going to sleep.");
+            basic_mud_log("No connections.  Going to sleep.");
             FD_ZERO(&input_set);
             FD_SET(local_mother_desc, &input_set);
             if (select(local_mother_desc + 1, &input_set, (fd_set *) 0, (fd_set *) 0, NULL) < 0) {
                 if (errno == EINTR)
-                    log("Waking up to process signal.");
+                    basic_mud_log("Waking up to process signal.");
                 else {
                     perror("SYSERR: Select coma");
                 }
             } else
-                log("New connection.  Waking up.");
+                basic_mud_log("New connection.  Waking up.");
             gettimeofday(&last_time, (struct timezone *) 0);
         }
         /* Set up the input, output, and exception sets for select(). */
@@ -922,13 +922,13 @@ void game_loop(socket_t local_mother_desc)
         missed_pulses++;
 
         if (missed_pulses <= 0) {
-            log("SYSERR: **BAD** MISSED_PULSES NONPOSITIVE (%d), TIME GOING BACKWARDS!!", missed_pulses);
+            basic_mud_log("SYSERR: **BAD** MISSED_PULSES NONPOSITIVE (%d), TIME GOING BACKWARDS!!", missed_pulses);
             missed_pulses = 1;
         }
 
         /* If we missed more than 30 seconds worth of pulses, just do 30 secs */
         if (missed_pulses > 30 RL_SEC) {
-            log("SYSERR: Missed %d seconds worth of pulses.", missed_pulses / PASSES_PER_SEC);
+            basic_mud_log("SYSERR: Missed %d seconds worth of pulses.", missed_pulses / PASSES_PER_SEC);
             missed_pulses = 30 RL_SEC;
         }
 
@@ -1075,7 +1075,7 @@ static void record_usage(void)
         }
     }
 
-    log("nusage: %-3d sockets connected, %-3d sockets playing", sockets_connected, sockets_playing);
+    basic_mud_log("nusage: %-3d sockets connected, %-3d sockets playing", sockets_connected, sockets_playing);
 
 #ifdef RUSAGE    /* Not RUSAGE_SELF because it doesn't guarantee prototype. */
     {
@@ -1391,16 +1391,16 @@ static struct in_addr *get_bind_addr()
     } else {
         /* If the parsing fails, use INADDR_ANY */
         if (!parse_ip(CONFIG_DFLT_IP, &bind_addr)) {
-            log("SYSERR: DFLT_IP of %s appears to be an invalid IP address", CONFIG_DFLT_IP);
+            basic_mud_log("SYSERR: DFLT_IP of %s appears to be an invalid IP address", CONFIG_DFLT_IP);
             bind_addr.s_addr = htonl(INADDR_ANY);
         }
     }
 
     /* Put the address that we've finally decided on into the logs */
     if (bind_addr.s_addr == htonl(INADDR_ANY))
-        log("Binding to all IP interfaces on this host.");
+        basic_mud_log("Binding to all IP interfaces on this host.");
     else
-        log("Binding only to IP address %s", inet_ntoa(bind_addr));
+        basic_mud_log("Binding only to IP address %s", inet_ntoa(bind_addr));
 
     return (&bind_addr);
 }
@@ -1701,7 +1701,7 @@ static ssize_t perform_socket_write(socket_t desc, const char *txt, size_t lengt
 
     if (result == 0) {
         /* This should never happen! */
-        log("SYSERR: Huh??  write() returned 0???  Please report this!");
+        basic_mud_log("SYSERR: Huh??  write() returned 0???  Please report this!");
         return (-1);
     }
 
@@ -1780,7 +1780,7 @@ static ssize_t perform_socket_read(socket_t desc, char *read_point, size_t space
 
     /* read() returned 0, meaning we got an EOF. */
     if (ret == 0) {
-        log("WARNING: EOF on socket read (connection broken by peer)");
+        basic_mud_log("WARNING: EOF on socket read (connection broken by peer)");
         return (-1);
     }
 
@@ -1854,7 +1854,7 @@ static int process_input(struct descriptor_data *t)
 
     do {
         if (space_left <= 0) {
-            log("WARNING: process_input: about to close connection: input overflow");
+            basic_mud_log("WARNING: process_input: about to close connection: input overflow");
             return (-1);
         }
 
@@ -2268,7 +2268,7 @@ static RETSIGTYPE checkpointing(int sig)
 {
 #ifndef MEMORY_DEBUG
     if (!tics_passed) {
-        log("SYSERR: CHECKPOINT shutdown: tics not updated. (Infinite loop suspected)");
+        basic_mud_log("SYSERR: CHECKPOINT shutdown: tics not updated. (Infinite loop suspected)");
         abort();
     } else {
         tics_passed = 0;
@@ -2279,7 +2279,7 @@ static RETSIGTYPE checkpointing(int sig)
 /* Dying anyway... */
 static RETSIGTYPE hupsig(int sig)
 {
-    log("SYSERR: Received SIGHUP, SIGINT, or SIGTERM.  Shutting down...");
+    basic_mud_log("SYSERR: Received SIGHUP, SIGINT, or SIGTERM.  Shutting down...");
     exit(1); /* perhaps something more elegant should substituted */
 }
 
@@ -2486,7 +2486,7 @@ void send_to_range(room_vnum start, room_vnum finish, const char *messg, ...)
     int j;
 
     if (start > finish) {
-        log("send_to_range passed start room value greater then finish.");
+        basic_mud_log("send_to_range passed start room value greater then finish.");
         return;
     }
     if (messg == NULL) {
@@ -2602,8 +2602,8 @@ void perform_act(const char *orig, struct char_data *ch, struct obj_data *obj, v
                     i = "$";
                     break;
                 default:
-                    log("SYSERR: Illegal $-code to act(): %c", *orig);
-                    log("SYSERR: %s", orig);
+                    basic_mud_log("SYSERR: Illegal $-code to act(): %c", *orig);
+                    basic_mud_log("SYSERR: %s", orig);
                     i = "";
                     break;
             }
@@ -2705,7 +2705,7 @@ char *act(const char *str, int hide_invisible, struct char_data *ch, struct obj_
     } else if (obj && IN_ROOM(obj) != NOWHERE) {
         to = world[IN_ROOM(obj)].people;
     } else {
-        log("SYSERR: no valid target to act()!");
+        basic_mud_log("SYSERR: no valid target to act()!");
         return NULL;
     }
 

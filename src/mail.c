@@ -61,8 +61,8 @@ static struct mail_t *read_mail_record(FILE *mail_file)
     }
 
     if (sscanf(line, "### %ld %ld %ld", &recipient, &sender, (long *) &sent_time) != 3) {
-        log("Mail system - fatal error - malformed mail header");
-        log("Line was: %s", line);
+        basic_mud_log("Mail system - fatal error - malformed mail header");
+        basic_mud_log("Line was: %s", line);
         return NULL;
     }
 
@@ -94,7 +94,7 @@ int scan_file(void)
     struct mail_t *record;
 
     if (!(mail_file = fopen(MAIL_FILE, "r"))) {
-        log("   Mail file non-existant... creating new file.");
+        basic_mud_log("   Mail file non-existant... creating new file.");
         touch(MAIL_FILE);
         return true;
     }
@@ -108,7 +108,7 @@ int scan_file(void)
     }
 
     fclose(mail_file);
-    log("   Mail file read -- %d messages.", count);
+    basic_mud_log("   Mail file read -- %d messages.", count);
     return true;
 }
 

@@ -186,7 +186,7 @@ int save_objects(zone_rnum zone_num)
     int n;
 
     if (zone_num == NOWHERE || zone_num > top_of_zone_table) {
-        log("SYSERR: GenOLC: save_objects: Invalid real zone number %d. (0-%d)", zone_num, top_of_zone_table);
+        basic_mud_log("SYSERR: GenOLC: save_objects: Invalid real zone number %d. (0-%d)", zone_num, top_of_zone_table);
         return false;
     }
 
@@ -399,7 +399,7 @@ int delete_object(obj_rnum rnum)
     zrnum = real_zone_by_thing(GET_OBJ_VNUM(obj));
 
     /* This is something you might want to read about in the logs. */
-    log("GenOLC: delete_object: Deleting object #%d (%s).", GET_OBJ_VNUM(obj), obj->short_description);
+    basic_mud_log("GenOLC: delete_object: Deleting object #%d (%s).", GET_OBJ_VNUM(obj), obj->short_description);
 
     for (tmp = object_list; tmp; tmp = next_obj) {
         next_obj = tmp->next;

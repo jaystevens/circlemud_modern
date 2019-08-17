@@ -255,7 +255,7 @@ void medit_save_internally(struct descriptor_data *d)
     i = (real_mobile(OLC_NUM(d)) == NOBODY);
 
     if ((new_rnum = add_mobile(OLC_MOB(d), OLC_NUM(d))) == NOBODY) {
-        log("medit_save_internally: add_mobile failed.");
+        basic_mud_log("medit_save_internally: add_mobile failed.");
         return;
     }
 

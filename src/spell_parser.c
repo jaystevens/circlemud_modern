@@ -123,7 +123,7 @@ static void say_spell(struct char_data *ch, int spellnum, struct char_data *tch,
         }
         /* i.e., we didn't find a match in syls[] */
         if (!*syls[j].org) {
-            log("No entry in syllable table for substring of '%s'", lbuf);
+            basic_mud_log("No entry in syllable table for substring of '%s'", lbuf);
             ofs++;
         }
     }
@@ -484,7 +484,7 @@ void mag_objectmagic(struct char_data *ch, struct obj_data *obj, char *argument)
             }
             break;
         default:
-            log("SYSERR: Unknown object_type %d in mag_objectmagic.", GET_OBJ_TYPE(obj));
+            basic_mud_log("SYSERR: Unknown object_type %d in mag_objectmagic.", GET_OBJ_TYPE(obj));
             break;
     }
 }
@@ -496,7 +496,7 @@ void mag_objectmagic(struct char_data *ch, struct obj_data *obj, char *argument)
 int cast_spell(struct char_data *ch, struct char_data *tch, struct obj_data *tobj, int spellnum)
 {
     if (spellnum < 0 || spellnum > TOP_SPELL_DEFINE) {
-        log("SYSERR: cast_spell trying to call spellnum %d/%d.", spellnum, TOP_SPELL_DEFINE);
+        basic_mud_log("SYSERR: cast_spell trying to call spellnum %d/%d.", spellnum, TOP_SPELL_DEFINE);
         return (0);
     }
 
@@ -705,17 +705,17 @@ void spell_level(int spell, int chclass, int level)
     int bad = 0;
 
     if (spell < 0 || spell > TOP_SPELL_DEFINE) {
-        log("SYSERR: attempting assign to illegal spellnum %d/%d", spell, TOP_SPELL_DEFINE);
+        basic_mud_log("SYSERR: attempting assign to illegal spellnum %d/%d", spell, TOP_SPELL_DEFINE);
         return;
     }
 
     if (chclass < 0 || chclass >= NUM_CLASSES) {
-        log("SYSERR: assigning '%s' to illegal class %d/%d.", skill_name(spell), chclass, NUM_CLASSES - 1);
+        basic_mud_log("SYSERR: assigning '%s' to illegal class %d/%d.", skill_name(spell), chclass, NUM_CLASSES - 1);
         bad = 1;
     }
 
     if (level < 1 || level > LVL_IMPL) {
-        log("SYSERR: assigning '%s' to illegal level %d/%d.", skill_name(spell), level, LVL_IMPL);
+        basic_mud_log("SYSERR: assigning '%s' to illegal level %d/%d.", skill_name(spell), level, LVL_IMPL);
         bad = 1;
     }
 
