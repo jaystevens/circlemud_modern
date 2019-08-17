@@ -15,137 +15,110 @@
 
 
 /* arbitrary constants used by index_boot() (must be unique) */
-#define DB_BOOT_WLD    0
-#define DB_BOOT_MOB    1
-#define DB_BOOT_OBJ    2
-#define DB_BOOT_ZON    3
-#define DB_BOOT_SHP    4
-#define DB_BOOT_HLP    5
-#define DB_BOOT_TRG    6
-#define DB_BOOT_QST 7
+#define DB_BOOT_WLD         0
+#define DB_BOOT_MOB         1
+#define DB_BOOT_OBJ         2
+#define DB_BOOT_ZON         3
+#define DB_BOOT_SHP         4
+#define DB_BOOT_HLP         5
+#define DB_BOOT_TRG         6
+#define DB_BOOT_QST         7
 
-#if defined(CIRCLE_MACINTOSH)
-#define LIB_WORLD	":world:"
-#define LIB_TEXT	":text:"
-#define LIB_TEXT_HELP   ":text:help:"
-#define LIB_MISC	":misc:"
-#define LIB_ETC		":etc:"
-#define LIB_PLRTEXT	":plrtext:"
-#define LIB_PLROBJS	":plrobjs:"
-#define LIB_PLRVARS	":plrvars:"
-#define LIB_PLRFILES	":plrfiles:"
-#define LIB_HOUSE	":house:"
-#define SLASH		":"
-#elif defined(CIRCLE_AMIGA) || defined(CIRCLE_UNIX) || defined(CIRCLE_WINDOWS) || defined(CIRCLE_ACORN) || defined(CIRCLE_VMS)
-#define LIB_WORLD    "world/"
-#define LIB_TEXT    "text/"
-#define LIB_TEXT_HELP   "text/help/"
-#define LIB_MISC    "misc/"
-#define LIB_ETC        "etc/"
-#define LIB_PLRTEXT    "plrtext/"
-#define LIB_PLROBJS    "plrobjs/"
-#define LIB_PLRVARS    "plrvars/"
-#define LIB_HOUSE    "house/"
-#define LIB_PLRFILES    "plrfiles/"
-#define SLASH        "/"
-#else
-#error "Unknown path components."
-#endif
+#define LIB_WORLD           "world/"
+#define LIB_TEXT            "text/"
+#define LIB_TEXT_HELP       "text/help/"
+#define LIB_MISC            "misc/"
+#define LIB_ETC             "etc/"
+#define LIB_PLRTEXT         "plrtext/"
+#define LIB_PLROBJS         "plrobjs/"
+#define LIB_PLRVARS         "plrvars/"
+#define LIB_HOUSE           "house/"
+#define LIB_PLRFILES        "plrfiles/"
+#define SLASH               "/"
 
-#define SUF_OBJS    "objs"
-#define SUF_TEXT    "text"
-#define SUF_MEM            "mem"
-#define SUF_PLR        "plr"
+#define SUF_OBJS            "objs"
+#define SUF_TEXT            "text"
+#define SUF_MEM             "mem"
+#define SUF_PLR             "plr"
 
-#if defined(CIRCLE_AMIGA)
-#define EXE_FILE "/bin/circle" /* maybe use argv[0] but it's not reliable */
-#define KILLSCRIPT_FILE "/.killscript"  /* autorun: shut mud down       */
-#define PAUSE_FILE      "/pause"        /* autorun: don't restart mud   */
-#elif defined(CIRCLE_MACINTOSH)
-#define EXE_FILE "::bin:circle" /* maybe use argv[0] but it's not reliable */
-#define FASTBOOT_FILE	"::.fastboot"	/* autorun: boot without sleep	*/
-#define KILLSCRIPT_FILE	"::.killscript"	/* autorun: shut mud down	*/
-#define PAUSE_FILE	"::pause"	/* autorun: don't restart mud	*/
-#else
-#define EXE_FILE "bin/circle" /* maybe use argv[0] but it's not reliable */
-#define FASTBOOT_FILE   "../.fastboot"  /* autorun: boot without sleep  */
-#define KILLSCRIPT_FILE "../.killscript"/* autorun: shut mud down       */
-#define PAUSE_FILE      "../pause"      /* autorun: don't restart mud   */
-#endif
+#define EXE_FILE            "bin/circle"            /* maybe use argv[0] but it's not reliable */
+#define FASTBOOT_FILE       "../.fastboot"          /* autorun: boot without sleep  */
+#define KILLSCRIPT_FILE     "../.killscript"        /* autorun: shut mud down       */
+#define PAUSE_FILE          "../pause"              /* autorun: don't restart mud   */
 
 /* names of various files and directories */
-#define INDEX_FILE    "index"        /* index of world files		*/
-#define MINDEX_FILE    "index.mini"    /* ... and for mini-mud-mode	*/
-#define WLD_PREFIX  LIB_WORLD"wld"SLASH    /* room definitions	*/
-#define MOB_PREFIX  LIB_WORLD"mob"SLASH    /* monster prototypes	*/
-#define OBJ_PREFIX  LIB_WORLD"obj"SLASH    /* object prototypes	*/
-#define ZON_PREFIX  LIB_WORLD"zon"SLASH    /* zon defs & command tables */
-#define SHP_PREFIX  LIB_WORLD"shp"SLASH    /* shop definitions	*/
-#define TRG_PREFIX  LIB_WORLD"trg"SLASH    /* trigger files	*/
-#define HLP_PREFIX  LIB_TEXT"help"SLASH /* Help files           */
-#define QST_PREFIX  LIB_WORLD"qst"SLASH /* quest files          */
+#define INDEX_FILE          "index"                 /* index of world files		*/
+#define MINDEX_FILE         "index.mini"            /* ... and for mini-mud-mode	*/
+#define WLD_PREFIX          LIB_WORLD"wld"SLASH     /* room definitions	*/
+#define MOB_PREFIX          LIB_WORLD"mob"SLASH     /* monster prototypes	*/
+#define OBJ_PREFIX          LIB_WORLD"obj"SLASH     /* object prototypes	*/
+#define ZON_PREFIX          LIB_WORLD"zon"SLASH     /* zon defs & command tables */
+#define SHP_PREFIX          LIB_WORLD"shp"SLASH     /* shop definitions	*/
+#define TRG_PREFIX          LIB_WORLD"trg"SLASH     /* trigger files	*/
+#define HLP_PREFIX          LIB_TEXT"help"SLASH     /* Help files           */
+#define QST_PREFIX          LIB_WORLD"qst"SLASH     /* quest files          */
 
-#define CREDITS_FILE    LIB_TEXT"credits" /* for the 'credits' command	*/
-#define NEWS_FILE    LIB_TEXT"news"    /* for the 'news' command	*/
-#define MOTD_FILE    LIB_TEXT"motd"    /* messages of the day / mortal	*/
-#define IMOTD_FILE    LIB_TEXT"imotd"    /* messages of the day / immort	*/
-#define GREETINGS_FILE    LIB_TEXT"greetings"    /* The opening screen.	*/
-#define HELP_PAGE_FILE    LIB_TEXT_HELP"help"    /* for HELP <CR>	*/
-#define IHELP_PAGE_FILE LIB_TEXT_HELP"ihelp"    /* for HELP <CR> imms   */
-#define INFO_FILE    LIB_TEXT"info"        /* for INFO		*/
-#define WIZLIST_FILE    LIB_TEXT"wizlist"    /* for WIZLIST		*/
-#define IMMLIST_FILE    LIB_TEXT"immlist"    /* for IMMLIST		*/
-#define BACKGROUND_FILE    LIB_TEXT"background"/* for the background story	*/
-#define POLICIES_FILE    LIB_TEXT"policies"  /* player policies/rules	*/
-#define HANDBOOK_FILE    LIB_TEXT"handbook"  /* handbook for new immorts	*/
-#define HELP_FILE       "help.hlp"
+#define CREDITS_FILE        LIB_TEXT"credits"       /* for the 'credits' command	*/
+#define NEWS_FILE           LIB_TEXT"news"          /* for the 'news' command	*/
+#define MOTD_FILE           LIB_TEXT"motd"          /* messages of the day / mortal	*/
+#define IMOTD_FILE          LIB_TEXT"imotd"         /* messages of the day / immort	*/
+#define GREETINGS_FILE      LIB_TEXT"greetings"     /* The opening screen.	*/
+#define HELP_PAGE_FILE      LIB_TEXT_HELP"help"     /* for HELP <CR>	*/
+#define IHELP_PAGE_FILE     LIB_TEXT_HELP"ihelp"    /* for HELP <CR> imms   */
+#define INFO_FILE           LIB_TEXT"info"          /* for INFO		*/
+#define WIZLIST_FILE        LIB_TEXT"wizlist"       /* for WIZLIST		*/
+#define IMMLIST_FILE        LIB_TEXT"immlist"       /* for IMMLIST		*/
+#define BACKGROUND_FILE     LIB_TEXT"background"    /* for the background story	*/
+#define POLICIES_FILE       LIB_TEXT"policies"      /* player policies/rules	*/
+#define HANDBOOK_FILE       LIB_TEXT"handbook"      /* handbook for new immorts	*/
+#define HELP_FILE           "help.hlp"
 
-#define IDEAS_FILE    LIB_MISC"ideas"       /* for the 'idea'-command	*/
-#define TYPOS_FILE    LIB_MISC"typos"       /*         'typo'		*/
-#define BUGS_FILE    LIB_MISC"bugs"       /*         'bug'		*/
-#define MESS_FILE    LIB_MISC"messages" /* damage messages		*/
-#define SOCMESS_FILE    LIB_MISC"socials"  /* messages for social acts	*/
-#define SOCMESS_FILE_NEW LIB_MISC"socials.new"  /* messages for social acts with aedit patch*/
-#define XNAME_FILE    LIB_MISC"xnames"   /* invalid name substrings	*/
+#define IDEAS_FILE          LIB_MISC"ideas"         /* for the 'idea'-command	*/
+#define TYPOS_FILE          LIB_MISC"typos"         /*         'typo'		*/
+#define BUGS_FILE           LIB_MISC"bugs"          /*         'bug'		*/
+#define MESS_FILE           LIB_MISC"messages"      /* damage messages		*/
+#define SOCMESS_FILE        LIB_MISC"socials"       /* messages for social acts	*/
+#define SOCMESS_FILE_NEW    LIB_MISC"socials.new"   /* messages for social acts with aedit patch*/
+#define XNAME_FILE          LIB_MISC"xnames"        /* invalid name substrings	*/
 
 /* BEGIN: Assumed default locations for logfiles, mainly used in do_file. */
 /**/
-#define SYSLOG_LOGFILE     "../syslog"
-#define CRASH_LOGFILE      "../syslog.CRASH"
-#define PREFIX_LOGFILE     "../log/"
-#define LEVELS_LOGFILE     PREFIX_LOGFILE"levels"
-#define RIP_LOGFILE        PREFIX_LOGFILE"rip"
-#define NEWPLAYERS_LOGFILE PREFIX_LOGFILE"newplayers"
-#define RENTGONE_LOGFILE   PREFIX_LOGFILE"rentgone"
-#define ERRORS_LOGFILE     PREFIX_LOGFILE"errors"
-#define GODCMDS_LOGFILE    PREFIX_LOGFILE"godcmds"
-#define HELP_LOGFILE       PREFIX_LOGFILE"help"
-#define DELETES_LOGFILE    PREFIX_LOGFILE"delete"
-#define RESTARTS_LOGFILE   PREFIX_LOGFILE"restarts"
-#define USAGE_LOGFILE      PREFIX_LOGFILE"usage"
-#define BADPWS_LOGFILE     PREFIX_LOGFILE"badpws"
-#define OLC_LOGFILE        PREFIX_LOGFILE"olc"
-#define TRIGGER_LOGFILE    PREFIX_LOGFILE"trigger"
+#define SYSLOG_LOGFILE      "../syslog"
+#define CRASH_LOGFILE       "../syslog.CRASH"
+#define PREFIX_LOGFILE      "../log/"
+#define LEVELS_LOGFILE      PREFIX_LOGFILE"levels"
+#define RIP_LOGFILE         PREFIX_LOGFILE"rip"
+#define NEWPLAYERS_LOGFILE  PREFIX_LOGFILE"newplayers"
+#define RENTGONE_LOGFILE    PREFIX_LOGFILE"rentgone"
+#define ERRORS_LOGFILE      PREFIX_LOGFILE"errors"
+#define GODCMDS_LOGFILE     PREFIX_LOGFILE"godcmds"
+#define HELP_LOGFILE        PREFIX_LOGFILE"help"
+#define DELETES_LOGFILE     PREFIX_LOGFILE"delete"
+#define RESTARTS_LOGFILE    PREFIX_LOGFILE"restarts"
+#define USAGE_LOGFILE       PREFIX_LOGFILE"usage"
+#define BADPWS_LOGFILE      PREFIX_LOGFILE"badpws"
+#define OLC_LOGFILE         PREFIX_LOGFILE"olc"
+#define TRIGGER_LOGFILE     PREFIX_LOGFILE"trigger"
 /**/
 /* END: Assumed default locations for logfiles, mainly used in do_file. */
 
-#define CONFIG_FILE    LIB_ETC"config"    /* OasisOLC * GAME CONFIG FL */
-#define PLAYER_FILE    LIB_ETC"players"   /* the player database	*/
-#define MAIL_FILE    LIB_ETC"plrmail"   /* for the mudmail system	*/
-#define MAIL_FILE_TMP    LIB_ETC"plrmail_tmp"   /* for the mudmail system	*/
-#define BAN_FILE    LIB_ETC"badsites"  /* for the siteban system	*/
-#define HCONTROL_FILE    LIB_ETC"hcontrol"  /* for the house system	*/
-#define TIME_FILE    LIB_ETC"time"       /* for calendar system	*/
-#define CHANGE_LOG_FILE "../changelog"     /* for the changelog         */
+#define CONFIG_FILE         LIB_ETC"config"         /* OasisOLC * GAME CONFIG FL */
+#define PLAYER_FILE         LIB_ETC"players"        /* the player database	*/
+#define MAIL_FILE           LIB_ETC"plrmail"        /* for the mudmail system	*/
+#define MAIL_FILE_TMP       LIB_ETC"plrmail_tmp"    /* for the mudmail system	*/
+#define BAN_FILE            LIB_ETC"badsites"       /* for the siteban system	*/
+#define HCONTROL_FILE       LIB_ETC"hcontrol"       /* for the house system	*/
+#define TIME_FILE           LIB_ETC"time"           /* for calendar system	*/
+#define CHANGE_LOG_FILE     "../changelog"          /* for the changelog         */
 
 /* new bitvector data for use in player_index_element */
-#define PINDEX_DELETED        (1 << 0)    /* deleted player	*/
-#define PINDEX_NODELETE        (1 << 1)    /* protected player	*/
-#define PINDEX_SELFDELETE    (1 << 2)    /* player is selfdeleting*/
-#define PINDEX_NOWIZLIST    (1 << 3)    /* Player shouldn't be on wizlist*/
+#define PINDEX_DELETED      (1 << 0)                /* deleted player	*/
+#define PINDEX_NODELETE     (1 << 1)                /* protected player	*/
+#define PINDEX_SELFDELETE   (1 << 2)                /* player is selfdeleting*/
+#define PINDEX_NOWIZLIST    (1 << 3)                /* Player shouldn't be on wizlist*/
 
-#define REAL 0
-#define VIRTUAL 1
+#define REAL                0
+#define VIRTUAL             1
 
 /* structure for the reset commands */
 struct reset_com {
