@@ -1472,9 +1472,6 @@ ACMD(do_who)
     }
 }
 
-#define USERS_FORMAT \
-"format: users [-l minlevel[-maxlevel]] [-n name] [-h host] [-c classlist] [-o] [-p]\r\n"
-
 ACMD(do_users)
 {
     char line[200], line2[220], idletime[10], classname[20];
@@ -1485,6 +1482,8 @@ ACMD(do_users)
     int low = 0, high = LVL_IMPL, num_can_see = 0;
     int showclass = 0, outlaws = 0, playing = 0, deadweight = 0;
     char buf[MAX_INPUT_LENGTH], arg[MAX_INPUT_LENGTH];
+    const char *user_format =
+        "format: users [-l minlevel[-maxlevel]] [-n name] [-h host] [-c classlist] [-o] [-p]\r\n";
 
     host_search[0] = name_search[0] = '\0';
 
@@ -1529,12 +1528,12 @@ ACMD(do_users)
                     showclass = find_class_bitvector(arg);
                     break;
                 default:
-                    send_to_char(ch, "%s", USERS_FORMAT);
+                    send_to_char(ch, "%s", user_format);
                     return;
             }                /* end of switch */
 
         } else {            /* endif */
-            send_to_char(ch, "%s", USERS_FORMAT);
+            send_to_char(ch, "%s", user_format);
             return;
         }
     }                /* end while (parser) */
