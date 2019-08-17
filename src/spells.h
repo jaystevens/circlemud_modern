@@ -12,6 +12,8 @@
 #ifndef _SPELLS_H_
 #define _SPELLS_H_
 
+#include "act_acmd.h"
+
 #define DEFAULT_STAFF_LVL    12
 #define DEFAULT_WAND_LVL    12
 

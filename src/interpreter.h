@@ -12,6 +12,7 @@
 #ifndef _INTERPRETER_H_
 #define _INTERPRETER_H_
 
+#include "act_acmd.h"
 
 /* List of external function prototypes.
  * @todo Organize the functions into modules. */

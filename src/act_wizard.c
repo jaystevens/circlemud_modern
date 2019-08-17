@@ -96,7 +96,6 @@ static int purge_room(room_rnum room)
 
 ACMD(do_wizhelp)
 {
-    extern int *cmd_sort_info;
     int no = 1, i, cmd_num;
     int level;
 
@@ -1404,8 +1403,6 @@ ACMD(do_vstat)
     struct char_data *mob;
     struct obj_data *obj;
     int r_num;
-
-    ACMD(do_tstat);
 
     two_arguments(argument, buf, buf2);
 

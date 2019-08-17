@@ -563,7 +563,7 @@ static void quest_join(struct char_data *ch, struct char_data *qm, char argument
     save_char(ch);
 }
 
-void quest_list(struct char_data *ch, struct char_data *qm, char argument[MAX_INPUT_LENGTH])
+static void quest_list(struct char_data *ch, struct char_data *qm, char argument[MAX_INPUT_LENGTH])
 {
     qst_vnum vnum;
     qst_rnum rnum;

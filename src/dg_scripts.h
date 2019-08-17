@@ -15,7 +15,7 @@
 #ifndef _DG_SCRIPTS_H_
 #define _DG_SCRIPTS_H_
 
-#include "utils.h" /* To make sure ACMD is defined */
+#include "act_acmd.h"
 
 #define    MOB_TRIGGER   0
 #define    OBJ_TRIGGER   1

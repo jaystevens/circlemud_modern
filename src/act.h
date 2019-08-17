@@ -18,7 +18,7 @@
 #ifndef _ACT_H_
 #define _ACT_H_
 
-#include "utils.h" /* for the ACMD macro */
+#include "act_acmd.h"
 
 /*****************************************************************************
  * Begin Functions and defines for act.comm.c

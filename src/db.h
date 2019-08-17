@@ -13,6 +13,7 @@
 #ifndef _DB_H_
 #define _DB_H_
 
+#include "act_acmd.h"
 
 /* arbitrary constants used by index_boot() (must be unique) */
 #define DB_BOOT_WLD         0
