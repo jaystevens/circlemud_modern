@@ -154,7 +154,7 @@ int str_cmp(const char *arg1, const char *arg2)
   int chk, i;
 
   if (arg1 == NULL || arg2 == NULL) {
-    log("SYSERR: str_cmp() passed a NULL pointer, %p or %p.", (void *)arg1, (void *)arg2);
+    basic_mud_log("SYSERR: str_cmp() passed a NULL pointer, %p or %p.", (void *)arg1, (void *)arg2);
     return (0);
   }
 
@@ -175,7 +175,7 @@ int strn_cmp(const char *arg1, const char *arg2, int n)
   int chk, i;
 
   if (arg1 == NULL || arg2 == NULL) {
-    log("SYSERR: strn_cmp() passed a NULL pointer, %p or %p.", (void *)arg1, (void *)arg2);
+    basic_mud_log("SYSERR: strn_cmp() passed a NULL pointer, %p or %p.", (void *)arg1, (void *)arg2);
     return (0);
   }
 

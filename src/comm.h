@@ -13,31 +13,26 @@
 #ifndef _COMM_H_
 #define _COMM_H_
 
-#define NUM_RESERVED_DESCS    8
 #define COPYOVER_FILE "copyover.dat"
 
 /* comm.c */
 void close_socket(struct descriptor_data *d);
 void game_info(const char *messg, ...) __attribute__ ((format (printf, 1, 2)));
-size_t send_to_char(struct char_data *ch, const char *messg, ...) __attribute__
-((format (printf, 2, 3)));
+size_t send_to_char(struct char_data *ch, const char *messg, ...) __attribute__((format (printf, 2, 3)));
 void send_to_all(const char *messg, ...) __attribute__ ((format (printf, 1, 2)));
-void send_to_room(room_rnum room, const char *messg, ...) __attribute__ ((format
-(printf, 2, 3)));
+void send_to_room(room_rnum room, const char *messg, ...) __attribute__ ((format(printf, 2, 3)));
 void send_to_outdoor(const char *messg, ...) __attribute__ ((format (printf, 1, 2)));
-void send_to_group(struct char_data *ch, struct group_data *group, const char *msg, ...) __attribute__ ((format
-(printf, 3, 4)));
-void send_to_range(room_vnum start, room_vnum finish, const char *messg, ...)
-__attribute__ ((format (printf, 3, 4)));
+void send_to_group(struct char_data *ch, struct group_data *group, const char *msg, ...) __attribute__ ((format(printf, 3, 4)));
+void send_to_range(room_vnum start, room_vnum finish, const char *messg, ...) __attribute__ ((format (printf, 3, 4)));
 
 /* Act type settings and flags */
-#define TO_ROOM     1   /* act() type: to everyone in room, except ch. */
-#define TO_VICT     2   /* act() type: to vict_obj. */
-#define TO_NOTVICT  3   /* act() type: to everyone in room, not ch or vict_obj. */
-#define TO_CHAR     4   /* act() type: to ch. */
-#define TO_GMOTE    5   /* act() type: to gemote channel (global emote) */
-#define TO_SLEEP    128    /* act() flag: to char, even if sleeping */
-#define DG_NO_TRIG  256 /* act() flag: don't check act trigger   */
+#define TO_ROOM     1       /* act() type: to everyone in room, except ch. */
+#define TO_VICT     2       /* act() type: to vict_obj. */
+#define TO_NOTVICT  3       /* act() type: to everyone in room, not ch or vict_obj. */
+#define TO_CHAR     4       /* act() type: to ch. */
+#define TO_GMOTE    5       /* act() type: to gemote channel (global emote) */
+#define TO_SLEEP    128     /* act() flag: to char, even if sleeping */
+#define DG_NO_TRIG  256     /* act() flag: don't check act trigger   */
 
 
 /* act functions */
@@ -65,10 +60,10 @@ extern struct descriptor_data *descriptor_list;
 extern int buf_largecount;
 extern int buf_overflows;
 extern int buf_switches;
-extern int circle_shutdown;
+extern bool circle_shutdown;
 extern int circle_reboot;
 extern int no_specials;
-extern int scheck;
+extern bool scheck;
 extern FILE *logfile;
 extern unsigned long pulse;
 extern uint16_t port;

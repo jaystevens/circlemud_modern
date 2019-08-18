@@ -69,6 +69,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <stdint.h>
 
 #ifdef HAVE_STRING_H
 #include <string.h>
@@ -231,11 +232,6 @@ struct in_addr {
 
 #ifdef HAVE_SYS_STAT_H
 # include <sys/stat.h>
-#endif
-
-/* Basic system dependencies. */
-#if CIRCLE_GNU_LIBC_MEMORY_TRACK && !defined(HAVE_MCHECK_H)
-#error "Cannot use GNU C library memory tracking without <mcheck.h>"
 #endif
 
 /* strcasecmp -> stricmp -> str_cmp */

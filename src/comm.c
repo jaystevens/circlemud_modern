@@ -10,12 +10,9 @@
 
 #include "conf.h"
 #include "sysdep.h"
+#include "version.h"
 
 /* Begin conf.h dependent includes */
-
-#if CIRCLE_GNU_LIBC_MEMORY_TRACK
-# include <mcheck.h>
-#endif
 
 #ifdef CIRCLE_WINDOWS        /* Includes for Win32 */
 # ifdef __BORLANDC__
@@ -67,42 +64,37 @@
 #endif
 
 /* locally defined globals, used externally */
-struct descriptor_data *descriptor_list = NULL;   /* master desc list */
-int buf_largecount = 0;   /* # of large buffers which exist */
-int buf_overflows = 0;    /* # of overflows of output */
-int buf_switches = 0;     /* # of switches from small to large buf */
-int circle_shutdown = 0;  /* clean shutdown */
-int circle_reboot = 0;    /* reboot the game after a shutdown */
-int no_specials = 0;      /* Suppress ass. of special routines */
-int scheck = 0;           /* for syntax checking mode */
-FILE *logfile = NULL;     /* Where to send the log messages. */
-unsigned long pulse = 0;  /* number of pulses since game start */
-uint16_t port;
-socket_t mother_desc;
-int next_tick = SECS_PER_MUD_HOUR;  /* Tick countdown */
+struct descriptor_data *descriptor_list = NULL;     /* master desc list */
+int buf_largecount = 0;                             /* # of large buffers which exist */
+int buf_overflows = 0;                              /* # of overflows of output */
+int buf_switches = 0;                               /* # of switches from small to large buf */
+bool circle_shutdown = false;                       /* clean shutdown */
+int circle_reboot = 0;                              /* reboot the game after a shutdown */
+int no_specials = 0;                                /* Suppress ass. of special routines */
+bool scheck = false;                                /* for syntax checking mode */
+FILE *logfile = NULL;                               /* Where to send the log messages. */
+unsigned long pulse = 0;                            /* number of pulses since game start */
+uint16_t port;                                      /* port number */
+socket_t mother_desc;                               /* master socket descriptor */
+int next_tick = SECS_PER_MUD_HOUR;                  /* Tick countdown */
 /* used with do_tell and handle_webster_file utility */
 long last_webster_teller = -1L;
 
 /* static local global variable declarations (current file scope only) */
-static struct txt_block *bufpool = 0;  /* pool of large output buffers */
-static int max_players = 0;   /* max descriptors available */
-static int tics_passed = 0;     /* for extern checkpointing */
-static struct timeval null_time; /* zero-valued time structure */
-static int8_t reread_wizlist;   /* signal: SIGUSR1 */
-/* normally signal SIGUSR2, currently orphaned in favor of Webster dictionary
- * lookup
-static byte emergency_unban;
-*/
-static int dg_act_check;         /* toggle for act_trigger */
-static bool fCopyOver;          /* Are we booting in copyover mode? */
+static struct txt_block *bufpool = 0;               /* pool of large output buffers */
+static int max_players = 0;                         /* max descriptors available */
+static int tics_passed = 0;                         /* for extern checkpointing */
+static struct timeval null_time;                    /* zero-valued time structure */
+static int8_t reread_wizlist;                       /* signal: SIGUSR1 - re-read wizlist */
+static int8_t webster_file_ready = false;           /* signal: SIGUSR2 - webster */
+static int dg_act_check;                            /* toggle for act_trigger */
+static bool fCopyOver;                              /* Are we booting in copyover mode? */
 static char *last_act_message = NULL;
-static int8_t webster_file_ready = false;/* signal: SIGUSR2 */
+
 
 /* static local function prototypes (current file scope only) */
-static RETSIGTYPE reread_wizlists(int sig);
-/* Appears to be orphaned right now...
-static RETSIGTYPE unrestrict_game(int sig);
-*/
+static RETSIGTYPE reread_wizlists(int sig);         /* signal: SIGUSR1 */
+//static RETSIGTYPE unrestrict_game(int sig);         /* signal: SIGUSR2 */
 static RETSIGTYPE reap(int sig);
 static RETSIGTYPE checkpointing(int sig);
 static RETSIGTYPE hupsig(int sig);
@@ -178,14 +170,6 @@ int main(int argc, char **argv)
 {
     int pos = 1;
     const char *dir;
-
-#ifdef MEMORY_DEBUG
-    zmalloc_init();
-#endif
-
-#if CIRCLE_GNU_LIBC_MEMORY_TRACK
-    mtrace();	/* This must come before any use of malloc(). */
-#endif
 
     /* Load the game configuration. We must load BEFORE we use any of the
      * constants stored in constants.c.  Otherwise, there will be no variables
@@ -303,8 +287,11 @@ int main(int argc, char **argv)
 
     /* Moved here to distinguish command line options and to show up
      * in the log if stderr is redirected to a file. */
+    basic_mud_log("circle Starting up");
+    basic_mud_log("%s version: %s", MUD_NAME, MUD_VERSION_FULL);
+    basic_mud_log("Compiled on %s @ %s", MUD_BUILD_TIME, MUD_BUILD_HOST);
+
     basic_mud_log("Loading configuration.");
-    basic_mud_log("%s", tbamud_version);
 
     if (chdir(dir) < 0) {
         perror("SYSERR: Fatal error changing to data directory");
@@ -313,9 +300,10 @@ int main(int argc, char **argv)
     basic_mud_log("Using %s as data directory.", dir);
 
     if (scheck) {
+        basic_mud_log("Checking game files");
         boot_world();
     } else {
-        basic_mud_log("Running game on port %d.", port);
+        basic_mud_log("port: %d.", port);
         init_game(port);
     }
 
@@ -324,21 +312,21 @@ int main(int argc, char **argv)
 
     if (!scheck) {
         basic_mud_log("Clearing other memory.");
-        free_bufpool();         /* comm.c */
-        free_player_index();    /* players.c */
-        free_messages();        /* fight.c */
-        free_text_files();      /* db.c */
-        board_clear_all();      /* boards.c */
-        free(cmd_sort_info);    /* act.informative.c */
-        free_command_list();    /* act.informative.c */
-        free_social_messages(); /* act.social.c */
-        free_help_table();      /* db.c */
-        free_invalid_list();    /* ban.c */
-        free_save_list();       /* genolc.c */
-        free_strings(&config_info, OASIS_CFG); /* oasis_delete.c */
-        free_ibt_lists();       /* ibt.c */
-        free_recent_players();  /* act.informative.c */
-        free_list(world_events); /* free up our global lists */
+        free_bufpool();                         /* comm.c */
+        free_player_index();                    /* players.c */
+        free_messages();                        /* fight.c */
+        free_text_files();                      /* db.c */
+        board_clear_all();                      /* boards.c */
+        free(cmd_sort_info);                    /* act.informative.c */
+        free_command_list();                    /* act.informative.c */
+        free_social_messages();                 /* act.social.c */
+        free_help_table();                      /* db.c */
+        free_invalid_list();                    /* ban.c */
+        free_save_list();                       /* genolc.c */
+        free_strings(&config_info, OASIS_CFG);  /* oasis_delete.c */
+        free_ibt_lists();                       /* ibt.c */
+        free_recent_players();                  /* act.informative.c */
+        free_list(world_events);                /* free up our global lists */
         free_list(global_lists);
     }
 
@@ -350,10 +338,6 @@ int main(int argc, char **argv)
     free(CONFIG_CONFFILE);
 
     basic_mud_log("Done.");
-
-#ifdef MEMORY_DEBUG
-    zmalloc_check();
-#endif
 
     return (0);
 }
@@ -406,7 +390,7 @@ void copyover_recover()
 
         /* Write something, and check if it goes error-free */
         if (write_to_descriptor(desc, "\n\rRestoring from copyover...\n\r") < 0) {
-            close(desc); /* nope */
+            //CLOSE_SOCKET(desc); /* nope */
             continue;
         }
 
@@ -496,7 +480,7 @@ static void init_game(uint16_t local_port)
 
     boot_db();
 
-#if defined(CIRCLE_UNIX) || defined(CIRCLE_MACINTOSH)
+#if defined(CIRCLE_UNIX)
     basic_mud_log("Signal trapping.");
     signal_setup();
 #endif
@@ -530,7 +514,7 @@ static void init_game(uint16_t local_port)
 
     if (circle_reboot) {
         basic_mud_log("Rebooting.");
-        exit(52);            /* what's so great about HHGTTG, anyhow? */
+        exit(52);
     }
     basic_mud_log("Normal termination of game.");
 }
@@ -551,7 +535,7 @@ static socket_t init_socket(uint16_t local_port)
       wVersionRequested = MAKEWORD(1, 1);
 
       if (WSAStartup(wVersionRequested, &wsaData) != 0) {
-        log("SYSERR: WinSock not available!");
+        basic_mud_log("SYSERR: WinSock not available!");
         exit(1);
       }
 
@@ -561,10 +545,10 @@ static socket_t init_socket(uint16_t local_port)
       if ((wsaData.iMaxSockets - 4) < max_players) {
         max_players = wsaData.iMaxSockets - 4;
       }
-      log("Max players set to %d", max_players);
+        basic_mud_log("Max players set to %d", max_players);
 
       if ((s = socket(PF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
-        log("SYSERR: Error opening network connection: Winsock error #%d",
+        basic_mud_log("SYSERR: Error opening network connection: Winsock error #%d",
         WSAGetLastError());
         exit(1);
       }
@@ -1671,7 +1655,7 @@ ssize_t perform_socket_write(socket_t desc, const char *txt, size_t length)
 
   if (result == 0) {
     /* This should never happen! */
-    log("SYSERR: Huh??  write() returned 0???  Please report this!");
+    basic_mud_log("SYSERR: Huh??  write() returned 0???  Please report this!");
     return (-1);
   }
 
