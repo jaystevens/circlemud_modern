@@ -726,10 +726,6 @@ do                                                              \
 #define GET_OBJ_SHORT(obj)      ((obj)->short_description)
 
 /* Compound utilities and other macros. */
-/** Used to compute version. To see if the code running is newer than 3.0pl13,
- * you would use: if _CIRCLEMUD > CIRCLEMUD_VERSION(3,0,13) */
-#define CIRCLEMUD_VERSION(major, minor, patchlevel) \
-       (((major) << 16) + ((minor) << 8) + (patchlevel))
 
 /** Figures out possessive pronoun for ch. */
 #define HSHR(ch) (GET_SEX(ch) ? (GET_SEX(ch)==SEX_MALE ? "his":"her") :"its")
