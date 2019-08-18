@@ -39,7 +39,7 @@ endif()
 # append cmake/modules to MAKE_MODULE_PATH variable
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
-project("tbamud" LANGUAGES C)
+project("circlemud" LANGUAGES C)
 
 # setup version number
 include(GetGitRevisionDescription)
