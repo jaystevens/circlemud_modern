@@ -4244,6 +4244,11 @@ ACMD(do_copyover)
     struct descriptor_data *d, *d_next;
     char buf[100], buf2[100];
 
+#if defined(_WIN32) || defined(_WIN64)
+    send_to_char(ch, "copyover not supported on windows\r\n");
+    return;
+#endif
+
     fp = fopen(COPYOVER_FILE, "w");
     if (!fp) {
         send_to_char(ch, "Copyover file not writeable, aborted.\n\r");
