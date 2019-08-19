@@ -11,6 +11,7 @@
 #include "conf.h"
 #include "sysdep.h"
 #include "version.h"
+#include "argparse.h"
 
 /* Begin conf.h dependent includes */
 
@@ -58,6 +59,7 @@
 #include "quest.h"
 #include "ibt.h" /* for free_ibt_lists */
 #include "mud_event.h"
+#include "argparse.h"
 
 #ifndef INVALID_SOCKET
 #define INVALID_SOCKET (-1)
@@ -134,18 +136,6 @@ static void handle_webster_file(void);
 
 static void msdp_update(void); /* KaVir plugin*/
 
-/* externally defined functions, used locally */
-#ifdef __CXREF__
-#undef FD_ZERO
-#undef FD_SET
-#undef FD_ISSET
-#undef FD_CLR
-#define FD_ZERO(x)
-#define FD_SET(x, y) 0
-#define FD_ISSET(x, y) 0
-#define FD_CLR(x, y)
-#endif
-
 /*  main game loop and related stuff */
 
 #if defined(CIRCLE_WINDOWS) || defined(CIRCLE_MACINTOSH)
@@ -166,7 +156,8 @@ void gettimeofday(struct timeval *t, struct timezone *dummy)
 
 #endif    /* CIRCLE_WINDOWS || CIRCLE_MACINTOSH */
 
-int main(int argc, char **argv)
+// OLD main - JS 2019-08-18, TODO - delete me
+static int main_old(int argc, char **argv)
 {
     int pos = 1;
     const char *dir;
@@ -342,6 +333,225 @@ int main(int argc, char **argv)
     return (0);
 }
 
+// used by new main - JS 2019-08-18, TODO - should probably be moved else where in src tree
+static bool check_folder_exists(const char *folder_path)
+{
+    struct stat st_info;
+
+    if (stat(folder_path, &st_info) != 0) {
+        return false; // stat failed, folder does not exist
+    }
+
+    if ((st_info.st_mode & S_IFDIR) != 0) {
+        return true; // stat says path is a directory
+    }
+
+    return false;  // exists but not a folder
+}
+
+int main(int argc, char **argv)
+{
+    char lib_dir[MAX_PATH];
+    char config_file[MAX_PATH];
+    bool init_exit = false;
+
+    // argparse params
+    uint32_t PARAM_port = 4000;  // TODO - use default from somewhere
+    bool PARAM_check_boot = false;
+    char *PARAM_lib_dir = "lib";  // TODO - use default from somewhere
+    bool PARAM_quick_boot = false;
+    bool PARAM_restrict_mode = false;
+    bool PARAM_wizlock_mode = false;
+    bool PARAM_no_spec_proc = false;
+    int32_t PARAM_copyover_socket = -1;
+
+    // argparse vars
+    struct argparse_option options[] = {
+            OPT_HELP(),
+            OPT_INTEGER('p', "port",       &PARAM_port, "game port (default: 4000)"),
+            OPT_STRING('d',  "libdir",     &PARAM_lib_dir, "library directory (default: ./lib)", NULL, 0, 0),
+            OPT_BOOLEAN('q', "quick",      &PARAM_quick_boot, "quick boot (skip rent check for object limits)", NULL, 0, 0),
+            OPT_BOOLEAN('r', "restrict",   &PARAM_restrict_mode, "restrict login to existing players", NULL, 0, 0),
+            OPT_BOOLEAN('w', "wizlock",    &PARAM_wizlock_mode, "restrict login to god or higher", NULL, 0, 0),
+            OPT_BOOLEAN('s', "nospecproc", &PARAM_no_spec_proc, "do not setup special procedure assignments", NULL, 0, 0),
+            OPT_BOOLEAN(0,   "check",      &PARAM_check_boot, "check game files and exit", NULL, 0, 0),
+            OPT_GROUP("DO NOT USE"),
+            OPT_INTEGER('C', "copyover",   &PARAM_copyover_socket, "copyover control socket [USED INTERNALLY, DO NOT USE]", NULL, 0, 0),
+            OPT_END(),
+    };
+    static const char *const usage[] = {
+            "circle [options]",
+            NULL,
+    };
+    struct argparse argparse;
+
+    struct launch_cfg_t {
+        uint16_t port;
+        bool check_boot;
+        const char *lib_dir;
+        bool quick_boot;
+        bool boot_restricted;
+        bool no_spec_proc;
+        bool need_copy_over;
+        int32_t copy_over_socket;
+        const char *path_to_exe;
+    } launch_cfg;
+
+    printf("circlemud\n");
+    printf("Version: %s\n", MUD_VERSION_FULL);
+    printf("Compiler: %s %s\n", COMPILER_NAME, COMPILER_VER);
+    printf("compiled on: %s @ %s\n", MUD_BUILD_TIME, MUD_BUILD_HOST);
+    printf("\n");
+
+    // parse args
+    argparse_init(&argparse, options, usage, 0);
+    argparse_describe(&argparse, "\ncircle", "\ncircle mud server");
+    argparse_parse(&argparse, argc, (const char **) argv);  // returns argc
+
+    // validate port
+    if ((PARAM_port <= 0) || (PARAM_port > 65535)) {
+        printf("invalid port: %d, valid range 1-65535\n", PARAM_port);
+        init_exit = true;
+    }
+
+    // convert PARAM_lib_dir to absolute path stored as lib_dir
+#if defined(_WIN32) || defined(_WIN64)
+    _fullpath((char*)lib_dir, (const char*)PARAM_lib_dir, sizeof(lib_dir));
+#else
+    realapath((const char*)&PARAM_lib_dir, (char*)&lib_dir)
+#endif
+
+    // check lib dir exists
+    if (!check_folder_exists(lib_dir)) {
+        printf("unable to find lib directory: %s\n", lib_dir);
+        init_exit = true;
+    }
+
+    if (PARAM_copyover_socket != -1) {
+        if ((PARAM_copyover_socket <= 0) || (PARAM_copyover_socket > INT_MAX)) {
+            printf("invalid copy over socket: %d, starting normal\n", PARAM_copyover_socket);
+            PARAM_copyover_socket = -1;
+        }
+    }
+
+    if (init_exit) {
+        return 1;
+    }
+
+    // zero game_cfg
+    memset(&launch_cfg, 0, sizeof(launch_cfg));
+    // setup game cfg
+    launch_cfg.port = (int16_t) PARAM_port;
+    launch_cfg.check_boot = PARAM_check_boot;
+    launch_cfg.lib_dir = (const char*)&lib_dir;
+    launch_cfg.quick_boot = PARAM_quick_boot;
+    launch_cfg.boot_restricted = PARAM_restrict_mode;
+    launch_cfg.no_spec_proc = PARAM_no_spec_proc;
+    launch_cfg.copy_over_socket = PARAM_copyover_socket;
+
+    /* FINISHED PARSE OF CMD LINE */
+
+    /* Load the game configuration. We must load BEFORE we use any of the
+     * constants stored in constants.c.  Otherwise, there will be no variables
+     * set to set the rest of the vars to, which will mean trouble --> Mythran */
+    memset(&config_file, '\0', sizeof(config_file));
+    memcpy(&config_file, CONFIG_FILE, strlen(CONFIG_FILE));
+    CONFIG_CONFFILE = (char*)&config_file;
+    load_config();
+
+    /* All arguments have been parsed, try to open log file. */
+    setup_log(CONFIG_LOGNAME, STDERR_FILENO);
+
+    /* Moved here to distinguish command line options and to show up
+     * in the log if stderr is redirected to a file. */
+    basic_mud_log("circle Starting up");
+    basic_mud_log("%s version: %s", MUD_NAME, MUD_VERSION_FULL);
+    basic_mud_log("Compiled on %s @ %s", MUD_BUILD_TIME, MUD_BUILD_HOST);
+
+    port = launch_cfg.port;
+    basic_mud_log("port: %d", port);
+
+    if (launch_cfg.quick_boot) {
+        basic_mud_log("QUICK BOOT - Rent check skipped");
+        no_rent_check = 1;
+    }
+
+    if (launch_cfg.check_boot) {
+        basic_mud_log("CHECK BOOT - checking games files and quitting");
+        scheck = 1;
+    }
+
+    if (launch_cfg.boot_restricted) {
+        basic_mud_log("BOOT RESTRICTED - no new players will be allowed");
+        circle_restrict = 1;
+    }
+
+    if (PARAM_wizlock_mode) {  // TODO - fix not in launch_cfg
+        basic_mud_log("BOOT WIZLOCK - only gods (level >= %d) will be allowed to login", LVL_GOD);
+        circle_restrict = LVL_GOD;
+    }
+
+    if (launch_cfg.no_spec_proc) {
+        basic_mud_log("BOOT NO SPEC - no special proc");
+        no_specials = 1;
+    }
+
+    if (launch_cfg.copy_over_socket > 0) {
+        basic_mud_log("booting copyover, desc: %d", launch_cfg.copy_over_socket);
+        fCopyOver = true;
+        mother_desc = (socket_t) launch_cfg.copy_over_socket;
+    }
+
+    if (chdir(launch_cfg.lib_dir) < 0) {
+        perror("SYSERR: Fatal error changing to data directory");
+        exit(1);
+    }
+    basic_mud_log("Using data directory: %s", launch_cfg.lib_dir);
+
+    basic_mud_log("reading config file from data directory");
+    load_config();
+
+    if (scheck) {
+        basic_mud_log("Checking game files");
+        boot_world();
+    } else {
+        basic_mud_log("port: %d.", port);
+        init_game(port);
+    }
+
+    basic_mud_log("shutting down");
+    destroy_db();
+
+    if (!scheck) {
+        basic_mud_log("freeing memory");
+        free_bufpool();                         /* comm.c */
+        free_player_index();                    /* players.c */
+        free_messages();                        /* fight.c */
+        free_text_files();                      /* db.c */
+        board_clear_all();                      /* boards.c */
+        free(cmd_sort_info);                    /* act.informative.c */
+        free_command_list();                    /* act.informative.c */
+        free_social_messages();                 /* act.social.c */
+        free_help_table();                      /* db.c */
+        free_invalid_list();                    /* ban.c */
+        free_save_list();                       /* genolc.c */
+        free_strings(&config_info, OASIS_CFG);  /* oasis_delete.c */
+        free_ibt_lists();                       /* ibt.c */
+        free_recent_players();                  /* act.informative.c */
+        free_list(world_events);                /* free up our global lists */
+        free_list(global_lists);
+    }
+
+    if (last_act_message) {
+        free(last_act_message);
+    }
+
+    basic_mud_log("shutdown complete.");
+
+    return (0);
+}
+
+
 /* Reload players after a copyover */
 void copyover_recover()
 {
@@ -390,7 +600,7 @@ void copyover_recover()
 
         /* Write something, and check if it goes error-free */
         if (write_to_descriptor(desc, "\n\rRestoring from copyover...\n\r") < 0) {
-            //CLOSE_SOCKET(desc); /* nope */
+            close(desc); /* nope */
             continue;
         }
 

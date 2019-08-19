@@ -35,6 +35,8 @@
 #include "ban.h"
 #include "screen.h"
 
+#include <stdio.h>
+
 /* local utility functions with file scope */
 static int perform_set(struct char_data *ch, struct char_data *vict, int mode, char *val_arg);
 static void perform_immort_invis(struct char_data *ch, int level);
@@ -4294,8 +4296,8 @@ ACMD(do_copyover)
     fclose(fp);
 
     /* exec - descriptors are inherited */
-    sprintf(buf, "%d", port);
-    sprintf(buf2, "-C%d", mother_desc);
+    sprintf(buf, "-p %d", port);
+    sprintf(buf2, "-C %d", (int) mother_desc);
 
     /* Ugh, seems it is expected we are 1 step above lib - this may be dangerous! */
     if (chdir("..") != 0) {

@@ -325,7 +325,8 @@ add_executable(circle
         "src/version.c"
         "src/weather.c"
         "src/olc_zone_zedit.c"
-        "src/zmalloc.c")
+        "src/zmalloc.c"
+        src/argparse.c)
 set_target_properties(circle PROPERTIES C_STANDARD_REQUIRED ON)
 set_target_properties(circle PROPERTIES C_STANDARD 11)
 set_target_properties(circle PROPERTIES C_EXTENSIONS ON)
