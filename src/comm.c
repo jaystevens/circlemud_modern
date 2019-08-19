@@ -711,8 +711,9 @@ void game_loop(socket_t local_mother_desc)
                 else {
                     perror("SYSERR: Select coma");
                 }
-            } else
+            } else {
                 basic_mud_log("New connection.  Waking up.");
+            }
             gettimeofday(&last_time, (struct timezone *) 0);
         }
         /* Set up the input, output, and exception sets for select(). */
@@ -2254,7 +2255,7 @@ static sigfunc *my_signal(int signo, sigfunc *func)
 static void signal_setup(void)
 {
 #if defined(_WIN32) || defined(_WIN64)
-    basic_mud_log("signals not supported on windows, skipping")
+    basic_mud_log("signals not supported on windows, skipping");
 #else
     struct itimerval itime;
     struct timeval interval;
@@ -2725,7 +2726,7 @@ static int open_logfile(const char *filename, FILE *stderr_fp)
 static void circle_sleep(struct timeval *timeout)
 {
 #if defined(_WIN32) || defined(_WIN64)
-    Sleep(timeout->tv_sec * 1000 + timeout->tv_usec / 1000);
+    Sleep((DWORD) ((timeout->tv_sec * 1000) + (timeout->tv_usec / 1000)));
 #else
     if (select(0, (fd_set *) 0, (fd_set *) 0, (fd_set *) 0, timeout) < 0) {
         if (errno != EINTR) {
