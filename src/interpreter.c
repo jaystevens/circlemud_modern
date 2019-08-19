@@ -348,7 +348,6 @@ cpp_extern const struct command_info cmd_info[] = {{"RESERVED",   "",        0, 
                                                    {";",          ";",         POS_DEAD,     do_wiznet,         LVL_IMMORT,   0},
                                                    {"wizhelp",    "wizhelp",   POS_DEAD,     do_wizhelp,        LVL_IMMORT,   0},
                                                    {"wizlist",    "wizlist",   POS_DEAD,     do_gen_ps,         0,            SCMD_WIZLIST},
-                                                   {"wizupdate",  "wizupde",   POS_DEAD,     do_wizupdate,      LVL_GRGOD,    0},
                                                    {"wizlock",    "wizlock",   POS_DEAD,     do_wizlock,        LVL_IMPL,     0},
                                                    {"write",      "write",     POS_STANDING, do_write,          1,            0},
 

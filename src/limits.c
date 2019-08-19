@@ -202,36 +202,6 @@ void set_title(struct char_data *ch, char *title)
     }
 }
 
-void run_autowiz(void)
-{
-#if defined(CIRCLE_UNIX) || defined(CIRCLE_WINDOWS)
-    if (CONFIG_USE_AUTOWIZ) {
-        size_t res;
-        char buf[256];
-
-#if defined(CIRCLE_UNIX)
-        res = snprintf(buf, sizeof(buf), "nice ../bin/autowiz %d %s %d %s %d &", CONFIG_MIN_WIZLIST_LEV, WIZLIST_FILE,
-                       LVL_IMMORT, IMMLIST_FILE, (int) getpid());
-#elif defined(CIRCLE_WINDOWS)
-        res = snprintf(buf, sizeof(buf), "autowiz %d %s %d %s",
-        CONFIG_MIN_WIZLIST_LEV, WIZLIST_FILE, LVL_IMMORT, IMMLIST_FILE);
-#endif /* CIRCLE_WINDOWS */
-
-        /* Abusing signed -> unsigned conversion to avoid '-1' check. */
-        if (res < sizeof(buf)) {
-            int rval;
-            mudlog(CMP, LVL_IMMORT, false, "Initiating autowiz.");
-            reboot_wizlists();
-            rval = system(buf);
-            if (rval != 0) {
-                mudlog(BRF, LVL_IMMORT, true, "Warning: autowiz failed with return value %d", rval);
-            }
-        } else
-            basic_mud_log("Cannot run autowiz: command-line doesn't fit in buffer.");
-    }
-#endif /* CIRCLE_UNIX || CIRCLE_WINDOWS */
-}
-
 void gain_exp(struct char_data *ch, int gain)
 {
     int is_altered = false;
@@ -269,18 +239,12 @@ void gain_exp(struct char_data *ch, int gain)
                 send_to_char(ch, "You rise %d levels!\r\n", num_levels);
             }
             set_title(ch, NULL);
-            if (GET_LEVEL(ch) >= LVL_IMMORT && !PLR_FLAGGED(ch, PLR_NOWIZLIST)) {
-                run_autowiz();
-            }
         }
     } else if (gain < 0) {
         gain = MAX(-CONFIG_MAX_EXP_LOSS, gain);    /* Cap max exp lost per death */
         GET_EXP(ch) += gain;
         if (GET_EXP(ch) < 0)
             GET_EXP(ch) = 0;
-    }
-    if (GET_LEVEL(ch) >= LVL_IMMORT && !PLR_FLAGGED(ch, PLR_NOWIZLIST)) {
-        run_autowiz();
     }
 }
 
@@ -315,9 +279,6 @@ void gain_exp_regardless(struct char_data *ch, int gain)
             }
             set_title(ch, NULL);
         }
-    }
-    if (GET_LEVEL(ch) >= LVL_IMMORT && !PLR_FLAGGED(ch, PLR_NOWIZLIST)) {
-        run_autowiz();
     }
 }
 

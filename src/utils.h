@@ -119,7 +119,6 @@ void gain_exp_regardless(struct char_data *ch, int gain);
 void gain_condition(struct char_data *ch, int condition, int value);
 void point_update(void);
 void update_pos(struct char_data *victim);
-void run_autowiz(void);
 int increase_gold(struct char_data *ch, int amt);
 int decrease_gold(struct char_data *ch, int amt);
 int increase_bank(struct char_data *ch, int amt);

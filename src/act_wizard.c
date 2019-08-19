@@ -1308,13 +1308,7 @@ void return_to_char(struct char_data *ch)
 ACMD(do_return)
 {
     if (!IS_NPC(ch) && !ch->desc->original) {
-        int level, newlevel;
-        level = GET_LEVEL(ch);
         do_cheat(ch);
-        newlevel = GET_LEVEL(ch);
-        if (!PLR_FLAGGED(ch, PLR_NOWIZLIST) && level != newlevel) {
-            run_autowiz();
-        }
     }
 
     if (ch->desc && ch->desc->original) {
@@ -1581,9 +1575,6 @@ ACMD(do_advance)
         REMOVE_BIT_AR(PRF_FLAGS(victim), PRF_NOHASSLE);
         REMOVE_BIT_AR(PRF_FLAGS(victim), PRF_HOLYLIGHT);
         REMOVE_BIT_AR(PRF_FLAGS(victim), PRF_SHOWVNUMS);
-        if (!PLR_FLAGGED(victim, PLR_NOWIZLIST)) {
-            run_autowiz();
-        }
     } else if (oldlevel < LVL_IMMORT && newlevel >= LVL_IMMORT) {
         SET_BIT_AR(PRF_FLAGS(victim), PRF_LOG2);
         SET_BIT_AR(PRF_FLAGS(victim), PRF_HOLYLIGHT);
@@ -4676,12 +4667,6 @@ ACMD(do_plist)
     snprintf(buf + len, sizeof(buf) - len, "%s-------------------------------------%s\r\n"
                                            "%d players listed.\r\n", CCCYN(ch, C_NRM), CCNRM(ch, C_NRM), count);
     page_string(ch->desc, buf, true);
-}
-
-ACMD(do_wizupdate)
-{
-    run_autowiz();
-    send_to_char(ch, "Wizlists updated.\n\r");
 }
 
 /* NOTE: This is called from perform_set */
