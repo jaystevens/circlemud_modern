@@ -13,7 +13,8 @@
 #ifndef _COMM_H_
 #define _COMM_H_
 
-#define COPYOVER_FILE "copyover.dat"
+#define NUM_RESERVED_DESCS  8
+#define COPYOVER_FILE       "copyover.dat"
 
 /* comm.c */
 void close_socket(struct descriptor_data *d);

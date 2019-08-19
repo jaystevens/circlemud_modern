@@ -390,7 +390,7 @@ void copyover_recover()
 
         /* Write something, and check if it goes error-free */
         if (write_to_descriptor(desc, "\n\rRestoring from copyover...\n\r") < 0) {
-            //CLOSE_SOCKET(desc); /* nope */
+            close(desc); /* nope */
             continue;
         }
 
