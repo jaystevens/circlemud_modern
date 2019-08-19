@@ -329,6 +329,11 @@ void queue_free(struct dg_queue *q)
     struct q_element *qe, *next_qe;
     struct event *event;
 
+    if (!q) {
+        basic_mud_log("SYSERR: trying to free NULL dg_queue: %s:%d", __FILE__, __LINE__);
+        return;
+    }
+
     for (i = 0; i < NUM_EVENT_QUEUES; i++) {
         for (qe = q->head[i]; qe; qe = next_qe) {
             next_qe = qe->next;
