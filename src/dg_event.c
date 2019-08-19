@@ -330,7 +330,7 @@ void queue_free(struct dg_queue *q)
     struct event *event;
 
     if (!q) {
-        basic_mud_log("SYSERR: trying to free NULL dg_queue: %s:%d", __FILE__, __LINE__);
+        basic_mud_log("WARNING: trying to free NULL dg_queue: %s:%d", __FILE__, __LINE__);
         return;
     }
 
