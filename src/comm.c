@@ -106,13 +106,13 @@ static int new_descriptor(socket_t s);
 static int get_max_players(void);
 static int process_output(struct descriptor_data *t);
 static int process_input(struct descriptor_data *t);
-static void timediff(struct timeval *diff, struct timeval *a, struct timeval *b);
-static void timeadd(struct timeval *sum, struct timeval *a, struct timeval *b);
+static void timediff(struct timeval *rslt, struct timeval *a, struct timeval *b);
+static void timeadd(struct timeval *rslt, struct timeval *a, struct timeval *b);
 static void flush_queues(struct descriptor_data *d);
 static void nonblock(socket_t s);
 static int perform_subst(struct descriptor_data *t, char *orig, char *subst);
 static void record_usage(void);
-static char *make_prompt(struct descriptor_data *point);
+static char *make_prompt(struct descriptor_data *d);
 static void check_idle_passwords(void);
 static void init_descriptor(struct descriptor_data *newd, int desc);
 
