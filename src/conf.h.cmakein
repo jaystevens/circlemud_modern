@@ -18,9 +18,6 @@
 /* Define to `int' if <sys/types.h> doesn't define.  */
 #cmakedefine pid_t @pid_t@
 
-/* Define as the return type of signal handlers (int or void).  */
-#cmakedefine RETSIGTYPE @RETSIGTYPE@
-
 /* Define to `unsigned' if <sys/types.h> doesn't define.  */
 #cmakedefine size_t @size_t@
 

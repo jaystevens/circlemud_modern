@@ -93,11 +93,11 @@ static char *last_act_message = NULL;
 
 
 /* static local function prototypes (current file scope only) */
-static RETSIGTYPE reread_wizlists(int sig);         /* signal: SIGUSR1 */
+static void reread_wizlists(int sig);         /* signal: SIGUSR1 */
 //static RETSIGTYPE unrestrict_game(int sig);         /* signal: SIGUSR2 */
-static RETSIGTYPE reap(int sig);
-static RETSIGTYPE checkpointing(int sig);
-static RETSIGTYPE hupsig(int sig);
+static void reap(int sig);
+static void checkpointing(int sig);
+static void hupsig(int sig);
 static ssize_t perform_socket_read(socket_t desc, char *read_point, size_t space_left);
 static ssize_t perform_socket_write(socket_t desc, const char *txt, size_t length);
 static void circle_sleep(struct timeval *timeout);
@@ -129,7 +129,7 @@ static int open_logfile(const char *filename, FILE *stderr_fp);
 static sigfunc *my_signal(int signo, sigfunc *func);
 #endif
 /* Webster Dictionary Lookup functions */
-static RETSIGTYPE websterlink(int sig);
+static void websterlink(int sig);
 static void handle_webster_file(void);
 
 static void msdp_update(void); /* KaVir plugin*/
@@ -2219,7 +2219,7 @@ static void nonblock(socket_t s)
 
 /*  signal-handling functions (formerly signals.c).  UNIX only. */
 #if defined(CIRCLE_UNIX) || defined(CIRCLE_MACINTOSH)
-static RETSIGTYPE reread_wizlists(int sig)
+static void reread_wizlists(int sig)
 {
     reread_wizlist = true;
 }
@@ -2231,7 +2231,7 @@ static RETSIGTYPE unrestrict_game(int sig)
 }
 */
 
-static RETSIGTYPE websterlink(int sig)
+static void websterlink(int sig)
 {
     webster_file_ready = true;
 }
@@ -2240,7 +2240,7 @@ static RETSIGTYPE websterlink(int sig)
 #ifdef CIRCLE_UNIX
 
 /* clean up our zombie kids to avoid defunct processes */
-static RETSIGTYPE reap(int sig)
+static void reap(int sig)
 {
     while (waitpid(-1, NULL, WNOHANG) > 0) {}
 
@@ -2248,7 +2248,7 @@ static RETSIGTYPE reap(int sig)
 }
 
 /* Dying anyway... */
-static RETSIGTYPE checkpointing(int sig)
+static void checkpointing(int sig)
 {
 #ifndef MEMORY_DEBUG
     if (!tics_passed) {
@@ -2261,7 +2261,7 @@ static RETSIGTYPE checkpointing(int sig)
 }
 
 /* Dying anyway... */
-static RETSIGTYPE hupsig(int sig)
+static void hupsig(int sig)
 {
     basic_mud_log("SYSERR: Received SIGHUP, SIGINT, or SIGTERM.  Shutting down...");
     exit(1); /* perhaps something more elegant should substituted */
