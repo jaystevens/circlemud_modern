@@ -50,7 +50,6 @@ if(NOT CONF_H_GENERATED)
             set(pid_t int CACHE INTERNAL "")
         endif()
 
-        include(TestSignalType)
 
         CHECK_TYPE_SIZE(size_t HAVE_SIZE_T)
         if(HAVE_SIZE_T GREATER_EQUAL 0)
