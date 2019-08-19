@@ -295,7 +295,7 @@ int display_closed_doors = YES;
 
 /* Automap and map options */
 /* Default is to have automap and map command only enabled for immortals */
-int map_option = MAP_IMM_ONLY;
+int map_option = MAP_ON;
 int default_map_size = 6;
 int default_minimap_size = 2;
 
@@ -306,7 +306,7 @@ int medit_advanced_stats = YES;
 int ibt_autosave = YES;
 
 /* Use the protocol negotiation system */
-int protocol_negotiation = YES;
+int protocol_negotiation = NO;
 
 /* Use the special character in communication channels */
 int special_in_comm = YES;
