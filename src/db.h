@@ -287,7 +287,7 @@ void parse_mobile(FILE *mob_f, int nr);
 char *parse_object(FILE *obj_f, int nr);
 int is_empty(zone_rnum zone_nr);
 void reset_zone(zone_rnum zone);
-void reboot_wizlists(void);
+void reread_wizlist(void);
 ACMD(do_reboot);
 void boot_world(void);
 int count_hash_records(FILE *fl);

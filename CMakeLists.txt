@@ -375,12 +375,6 @@ if(NOT MSVC)
     #target_link_libraries(wld2html ${LINK_LIBS})
 endif()
 
-if(NOT MSVC)
-    # TODO - webster does not compile on windows
-    #add_executable(webster "src/util/webster.c")
-    #target_link_libraries(webster ${LINK_LIBS})
-endif()
-
 
 # install directives
 if(WIN32)

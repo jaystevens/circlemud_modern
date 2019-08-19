@@ -325,9 +325,10 @@ static void boot_social_messages(void)
     top_of_socialt = curr_soc;
 }
 
-/* this is necessary for the autowiz system */
-void reboot_wizlists(void)
+
+void reread_wizlist(void)
 {
+    /* reread wizlists */
     file_to_string_alloc(WIZLIST_FILE, &wizlist);
     file_to_string_alloc(IMMLIST_FILE, &immlist);
 }
