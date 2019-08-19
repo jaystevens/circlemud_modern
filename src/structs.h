@@ -20,14 +20,23 @@
  * TRUE/FALSE aren't defined yet. */
 #define USE_AUTOEQ  1
 
-/* preamble */
-/* As of bpl20, it should be safe to use unsigned data types for the various
- * virtual and real number data types.  There really isn't a reason to use
- * signed anymore so use the unsigned types and get 65,535 objects instead of
- * 32,768. NOTE: This will likely be unconditionally unsigned later.
- * 0 = use signed indexes; 1 = use unsigned indexes */
-# define IDXTYPE        uint16_t        /* Index types are unsigned 16 bit int */
-# define IDXTYPE_MAX    UINT16_MAX      /* Used for compatibility checks. */
+/* JS 2019-08-18 -
+ * the game is broken when IDXTYPE is greater than uint16_t because it will have values that are
+ * greater than 'int'/'int32_t' that are used throughout the game
+ * we could switch to int32_t, and only use the positive values, not break the game and go to 21 million rooms/obj
+ * I'd prefer to update to support uint32_t IDXTYPE properly, but might switch to int32_t in the short term.
+ *
+ * uint16_t max value:        65,535
+ *  int32_t max value: 2,147,483,647
+ * uint32_t max value: 4,294,967.295
+ *
+ * uint16_t gives a max of                     655 zones        (65,535 / 100)
+ *  int32_t gives a max of              21,474,836 zones (2,147,483,647 / 100)
+ * uint32_t gives a max of              42,949,672 zones (4,294,967,295 / 100)
+ * uint64_t gives a max of 184,467,440,737,095,516 zones
+ */
+# define IDXTYPE        int32_t        /* Index types are unsigned 16 bit int */
+# define IDXTYPE_MAX    INT32_MAX      /* Used for compatibility checks. */
 # define IDXTYPE_MIN    0               /* Used for compatibility checks. */
 # define NOWHERE        ((IDXTYPE)~0)   /* Sets to UINT16_MAX, or 65,535 */
 # define NOTHING        ((IDXTYPE)~0)   /* Sets to UINT16_MAX, or 65,535 */
