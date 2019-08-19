@@ -2218,6 +2218,7 @@ static void checkpointing(int sig)
 static void hupsig(int sig)
 {
     basic_mud_log("SYSERR: Received SIGHUP, SIGINT, or SIGTERM.  Shutting down...");
+    send_to_all("\r\nSERVER SHUTTING DOWN\r\n");
     circle_shutdown = 1;
 }
 
