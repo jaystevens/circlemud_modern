@@ -125,32 +125,17 @@ static int open_logfile(const char *filename, FILE *stderr_fp);
 #if defined(POSIX)
 static sigfunc *my_signal(int signo, sigfunc *func);
 #endif
-
-
 static void msdp_update(void); /* KaVir plugin*/
-
-/* externally defined functions, used locally */
-#ifdef __CXREF__
-#undef FD_ZERO
-#undef FD_SET
-#undef FD_ISSET
-#undef FD_CLR
-#define FD_ZERO(x)
-#define FD_SET(x, y) 0
-#define FD_ISSET(x, y) 0
-#define FD_CLR(x, y)
-#endif
 
 /*  main game loop and related stuff */
 
-#if defined(CIRCLE_WINDOWS) || defined(CIRCLE_MACINTOSH)
-/* Windows and Mac do not have gettimeofday, so we'll simulate it. Borland C++
- * warns: "Undefined structure 'timezone'" */
+#if defined(CIRCLE_WINDOWS)
+/* Windows and Mac do not have gettimeofday, so we'll simulate it. */
 void gettimeofday(struct timeval *t, struct timezone *dummy)
 {
-#if defined(CIRCLE_WINDOWS)
+#if defined(_WIN32) || defined(_WIN64)
   DWORD millisec = GetTickCount();
-#elif defined(CIRCLE_MACINTOSH)
+#elif defined(__APPLE__)  # TODO - check if this is needed. I do not think it is. JS 2019-08-18
   unsigned long int millisec;
   millisec = (int)((float)TickCount() * 1000.0 / 60.0);
 #endif
@@ -158,8 +143,7 @@ void gettimeofday(struct timeval *t, struct timezone *dummy)
   t->tv_sec = (int) (millisec / 1000);
   t->tv_usec = (millisec % 1000) * 1000;
 }
-
-#endif    /* CIRCLE_WINDOWS || CIRCLE_MACINTOSH */
+#endif    /* CIRCLE_WINDOWS */
 
 int main(int argc, char **argv)
 {
@@ -338,7 +322,7 @@ int main(int argc, char **argv)
 }
 
 /* Reload players after a copyover */
-void copyover_recover()
+void copyover_recover(void)
 {
     struct descriptor_data *d;
     FILE *fp;
@@ -1623,7 +1607,7 @@ static int process_output(struct descriptor_data *t)
  * Right now there are two versions of this function: one for Windows,
  * and one for all other platforms. */
 
-#if defined(CIRCLE_WINDOWS)
+#if defined(_WIN32) || defined(_WIN64)
 ssize_t perform_socket_write(socket_t desc, const char *txt, size_t length)
 {
   ssize_t result;
@@ -2171,7 +2155,7 @@ static void check_idle_passwords(void)
  * O_NONBLOCK.  Krusty old NeXT machines!  (Thanks to Michael Jones for
  * this and various other NeXT fixes.) */
 
-#if defined(CIRCLE_WINDOWS)
+#if defined(_WIN32) || defined(_WIN64)
 
 void nonblock(socket_t s)
 {
@@ -2179,7 +2163,7 @@ void nonblock(socket_t s)
   ioctlsocket(s, FIONBIO, &val);
 }
 
-#elif defined(CIRCLE_UNIX) || defined(CIRCLE_MACINTOSH)
+#else
 
 #ifndef O_NONBLOCK
 #define O_NONBLOCK O_NDELAY
@@ -2196,7 +2180,7 @@ static void nonblock(socket_t s)
         exit(1);
     }
 }
-#endif  /* CIRCLE_UNIX || CIRCLE_MACINTOSH */
+#endif  /* CIRCLE_WINDOWS */
 
 static void sigusr1_handler(int sig)
 {
@@ -2248,9 +2232,7 @@ static void hupsig(int sig)
  * sigaction either, you can use the same fix.
  * SunOS Release 4.0.2 (sun386) needs this too, according to Tim Aldric. */
 
-#ifndef POSIX
-#define my_signal(signo, func) signal(signo, func)
-#else
+#if defined(POSIX)
 static sigfunc *my_signal(int signo, sigfunc *func)
 {
     struct sigaction sact, oact;
@@ -2265,10 +2247,15 @@ static sigfunc *my_signal(int signo, sigfunc *func)
 
     return (oact.sa_handler);
 }
+#else
+#define my_signal(signo, func) signal(signo, func)
 #endif                /* POSIX */
 
 static void signal_setup(void)
 {
+#if defined(_WIN32) || defined(_WIN64)
+    basic_mud_log("signals not supported on windows, skipping")
+#else
     struct itimerval itime;
     struct timeval interval;
 
@@ -2294,6 +2281,7 @@ static void signal_setup(void)
     my_signal(SIGTERM, hupsig);
     my_signal(SIGPIPE, SIG_IGN);
     my_signal(SIGALRM, SIG_IGN);
+#endif
 }
 
 /* Public routines for system-to-player-communication. */
@@ -2423,7 +2411,6 @@ void send_to_group(struct char_data *ch, struct group_data *group, const char *m
     }
 }
 
-
 /* Thx to Jamie Nelson of 4D for this contribution */
 void send_to_range(room_vnum start, room_vnum finish, const char *messg, ...)
 {
@@ -2455,8 +2442,7 @@ void send_to_range(room_vnum start, room_vnum finish, const char *messg, ...)
 }
 
 static const char *ACTNULL = "<NULL>";
-#define CHECK_NULL(pointer, expression) \
-  if ((pointer) == NULL) i = ACTNULL; else i = (expression);
+#define CHECK_NULL(pointer, expression) if ((pointer) == NULL) i = ACTNULL; else i = (expression);
 /* higher-level communication: the act() function */
 void perform_act(const char *orig, struct char_data *ch, struct obj_data *obj, void *vict_obj, struct char_data *to)
 {
@@ -2736,24 +2722,19 @@ static int open_logfile(const char *filename, FILE *stderr_fp)
 }
 
 /* This may not be pretty but it keeps game_loop() neater than if it was inline. */
-#if defined(CIRCLE_WINDOWS)
-void circle_sleep(struct timeval *timeout)
-{
-  Sleep(timeout->tv_sec * 1000 + timeout->tv_usec / 1000);
-}
-
-#else
 static void circle_sleep(struct timeval *timeout)
 {
+#if defined(_WIN32) || defined(_WIN64)
+    Sleep(timeout->tv_sec * 1000 + timeout->tv_usec / 1000);
+#else
     if (select(0, (fd_set *) 0, (fd_set *) 0, (fd_set *) 0, timeout) < 0) {
         if (errno != EINTR) {
             perror("SYSERR: Select sleep");
             exit(1);
         }
     }
+#endif
 }
-
-#endif /* CIRCLE_WINDOWS */
 
 /* KaVir's plugin*/
 static void msdp_update(void)
