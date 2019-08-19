@@ -15,9 +15,6 @@
 /* Define if you have the vprintf function.  */
 #cmakedefine HAVE_VPRINTF 1
 
-/* Define to `int' if <sys/types.h> doesn't define.  */
-#cmakedefine pid_t @pid_t@
-
 /* Define to `unsigned' if <sys/types.h> doesn't define.  */
 #cmakedefine size_t @size_t@
 
